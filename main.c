@@ -56,6 +56,8 @@ void close()
 
 int main (int argc, char* args[]) 
 {
+	
+
 	if (init() == 0)
 	{
    		printf("Failed initialize!\n");
@@ -68,12 +70,24 @@ int main (int argc, char* args[])
 		}
 		else
 		{
+			int quit = 0; 			
+			SDL_Event e;
+			while(quit == 0)
+			{
+				while( SDL_PollEvent( &e ) != 0 )
+				{
+					if( e.type == SDL_QUIT ) 
+					{
+						quit = 1;
+					}			
+				}
+			
 			SDL_BlitSurface( gHelloWorld, NULL, gScreenSurface, NULL );
 			SDL_UpdateWindowSurface( gWindow );
-			SDL_Delay( 2000 );
-		}
+			
+			}
+		}	
 	}
-	
 	close();  	
 
 	return 0;
