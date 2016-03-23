@@ -10,7 +10,11 @@
 * Possibilitar o uso de imagens .png
 * exibição de uma figura na tela
 * Criar uma interface básica com uma figura e um plano de fundo
+
 ## O que eu vou fazer durante a próxima semana?
+* Juntar fundo com figura na interface
+* Animar figuras
+  * criar eventos caso aconteça choque
 
 ## Quantas horas de trabalho?
 5 horas
