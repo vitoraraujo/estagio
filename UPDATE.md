@@ -1,6 +1,6 @@
 # 24/03
 
-## O que eu ia fazer durante a semana passada
+## O que eu ia fazer durante a semana passada?
 * Começar um jogo simples.
   * exibição de uma figura na tela
   * animação desta figura
@@ -8,8 +8,11 @@
 ## O que eu realmente fiz durante a semana passada?
 * Incrementar otimização da resolução da interface
 * Possibilitar o uso de imagens .png
-* exibição de uma figura na tela
-* Criar uma interface básica com uma figura e um plano de fundo
+* exibição de uma figura geometrica na tela
+* Criar uma interface básica com uma figura e um plano de fundo (a ser corrigido)
+* Exibição de uma figura animada na tela
+* Criar um interface básica com uma figura animada e um plano de fundo (a ser corrigido)
+* Tenta converter o código de animação de C++ para C (boneco.cpp)
 
 ## O que eu vou fazer durante a próxima semana?
 * Juntar fundo com figura na interface
@@ -17,7 +20,7 @@
   * criar eventos caso aconteça choque
 
 ## Quantas horas de trabalho?
-5 horas
+8 horas
 
 # 17/03
 
