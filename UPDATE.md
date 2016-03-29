@@ -1,3 +1,18 @@
+# 31/03
+
+## O que eu ia fazer durante a semana passada?
+* Juntar fundo com figura na interface
+* Animar figuras
+  * criar eventos caso aconteça choque
+
+## O que eu realmente fiz durante a semana passada?
+
+## O que eu vou fazer durante a próxima semana?
+
+## Quantas horas de trabalho?
+
+=======
+
 # 24/03
 
 ## O que eu ia fazer durante a semana passada?
@@ -21,6 +36,8 @@
 
 ## Quantas horas de trabalho?
 8 horas
+
+=======
 
 # 17/03
 
