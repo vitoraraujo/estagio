@@ -11,7 +11,6 @@ SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
 
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
-SDL_Surface* gBackground = NULL;
 SDL_Renderer* gRenderer = NULL;
 
 class LTexture
@@ -55,6 +54,7 @@ class LTexture
 };
 
 LTexture gSpriteSheetTexture;
+LTexture gBackground;
 
 LTexture::LTexture()
 {
@@ -166,7 +166,7 @@ int LTexture::getHeight()
 	return mHeight;
 }
 
-SDL_Surface* loadSurface( const char* path )
+/*SDL_Surface* loadSurface( const char* path )
 {
 	SDL_Surface* optimizedSurface = NULL;
 	SDL_Surface* loadedSurface = IMG_Load( path );
@@ -184,7 +184,7 @@ SDL_Surface* loadSurface( const char* path )
 		SDL_FreeSurface( loadedSurface );
 	}
 	return optimizedSurface;
-}
+}*/
 
 int init()
 {
@@ -196,6 +196,11 @@ int init()
 	}
 	else
 	{
+		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
+		{
+			printf( "Warning: Linear texture filtering not enabled!" );
+		}		
+
 		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
@@ -212,7 +217,6 @@ int init()
 			}
 			else
 			{
-				//Initialize renderer color
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 
                 int imgFlags = IMG_INIT_PNG;
@@ -226,7 +230,6 @@ int init()
                     gScreenSurface = SDL_GetWindowSurface( gWindow );
                     if (gScreenSurface == NULL)
                     {
-                       printf("N foi\n");
                        success = 0;
                     }
                 }
@@ -269,24 +272,22 @@ int loadMedia()
 		gSpriteClips[ 3 ].h = 205;
 	}
 
-	gBackground = loadSurface("imagens/background.png" );
-	if( gBackground == NULL )
+	if( !gBackground.loadFromFile( "imagens/background.png" ) )
 	{
-		printf( "Failed to load PNG image!\n" );
-		success = 0;
+		printf( "Failed to load background texture image!\n" );
+		success = false;
 	}
+
 	return success;
 }
 
 int close()
 {
     gSpriteSheetTexture.free();
+	gBackground.free();
 
     SDL_DestroyRenderer( gRenderer );
     gRenderer = NULL;
-
-    SDL_FreeSurface( gBackground );
-	gBackground = NULL;
 
     SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
@@ -341,8 +342,7 @@ int main( int argc, char* args[] )
 					frame = 0;
 				}
 
-                SDL_BlitSurface( gBackground, NULL, gScreenSurface, NULL );
-				SDL_UpdateWindowSurface( gWindow );
+				gBackground.render( 0, 0 );
             }
         }
     }
