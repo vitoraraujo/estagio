@@ -139,6 +139,7 @@ int main( int argc, char* args[] )
 
                             case SDLK_LEFT:
                             gXOut = gKeyPressSurfaces[ KEY_PRESS_SURFACE_LEFT];
+							break;
 
                             case SDLK_RIGHT:
                             gXOut = gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ];

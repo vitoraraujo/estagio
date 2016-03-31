@@ -18,7 +18,7 @@ SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* gKeyPressSurfaces[ KEY_PRESS_SURFACE_TOTAL ];
 SDL_Surface* gCurrentSurface = NULL;
-
+void *__gxx_personality_v0;
 SDL_Surface* loadSurface( const char* path )
 {
     SDL_Surface* optimizedSurface = NULL;

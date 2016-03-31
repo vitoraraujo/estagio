@@ -8,7 +8,7 @@ const int SCREEN_HEIGHT = 800;
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
-
+void *__gxx_personality_v0;
 SDL_Texture* loadTexture( const char* path )
 {
 	SDL_Texture* newTexture = NULL;
@@ -118,11 +118,9 @@ int main( int argc, char* args[] )
 					}
 				}
 
-				 //Clear screen
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 
-                //Render red filled quad
                 SDL_Rect fillRect = {500, 500, 150 , 150 };
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF );
 				SDL_RenderFillRect( gRenderer, &fillRect );

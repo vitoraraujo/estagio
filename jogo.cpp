@@ -10,7 +10,7 @@ SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* gBackground = NULL;
 SDL_Renderer* gRenderer = NULL;
-
+void *__gxx_personality_v0;
 SDL_Texture* loadTexture( const char* path )
 {
 	SDL_Texture* newTexture = NULL;
@@ -133,6 +133,7 @@ int main( int argc, char* args[] )
 {
 	if( !init() )
 	{
+        printf("SDL_Init failed: %s\n", SDL_GetError());
 		printf( "Failed to initialize!\n" );
 	}
 	else
@@ -153,7 +154,7 @@ int main( int argc, char* args[] )
 				{
 					if( e.type == SDL_QUIT )
 					{
-						quit = true;
+						quit = 1;
 					}
 				}
                 SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );

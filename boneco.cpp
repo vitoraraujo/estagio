@@ -18,7 +18,7 @@ SDL_Renderer* gRenderer = NULL;
 
 SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
 
-LTexture gSpriteSheetTexture; // <------- problema
+int gSpriteSheetTexture; // <------- problema
 
 
 void LTexture()
@@ -170,7 +170,7 @@ int loadMedia()
 {
 	int success = 1;
 
-	if( !loadFromFile( "imagens/foo.png" ) )
+	if( !gSpriteSheetTexture = loadFromFile( "imagens/foo.png" ) )
 	{
 		printf( "Failed to load walking animation texture!\n" );
 		success = 0;
@@ -557,4 +557,3 @@ int main( int argc, char* args[] )
 
 	return 0;
 }
-

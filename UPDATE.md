@@ -6,12 +6,17 @@
   * criar eventos caso aconteça choque
 
 ## O que eu realmente fiz durante a semana passada?
-* consertar alguns bugs
+* consertar bugs do test.cpp e jogo.cpp
 * Começar a por duas imagens diferentes na tela 
-## O que eu vou fazer durante a próxima semana?
+* Resolver bugs para rodar o código no lablua
+* Tentar converter o código de animação de C++ para C (boneco.cpp)
 
+## O que eu vou fazer durante a próxima semana?
+* Juntar fundo com figura na interface
+* Animar figuras
+  * criar eventos caso aconteça choque
 ## Quantas horas de trabalho?
-3 horas
+5 horas e meia
 
 =======
 
@@ -30,7 +35,6 @@
 * Exibição de uma figura animada na tela
 * Criar um interface básica com uma figura animada e um plano de fundo (a ser corrigido)
 * Tentar converter o código de animação de C++ para C (boneco.cpp)
-* Resolver bugs para rodar o código no lablua
 * Instalar drivers e reboots na máquina de casa para efetuar execuções de códigos com problemas de " No hardware accelerated renderers available "
 
 ## O que eu vou fazer durante a próxima semana?
@@ -39,7 +43,7 @@
   * criar eventos caso aconteça choque
 
 ## Quantas horas de trabalho?
-12 horas
+11 horas e meia
 
 =======
 

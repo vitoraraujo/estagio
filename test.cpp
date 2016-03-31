@@ -10,8 +10,6 @@ const int WALKING_ANIMATION_FRAMES = 4;
 SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
 
 SDL_Window* gWindow = NULL;
-SDL_Surface* gScreenSurface = NULL;
-SDL_Surface* gBackground = NULL;
 SDL_Renderer* gRenderer = NULL;
 
 class LTexture
@@ -30,7 +28,7 @@ class LTexture
 		void free();
 
 		//Set color modulation
-		void setColor( Uint8 red, Uint8 green, Uint8 blue );
+/*		void setColor( Uint8 red, Uint8 green, Uint8 blue );
 
 		//Set blending
 		void setBlendMode( SDL_BlendMode blending );
@@ -38,7 +36,7 @@ class LTexture
 		//Set alpha modulation
 		void setAlpha( Uint8 alpha );
 
-		//Renders texture at given point
+*/		//Renders texture at given point
 		void render( int x, int y, SDL_Rect* clip = NULL );
 
 		//Gets image dimensions
@@ -55,6 +53,7 @@ class LTexture
 };
 
 LTexture gSpriteSheetTexture;
+LTexture gBackground;
 
 LTexture::LTexture()
 {
@@ -122,7 +121,7 @@ void LTexture::free()
 	}
 }
 
-void LTexture::setColor( Uint8 red, Uint8 green, Uint8 blue )
+/*void LTexture::setColor( Uint8 red, Uint8 green, Uint8 blue )
 {
 	//Modulate texture rgb
 	SDL_SetTextureColorMod( mTexture, red, green, blue );
@@ -139,12 +138,12 @@ void LTexture::setAlpha( Uint8 alpha )
 	//Modulate texture alpha
 	SDL_SetTextureAlphaMod( mTexture, alpha );
 }
-
+*/
 void LTexture::render( int x, int y, SDL_Rect* clip )
 {
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
-
+    SDL_RenderCopy( gRenderer, mTexture, NULL, &renderQuad );
 	//Set clip rendering dimensions
 	if( clip != NULL )
 	{
@@ -166,26 +165,6 @@ int LTexture::getHeight()
 	return mHeight;
 }
 
-SDL_Surface* loadSurface( const char* path )
-{
-	SDL_Surface* optimizedSurface = NULL;
-	SDL_Surface* loadedSurface = IMG_Load( path );
-	if( loadedSurface == NULL )
-	{
-		printf( "Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError() );
-	}
-	else
-	{
-		optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, 0 );
-		if( optimizedSurface == NULL )
-		{
-			printf( "Unable to optimize image %s! SDL Error: %s\n", path, SDL_GetError() );
-		}
-		SDL_FreeSurface( loadedSurface );
-	}
-	return optimizedSurface;
-}
-
 int init()
 {
 	int success = 1;
@@ -196,6 +175,11 @@ int init()
 	}
 	else
 	{
+		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
+		{
+			printf( "Warning: Linear texture filtering not enabled!" );
+		}
+
 		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
@@ -212,7 +196,6 @@ int init()
 			}
 			else
 			{
-				//Initialize renderer color
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 
                 int imgFlags = IMG_INIT_PNG;
@@ -220,15 +203,6 @@ int init()
                 {
                     printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
                     success = 0;
-                }
-                else
-                {
-                    gScreenSurface = SDL_GetWindowSurface( gWindow );
-                    if (gScreenSurface == NULL)
-                    {
-                       printf("N foi\n");
-                       success = 0;
-                    }
                 }
             }
         }
@@ -269,24 +243,22 @@ int loadMedia()
 		gSpriteClips[ 3 ].h = 205;
 	}
 
-	gBackground = loadSurface("imagens/background.png" );
-	if( gBackground == NULL )
+	if( !gBackground.loadFromFile( "imagens/background.png" ) )
 	{
-		printf( "Failed to load PNG image!\n" );
-		success = 0;
+		printf( "Failed to load background texture image!\n" );
+		success = false;
 	}
+
 	return success;
 }
 
 int close()
 {
     gSpriteSheetTexture.free();
+	gBackground.free();
 
     SDL_DestroyRenderer( gRenderer );
     gRenderer = NULL;
-
-    SDL_FreeSurface( gBackground );
-	gBackground = NULL;
 
     SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
@@ -333,7 +305,6 @@ int main( int argc, char* args[] )
 				SDL_Rect* currentClip = &gSpriteClips[ frame / 4 ];
 				gSpriteSheetTexture.render( ( SCREEN_WIDTH - currentClip->w ) / 2, ( SCREEN_HEIGHT - currentClip->h ) / 2, currentClip );
 
-				SDL_RenderPresent( gRenderer );
 
 				++frame;
 				if( frame / 4 >= WALKING_ANIMATION_FRAMES )
@@ -341,8 +312,9 @@ int main( int argc, char* args[] )
 					frame = 0;
 				}
 
-                SDL_BlitSurface( gBackground, NULL, gScreenSurface, NULL );
-				SDL_UpdateWindowSurface( gWindow );
+				gBackground.render( 0, 0 );
+
+				SDL_RenderPresent( gRenderer );
             }
         }
     }
