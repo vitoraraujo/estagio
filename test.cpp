@@ -10,6 +10,10 @@ const int WALKING_ANIMATION_FRAMES = 4;
 SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
 
 SDL_Window* gWindow = NULL;
+
+=======
+SDL_Surface* gScreenSurface = NULL;
+
 SDL_Renderer* gRenderer = NULL;
 
 class LTexture
@@ -165,6 +169,29 @@ int LTexture::getHeight()
 	return mHeight;
 }
 
+<<<<<<< HEAD
+=======
+/*SDL_Surface* loadSurface( const char* path )
+{
+	SDL_Surface* optimizedSurface = NULL;
+	SDL_Surface* loadedSurface = IMG_Load( path );
+	if( loadedSurface == NULL )
+	{
+		printf( "Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError() );
+	}
+	else
+	{
+		optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, 0 );
+		if( optimizedSurface == NULL )
+		{
+			printf( "Unable to optimize image %s! SDL Error: %s\n", path, SDL_GetError() );
+		}
+		SDL_FreeSurface( loadedSurface );
+	}
+	return optimizedSurface;
+}*/
+
+>>>>>>> 3d6a6b5c619991b269ca18cb491455c992ce0ab7
 int init()
 {
 	int success = 1;
@@ -178,7 +205,11 @@ int init()
 		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
 		{
 			printf( "Warning: Linear texture filtering not enabled!" );
+<<<<<<< HEAD
 		}
+=======
+		}
+>>>>>>> 3d6a6b5c619991b269ca18cb491455c992ce0ab7
 
 		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
@@ -204,6 +235,17 @@ int init()
                     printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
                     success = 0;
                 }
+<<<<<<< HEAD
+=======
+                else
+                {
+                    gScreenSurface = SDL_GetWindowSurface( gWindow );
+                    if (gScreenSurface == NULL)
+                    {
+                       success = 0;
+                    }
+                }
+>>>>>>> 3d6a6b5c619991b269ca18cb491455c992ce0ab7
             }
         }
 	}
@@ -313,8 +355,11 @@ int main( int argc, char* args[] )
 				}
 
 				gBackground.render( 0, 0 );
+<<<<<<< HEAD
 
 				SDL_RenderPresent( gRenderer );
+=======
+>>>>>>> 3d6a6b5c619991b269ca18cb491455c992ce0ab7
             }
         }
     }

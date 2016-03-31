@@ -15,6 +15,7 @@
 * Juntar fundo com figura na interface
 * Animar figuras
   * criar eventos caso aconteça choque
+
 ## Quantas horas de trabalho?
 5 horas e meia
 
