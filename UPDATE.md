@@ -1,3 +1,25 @@
+# 7/04
+
+## O que eu ia fazer durante a semana passada?
+* Juntar fundo com figura na interface
+* Animar figuras
+  * criar eventos caso aconteça choque
+
+## O que eu realmente fiz durante a semana passada?
+* consertar bugs do test.cpp e jogo.cpp
+* consertar o bug do driver na máquina
+* Tentar converter o código de animação de C++ para C (boneco.cpp), necessito dos códigos antigos no colégio para estudo
+
+## O que eu vou fazer durante a próxima semana?
+* Consertar o bug do test.cpp ("Couldn't find matching render driver") para juntar fundo com figura na interface
+* Animar figuras
+  * criar eventos caso aconteça choque
+
+## Quantas horas de trabalho?
+3 horas
+
+=======
+
 # 31/03
 
 ## O que eu ia fazer durante a semana passada?

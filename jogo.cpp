@@ -74,7 +74,7 @@ int init()
 		}
 		else
 		{
-            gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
+            gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_SOFTWARE );
 
 			if( gRenderer == NULL )
 			{

@@ -1,20 +1,13 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <SDL2/SDL_image.h>
-#include <cmath>
+
 
 const int SCREEN_WIDTH = 1200;
 const int SCREEN_HEIGHT = 800;
-const int WALKING_ANIMATION_FRAMES = 4;
 
-SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
 
-SDL_Window* gWindow = NULL;
 
-=======
-SDL_Surface* gScreenSurface = NULL;
-
-SDL_Renderer* gRenderer = NULL;
 
 class LTexture
 {
@@ -32,7 +25,7 @@ class LTexture
 		void free();
 
 		//Set color modulation
-/*		void setColor( Uint8 red, Uint8 green, Uint8 blue );
+		void setColor( Uint8 red, Uint8 green, Uint8 blue );
 
 		//Set blending
 		void setBlendMode( SDL_BlendMode blending );
@@ -40,9 +33,9 @@ class LTexture
 		//Set alpha modulation
 		void setAlpha( Uint8 alpha );
 
-*/		//Renders texture at given point
+		//Renders texture at given point
 		void render( int x, int y, SDL_Rect* clip = NULL );
-
+        void renderbg(int x, int y);
 		//Gets image dimensions
 		int getWidth();
 		int getHeight();
@@ -55,6 +48,16 @@ class LTexture
 		int mWidth;
 		int mHeight;
 };
+
+const int WALKING_ANIMATION_FRAMES = 4;
+
+SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
+
+SDL_Window* gWindow = NULL;
+
+SDL_Surface* gScreenSurface = NULL;
+
+SDL_Renderer* gRenderer = NULL;
 
 LTexture gSpriteSheetTexture;
 LTexture gBackground;
@@ -125,7 +128,7 @@ void LTexture::free()
 	}
 }
 
-/*void LTexture::setColor( Uint8 red, Uint8 green, Uint8 blue )
+void LTexture::setColor( Uint8 red, Uint8 green, Uint8 blue )
 {
 	//Modulate texture rgb
 	SDL_SetTextureColorMod( mTexture, red, green, blue );
@@ -142,12 +145,12 @@ void LTexture::setAlpha( Uint8 alpha )
 	//Modulate texture alpha
 	SDL_SetTextureAlphaMod( mTexture, alpha );
 }
-*/
+
 void LTexture::render( int x, int y, SDL_Rect* clip )
 {
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
-    SDL_RenderCopy( gRenderer, mTexture, NULL, &renderQuad );
+
 	//Set clip rendering dimensions
 	if( clip != NULL )
 	{
@@ -157,6 +160,13 @@ void LTexture::render( int x, int y, SDL_Rect* clip )
 
 	//Render to screen
 	SDL_RenderCopy( gRenderer, mTexture, clip, &renderQuad );
+}
+
+void LTexture::renderbg( int x, int y )
+{
+	//Set rendering space and render to screen
+	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+	SDL_RenderCopy( gRenderer, mTexture, NULL, &renderQuad );
 }
 
 int LTexture::getWidth()
@@ -169,86 +179,57 @@ int LTexture::getHeight()
 	return mHeight;
 }
 
-<<<<<<< HEAD
-=======
-/*SDL_Surface* loadSurface( const char* path )
+bool init()
 {
-	SDL_Surface* optimizedSurface = NULL;
-	SDL_Surface* loadedSurface = IMG_Load( path );
-	if( loadedSurface == NULL )
-	{
-		printf( "Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError() );
-	}
-	else
-	{
-		optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, 0 );
-		if( optimizedSurface == NULL )
-		{
-			printf( "Unable to optimize image %s! SDL Error: %s\n", path, SDL_GetError() );
-		}
-		SDL_FreeSurface( loadedSurface );
-	}
-	return optimizedSurface;
-}*/
+	//Initialization flag
+	bool success = true;
 
->>>>>>> 3d6a6b5c619991b269ca18cb491455c992ce0ab7
-int init()
-{
-	int success = 1;
+	//Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
 	{
-		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
-		success = 0;
+		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+		success = false;
 	}
 	else
 	{
+		//Set texture filtering to linear
 		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
 		{
 			printf( "Warning: Linear texture filtering not enabled!" );
-<<<<<<< HEAD
 		}
-=======
-		}
->>>>>>> 3d6a6b5c619991b269ca18cb491455c992ce0ab7
 
+		//Create window
 		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
-			printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
-			success = 0;
+			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
+			success = false;
 		}
 		else
 		{
-            gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+			//Create renderer for window
+			gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_SOFTWARE);
 			if( gRenderer == NULL )
 			{
 				printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
-				success = 0;
+				success = false;
 			}
 			else
 			{
+				//Initialize renderer color
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 
-                int imgFlags = IMG_INIT_PNG;
-                if( !( IMG_Init( imgFlags ) & imgFlags ) )
-                {
-                    printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
-                    success = 0;
-                }
-<<<<<<< HEAD
-=======
-                else
-                {
-                    gScreenSurface = SDL_GetWindowSurface( gWindow );
-                    if (gScreenSurface == NULL)
-                    {
-                       success = 0;
-                    }
-                }
->>>>>>> 3d6a6b5c619991b269ca18cb491455c992ce0ab7
-            }
-        }
+				//Initialize PNG loading
+				int imgFlags = IMG_INIT_PNG;
+				if( !( IMG_Init( imgFlags ) & imgFlags ) )
+				{
+					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+					success = false;
+				}
+			}
+		}
 	}
+
 	return success;
 }
 
@@ -311,7 +292,6 @@ int close()
 
 int main( int argc, char* args[] )
 {
-	printf("SDL_Init failed: %s\n", SDL_GetError());
 	if( !init() )
 	{
 		printf("SDL_Init failed: %s\n", SDL_GetError());
@@ -354,12 +334,9 @@ int main( int argc, char* args[] )
 					frame = 0;
 				}
 
-				gBackground.render( 0, 0 );
-<<<<<<< HEAD
+				gBackground.renderbg( 0, 0 );
 
 				SDL_RenderPresent( gRenderer );
-=======
->>>>>>> 3d6a6b5c619991b269ca18cb491455c992ce0ab7
             }
         }
     }
