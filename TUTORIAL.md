@@ -1,6 +1,8 @@
 # Objetivo (Céu)
 
-## Compilando SDL com C++
+## SDL com C++
+
+### Primeiro programa
 
 Primeiro precisamos fazer o mais simples: compilar um exemplo de SDL somente com C/C++
 
@@ -19,9 +21,9 @@ $ g++ main.c
 $ ./a.out
 ```
 
-## Exibindo um Background
+### Exibindo um Background
 
-## Exibindo uma Animação
+### Exibindo uma Animação
 
 
 

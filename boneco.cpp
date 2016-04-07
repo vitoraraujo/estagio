@@ -11,6 +11,7 @@ struct LTexture{
     SDL_Texture* mTexture = NULL;
 	int mWidth;
     int mHeight;
+	int path;
 };
 typedef struct LTexture LTexture;
 
@@ -20,7 +21,7 @@ SDL_Renderer* gRenderer = NULL;
 
 SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
 
-int loadFromFile(LTexture s, const char* path )
+int loadFromFile(LTexture* s, const char* path )
 {
 	SDL_Texture* newTexture = NULL;
 
@@ -42,35 +43,35 @@ int loadFromFile(LTexture s, const char* path )
 		}
 		else
 		{
-			s.mWidth = loadedSurface->w;
-			s.mHeight = loadedSurface->h;
+			s->mWidth = loadedSurface->w;
+			s->mHeight = loadedSurface->h;
 		}
 
 		SDL_FreeSurface( loadedSurface );
 	}
 
-	s.mTexture = newTexture;
-	return s.mTexture != NULL;
+	s->mTexture = newTexture;
+	return s->mTexture != NULL;
 }
 
-void setColor(LTexture s, Uint8 red, Uint8 green, Uint8 blue )
+void setColor(LTexture* s, Uint8 red, Uint8 green, Uint8 blue )
 {
-	SDL_SetTextureColorMod( s.mTexture, red, green, blue );
+	SDL_SetTextureColorMod( s->mTexture, red, green, blue );
 }
 
-void setBlendMode(LTexture s, SDL_BlendMode blending )
+void setBlendMode(LTexture* s, SDL_BlendMode blending )
 {
-	SDL_SetTextureBlendMode(s.mTexture, blending );
+	SDL_SetTextureBlendMode(s->mTexture, blending );
 }
 
-void setAlpha(LTexture s, Uint8 alpha )
+void setAlpha(LTexture* s, Uint8 alpha )
 {
-	SDL_SetTextureAlphaMod( s.mTexture, alpha );
+	SDL_SetTextureAlphaMod( s->mTexture, alpha );
 }
 
-void render(LTexture s, int x, int y, SDL_Rect* clip )
+void render(LTexture* s, int x, int y, SDL_Rect* clip )
 {
-	SDL_Rect renderQuad = { x, y, s.mWidth, s.mHeight };
+	SDL_Rect renderQuad = { x, y, s->mWidth, s->mHeight };
 
 	if( clip != NULL )
 	{
@@ -78,17 +79,17 @@ void render(LTexture s, int x, int y, SDL_Rect* clip )
 		renderQuad.h = clip->h;
 	}
 
-	SDL_RenderCopy( gRenderer, s.mTexture, clip, &renderQuad );
+	SDL_RenderCopy( gRenderer, s->mTexture, clip, &renderQuad );
 }
 
-int getWidth(LTexture s)
+int getWidth(LTexture* s)
 {
-	return s.mWidth;
+	return s->mWidth;
 }
 
-int getHeight(LTexture s)
+int getHeight(LTexture* s)
 {
-	return s.mHeight;
+	return s->mHeight;
 }
 
 int init()
@@ -138,11 +139,11 @@ int init()
 	return success;
 }
 
-int loadMedia(LTexture s)
+int loadMedia(LTexture* s)
 {
 	int success = 1;
 
-	if( !(s = loadFromFile( "imagens/foo.png" )) )
+	if( !(s->path = loadFromFile( s, "imagens/foo.png" )) )
 	{
 		printf( "Failed to load walking animation texture!\n" );
 		success = 0;
@@ -167,13 +168,13 @@ int loadMedia(LTexture s)
 		gSpriteClips[ 3 ].x = 196;
 		gSpriteClips[ 3 ].y =   0;
 		gSpriteClips[ 3 ].w =  64;
-		gSpriteClips[ 3 ].h = 205;
+		gSpriteClips[ 3 ].h = 205;	
 	}
 
 	return success;
 }
 
-void close(LTexture s)
+void close()
 {
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );
@@ -187,9 +188,9 @@ void close(LTexture s)
 int main( int argc, char* args[] )
 {
 
-    LTexture gSpriteSheetTexture;
-    gSpriteSheetTexture.mHeight = 0;
-    gSpriteSheetTexture.mWidth = 0;
+    LTexture* gSpriteSheetTexture;
+    gSpriteSheetTexture->mHeight = 0;
+    gSpriteSheetTexture->mWidth = 0;
 
 	if( !init() )
 	{
@@ -225,7 +226,7 @@ int main( int argc, char* args[] )
 				SDL_RenderClear( gRenderer );
 
 				SDL_Rect* currentClip = &gSpriteClips[ frame / 4 ];
-				render( (gSpriteSheetTexture, SCREEN_WIDTH - currentClip->w ) / 2, ( SCREEN_HEIGHT - currentClip->h ) / 2, currentClip );
+				render(gSpriteSheetTexture, ( SCREEN_WIDTH - currentClip->w ) / 2, ( SCREEN_HEIGHT - currentClip->h ) / 2, currentClip );
 
 				SDL_RenderPresent( gRenderer );
 
@@ -244,7 +245,6 @@ int main( int argc, char* args[] )
 	return 0;
 }
 /*
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>

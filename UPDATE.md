@@ -8,15 +8,16 @@
 ## O que eu realmente fiz durante a semana passada?
 * consertar bugs do test.cpp e jogo.cpp
 * consertar o bug do driver na máquina
-* Tentar converter o código de animação de C++ para C (boneco.cpp), necessito dos códigos antigos no colégio para estudo
+* Tentar converter o código de animação de C++ para C (boneco.cpp). Falta debug.
+* Juntar imagem e animação
 
 ## O que eu vou fazer durante a próxima semana?
-* Consertar o bug do test.cpp ("Couldn't find matching render driver") para juntar fundo com figura na interface
+* Ler comandos do teclado e animar
 * Animar figuras
   * criar eventos caso aconteça choque
 
 ## Quantas horas de trabalho?
-3 horas
+5 horas e meia
 
 =======
 
