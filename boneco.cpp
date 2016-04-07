@@ -1,4 +1,4 @@
-/*
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
@@ -7,10 +7,12 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int WALKING_ANIMATION_FRAMES = 4;
 
-int mWidth;
-int mHeight;
-
-SDL_Texture* mTexture;
+struct LTexture{
+    SDL_Texture* mTexture = NULL;
+	int mWidth;
+    int mHeight;
+};
+typedef struct LTexture LTexture;
 
 SDL_Window* gWindow = NULL;
 
@@ -18,27 +20,8 @@ SDL_Renderer* gRenderer = NULL;
 
 SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
 
-int gSpriteSheetTexture; // <------- problema
-
-
-void LTexture()
+int loadFromFile(LTexture s, const char* path )
 {
-	mTexture = NULL;
-	mWidth = 0;
-	mHeight = 0;
-}
-
-void ~LTexture()
-{
-
-	free();
-}
-
-int loadFromFile( const char* path )
-{
-
-	free();
-
 	SDL_Texture* newTexture = NULL;
 
 	SDL_Surface* loadedSurface = IMG_Load( path );
@@ -55,50 +38,39 @@ int loadFromFile( const char* path )
         newTexture = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
 		if( newTexture == NULL )
 		{
-			printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+			printf( "Unable to create texture from %s! SDL Error: %s\n", path, SDL_GetError() );
 		}
 		else
 		{
-			mWidth = loadedSurface->w;
-			mHeight = loadedSurface->h;
+			s.mWidth = loadedSurface->w;
+			s.mHeight = loadedSurface->h;
 		}
 
 		SDL_FreeSurface( loadedSurface );
 	}
 
-	mTexture = newTexture;
-	return mTexture != NULL;
+	s.mTexture = newTexture;
+	return s.mTexture != NULL;
 }
 
-void free()
+void setColor(LTexture s, Uint8 red, Uint8 green, Uint8 blue )
 {
-	if( mTexture != NULL )
-	{
-		SDL_DestroyTexture( mTexture );
-		mTexture = NULL;
-		mWidth = 0;
-		mHeight = 0;
-	}
+	SDL_SetTextureColorMod( s.mTexture, red, green, blue );
 }
 
-void setColor( Uint8 red, Uint8 green, Uint8 blue )
+void setBlendMode(LTexture s, SDL_BlendMode blending )
 {
-	SDL_SetTextureColorMod( mTexture, red, green, blue );
+	SDL_SetTextureBlendMode(s.mTexture, blending );
 }
 
-void setBlendMode( SDL_BlendMode blending )
+void setAlpha(LTexture s, Uint8 alpha )
 {
-	SDL_SetTextureBlendMode( mTexture, blending );
+	SDL_SetTextureAlphaMod( s.mTexture, alpha );
 }
 
-void setAlpha( Uint8 alpha )
+void render(LTexture s, int x, int y, SDL_Rect* clip )
 {
-	SDL_SetTextureAlphaMod( mTexture, alpha );
-}
-
-void render( int x, int y, SDL_Rect* clip )
-{
-	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+	SDL_Rect renderQuad = { x, y, s.mWidth, s.mHeight };
 
 	if( clip != NULL )
 	{
@@ -106,17 +78,17 @@ void render( int x, int y, SDL_Rect* clip )
 		renderQuad.h = clip->h;
 	}
 
-	SDL_RenderCopy( gRenderer, mTexture, clip, &renderQuad );
+	SDL_RenderCopy( gRenderer, s.mTexture, clip, &renderQuad );
 }
 
-int getWidth()
+int getWidth(LTexture s)
 {
-	return mWidth;
+	return s.mWidth;
 }
 
-int getHeight()
+int getHeight(LTexture s)
 {
-	return mHeight;
+	return s.mHeight;
 }
 
 int init()
@@ -166,11 +138,11 @@ int init()
 	return success;
 }
 
-int loadMedia()
+int loadMedia(LTexture s)
 {
 	int success = 1;
 
-	if( !gSpriteSheetTexture = loadFromFile( "imagens/foo.png" ) )
+	if( !(s = loadFromFile( "imagens/foo.png" )) )
 	{
 		printf( "Failed to load walking animation texture!\n" );
 		success = 0;
@@ -201,10 +173,8 @@ int loadMedia()
 	return success;
 }
 
-void close()
+void close(LTexture s)
 {
-	gSpriteSheetTexture.free();
-
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
@@ -216,18 +186,24 @@ void close()
 
 int main( int argc, char* args[] )
 {
+
+    LTexture gSpriteSheetTexture;
+    gSpriteSheetTexture.mHeight = 0;
+    gSpriteSheetTexture.mWidth = 0;
+
 	if( !init() )
 	{
 		printf( "Failed to initialize!\n" );
 	}
 	else
 	{
-		if( !loadMedia() )
+		if( !loadMedia(gSpriteSheetTexture) )
 		{
 			printf( "Failed to load media!\n" );
 		}
 		else
 		{
+
 
 			int quit = 0;
 
@@ -249,7 +225,7 @@ int main( int argc, char* args[] )
 				SDL_RenderClear( gRenderer );
 
 				SDL_Rect* currentClip = &gSpriteClips[ frame / 4 ];
-				gSpriteSheetTexture.render( ( SCREEN_WIDTH - currentClip->w ) / 2, ( SCREEN_HEIGHT - currentClip->h ) / 2, currentClip );
+				render( (gSpriteSheetTexture, SCREEN_WIDTH - currentClip->w ) / 2, ( SCREEN_HEIGHT - currentClip->h ) / 2, currentClip );
 
 				SDL_RenderPresent( gRenderer );
 
@@ -262,12 +238,12 @@ int main( int argc, char* args[] )
 			}
 		}
 	}
-
+    free(gSpriteSheetTexture);
 	close();
 
 	return 0;
 }
-*/
+/*
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -557,3 +533,4 @@ int main( int argc, char* args[] )
 
 	return 0;
 }
+*/

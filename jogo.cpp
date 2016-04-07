@@ -74,7 +74,7 @@ int init()
 		}
 		else
 		{
-            gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
+            gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_SOFTWARE );
 
 			if( gRenderer == NULL )
 			{
@@ -133,6 +133,7 @@ int main( int argc, char* args[] )
 {
 	if( !init() )
 	{
+        printf("SDL_Init failed: %s\n", SDL_GetError());
 		printf( "Failed to initialize!\n" );
 	}
 	else

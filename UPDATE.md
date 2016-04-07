@@ -1,3 +1,25 @@
+# 7/04
+
+## O que eu ia fazer durante a semana passada?
+* Juntar fundo com figura na interface
+* Animar figuras
+  * criar eventos caso aconteça choque
+
+## O que eu realmente fiz durante a semana passada?
+* consertar bugs do test.cpp e jogo.cpp
+* consertar o bug do driver na máquina
+* Tentar converter o código de animação de C++ para C (boneco.cpp), necessito dos códigos antigos no colégio para estudo
+
+## O que eu vou fazer durante a próxima semana?
+* Consertar o bug do test.cpp ("Couldn't find matching render driver") para juntar fundo com figura na interface
+* Animar figuras
+  * criar eventos caso aconteça choque
+
+## Quantas horas de trabalho?
+3 horas
+
+=======
+
 # 31/03
 
 ## O que eu ia fazer durante a semana passada?
@@ -6,10 +28,18 @@
   * criar eventos caso aconteça choque
 
 ## O que eu realmente fiz durante a semana passada?
+* consertar bugs do test.cpp e jogo.cpp
+* Começar a por duas imagens diferentes na tela 
+* Resolver bugs para rodar o código no lablua
+* Tentar converter o código de animação de C++ para C (boneco.cpp)
 
 ## O que eu vou fazer durante a próxima semana?
+* Juntar fundo com figura na interface
+* Animar figuras
+  * criar eventos caso aconteça choque
 
 ## Quantas horas de trabalho?
+5 horas e meia
 
 =======
 
@@ -27,7 +57,8 @@
 * Criar uma interface básica com uma figura e um plano de fundo (a ser corrigido)
 * Exibição de uma figura animada na tela
 * Criar um interface básica com uma figura animada e um plano de fundo (a ser corrigido)
-* Tenta converter o código de animação de C++ para C (boneco.cpp)
+* Tentar converter o código de animação de C++ para C (boneco.cpp)
+* Instalar drivers e reboots na máquina de casa para efetuar execuções de códigos com problemas de " No hardware accelerated renderers available "
 
 ## O que eu vou fazer durante a próxima semana?
 * Juntar fundo com figura na interface
@@ -35,7 +66,7 @@
   * criar eventos caso aconteça choque
 
 ## Quantas horas de trabalho?
-8 horas
+11 horas e meia
 
 =======
 
