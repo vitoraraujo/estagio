@@ -1,3 +1,23 @@
+# 14/04
+
+## O que eu ia fazer durante a semana passada?
+* Ler comandos do teclado e animar
+* Animar figuras
+  * criar eventos caso aconteça choque
+
+## O que eu realmente fiz durante a semana passada?
+* Movimenta o boneco conforme as setas do teclado para direita e esquerda e
+* Faz imagem para quando o boneco tiver fora de movimento ( a ser melhorada)
+* Caguei tudo dando checkout no lugar de rm no git, desculpa..
+* Refiz o código, porém mais bem mais rápido
+* Pensar sobre e melhorar a ideia do jogo
+
+## O que eu vou fazer durante a próxima semana?
+
+
+## Quantas horas de trabalho?
+4 horas e meia
+
 # 7/04
 
 ## O que eu ia fazer durante a semana passada?

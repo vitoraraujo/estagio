@@ -2,69 +2,63 @@
 #include <stdio.h>
 #include <SDL2/SDL_image.h>
 
-
 const int SCREEN_WIDTH = 1200;
 const int SCREEN_HEIGHT = 800;
-
-
-
 
 class LTexture
 {
 	public:
-		//Initializes variables
 		LTexture();
 
-		//Deallocates memory
-		~LTexture();
 
-		//Loads image at specified path
+        ~LTexture();
+
 		bool loadFromFile( const char* path );
 
-		//Deallocates texture
 		void free();
 
-		//Set color modulation
 		void setColor( Uint8 red, Uint8 green, Uint8 blue );
 
-		//Set blending
 		void setBlendMode( SDL_BlendMode blending );
 
-		//Set alpha modulation
 		void setAlpha( Uint8 alpha );
 
-		//Renders texture at given point
 		void render( int x, int y, SDL_Rect* clip = NULL );
         void renderbg(int x, int y);
-		//Gets image dimensions
+
 		int getWidth();
 		int getHeight();
 
 	private:
-		//The actual hardware texture
 		SDL_Texture* mTexture;
 
-		//Image dimensions
 		int mWidth;
 		int mHeight;
 };
 
+enum foos
+{
+    gStandFoo,
+    gRightFoo,
+    gLeftFoo,
+    gTotalFoo
+};
 const int WALKING_ANIMATION_FRAMES = 4;
 
-SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
+SDL_Rect gSpriteClipsRight[ WALKING_ANIMATION_FRAMES ];
+SDL_Rect gSpriteClipsLeft[ WALKING_ANIMATION_FRAMES ];
+
 
 SDL_Window* gWindow = NULL;
 
-SDL_Surface* gScreenSurface = NULL;
-
 SDL_Renderer* gRenderer = NULL;
 
-LTexture gSpriteSheetTexture;
+LTexture foos[gTotalFoo];
+LTexture gCurrentFoo;
 LTexture gBackground;
 
 LTexture::LTexture()
 {
-	//Initialize
 	mTexture = NULL;
 	mWidth = 0;
 	mHeight = 0;
@@ -72,19 +66,15 @@ LTexture::LTexture()
 
 LTexture::~LTexture()
 {
-	//Deallocate
 	free();
 }
 
 bool LTexture::loadFromFile( const char* path )
 {
-	//Get rid of preexisting texture
 	free();
 
-	//The final texture
 	SDL_Texture* newTexture = NULL;
 
-	//Load image at specified path
 	SDL_Surface* loadedSurface = IMG_Load( path );
 	if( loadedSurface == NULL )
 	{
@@ -92,27 +82,22 @@ bool LTexture::loadFromFile( const char* path )
 	}
 	else
 	{
-		//Color key image
 		SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
 
-		//Create texture from surface pixels
-        newTexture = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
+		newTexture = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
 		if( newTexture == NULL )
 		{
 			printf( "Unable to create texture from %s! SDL Error: %s\n", path, SDL_GetError() );
 		}
 		else
 		{
-			//Get image dimensions
 			mWidth = loadedSurface->w;
 			mHeight = loadedSurface->h;
 		}
 
-		//Get rid of old loaded surface
 		SDL_FreeSurface( loadedSurface );
 	}
 
-	//Return success
 	mTexture = newTexture;
 	return mTexture != NULL;
 }
@@ -130,41 +115,34 @@ void LTexture::free()
 
 void LTexture::setColor( Uint8 red, Uint8 green, Uint8 blue )
 {
-	//Modulate texture rgb
 	SDL_SetTextureColorMod( mTexture, red, green, blue );
 }
 
 void LTexture::setBlendMode( SDL_BlendMode blending )
 {
-	//Set blending function
 	SDL_SetTextureBlendMode( mTexture, blending );
 }
 
 void LTexture::setAlpha( Uint8 alpha )
 {
-	//Modulate texture alpha
 	SDL_SetTextureAlphaMod( mTexture, alpha );
 }
 
 void LTexture::render( int x, int y, SDL_Rect* clip )
 {
-	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
 
-	//Set clip rendering dimensions
 	if( clip != NULL )
 	{
 		renderQuad.w = clip->w;
 		renderQuad.h = clip->h;
 	}
 
-	//Render to screen
 	SDL_RenderCopy( gRenderer, mTexture, clip, &renderQuad );
 }
 
 void LTexture::renderbg( int x, int y )
 {
-	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
 	SDL_RenderCopy( gRenderer, mTexture, NULL, &renderQuad );
 }
@@ -181,10 +159,8 @@ int LTexture::getHeight()
 
 bool init()
 {
-	//Initialization flag
 	bool success = true;
 
-	//Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
 	{
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
@@ -192,13 +168,11 @@ bool init()
 	}
 	else
 	{
-		//Set texture filtering to linear
 		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
 		{
 			printf( "Warning: Linear texture filtering not enabled!" );
 		}
 
-		//Create window
 		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
@@ -207,7 +181,6 @@ bool init()
 		}
 		else
 		{
-			//Create renderer for window
 			gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if( gRenderer == NULL )
 			{
@@ -216,10 +189,8 @@ bool init()
 			}
 			else
 			{
-				//Initialize renderer color
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 
-				//Initialize PNG loading
 				int imgFlags = IMG_INIT_PNG;
 				if( !( IMG_Init( imgFlags ) & imgFlags ) )
 				{
@@ -237,34 +208,66 @@ int loadMedia()
 {
     int success = 1;
 
-	if( !gSpriteSheetTexture.loadFromFile( "imagens/foo.png" ) )
+	if( !foos[gLeftFoo].loadFromFile( "imagens/leftfoo.png" ) )
 	{
-		printf( "Failed to load walking animation texture!\n" );
+		printf( "Failed to load left animation texture!\n" );
 		success = 0;
 	}
 	else
 	{
-		//Set sprite clips
-		gSpriteClips[ 0 ].x =   0;
-		gSpriteClips[ 0 ].y =   0;
-		gSpriteClips[ 0 ].w =  64/2;
-		gSpriteClips[ 0 ].h = 205/2;
+		gSpriteClipsLeft[ 0 ].x =   0;
+		gSpriteClipsLeft[ 0 ].y =   0;
+		gSpriteClipsLeft[ 0 ].w =  64;
+		gSpriteClipsLeft[ 0 ].h = 205;
 
-		gSpriteClips[ 1 ].x =  64;
-		gSpriteClips[ 1 ].y =   0;
-		gSpriteClips[ 1 ].w =  64/2;
-		gSpriteClips[ 1 ].h = 205/2;
+		gSpriteClipsLeft[ 1 ].x =  64;
+		gSpriteClipsLeft[ 1 ].y =   0;
+		gSpriteClipsLeft[ 1 ].w =  64;
+		gSpriteClipsLeft[ 1 ].h = 205;
 
-		gSpriteClips[ 2 ].x = 128;
-		gSpriteClips[ 2 ].y =   0;
-		gSpriteClips[ 2 ].w =  64/2;
-		gSpriteClips[ 2 ].h = 205/2;
+		gSpriteClipsLeft[ 2 ].x = 128;
+		gSpriteClipsLeft[ 2 ].y =   0;
+		gSpriteClipsLeft[ 2 ].w =  64;
+		gSpriteClipsLeft[ 2 ].h = 205;
 
-		gSpriteClips[ 3 ].x = 196;
-		gSpriteClips[ 3 ].y =   0;
-		gSpriteClips[ 3 ].w =  64/2;
-		gSpriteClips[ 3 ].h = 205/2;
+		gSpriteClipsLeft[ 3 ].x = 196;
+		gSpriteClipsLeft[ 3 ].y =   0;
+		gSpriteClipsLeft[ 3 ].w =  64;
+		gSpriteClipsLeft[ 3 ].h = 205;
 	}
+
+    if( !foos[gRightFoo].loadFromFile( "imagens/rightfoo.png" ) )
+	{
+		printf( "Failed to load right animation texture!\n" );
+		success = 0;
+	}
+	else
+	{
+		gSpriteClipsRight[ 0 ].x = 196;
+		gSpriteClipsRight[ 0 ].y =   0;
+		gSpriteClipsRight[ 0 ].w =  64;
+		gSpriteClipsRight[ 0 ].h = 205;
+
+		gSpriteClipsRight[ 1 ].x = 128;
+		gSpriteClipsRight[ 1 ].y =   0;
+		gSpriteClipsRight[ 1 ].w =  64;
+		gSpriteClipsRight[ 1 ].h = 205;
+
+		gSpriteClipsRight[ 2 ].x =  64;
+		gSpriteClipsRight[ 2 ].y =   0;
+		gSpriteClipsRight[ 2 ].w =  64;
+		gSpriteClipsRight[ 2 ].h = 205;
+
+		gSpriteClipsRight[ 3 ].x =   0;
+		gSpriteClipsRight[ 3 ].y =   0;
+		gSpriteClipsRight[ 3 ].w =  64;
+		gSpriteClipsRight[ 3 ].h = 205;
+	}
+    if(!foos[gStandFoo].loadFromFile("imagens/standfoo.png"))
+    {
+        printf( "Failed to load stand animation texture!\n" );
+		success = 0;
+    }
 
 	if( !gBackground.loadFromFile( "imagens/background.png" ) )
 	{
@@ -277,7 +280,10 @@ int loadMedia()
 
 int close()
 {
-    gSpriteSheetTexture.free();
+    for( int i = 0; i < gTotalFoo; i++)
+    {
+        foos[i].free();
+    }
 	gBackground.free();
 
     SDL_DestroyRenderer( gRenderer );
@@ -311,6 +317,14 @@ int main( int argc, char* args[] )
 
             int frame = 0;
 
+            int x = 600;
+
+            int stand = 1;
+            int right = 0;
+            int left = 0;
+
+            gCurrentFoo = foos[gStandFoo];
+
 			while( !quit )
 			{
                 while( SDL_PollEvent( &e ) != 0 )
@@ -319,23 +333,64 @@ int main( int argc, char* args[] )
 					{
 						quit = true;
 					}
-				}
+                    else if( e.type == SDL_KEYDOWN )
+                    {
+                        switch( e.key.keysym.sym )
+                        {
+                            case SDLK_LEFT:
+                            gCurrentFoo = foos[gLeftFoo];
+                            left = 1;
+                            right = 0;
+                            stand = 0;
+                            x -= 10;
+                            break;
 
+                            case SDLK_RIGHT:
+                            gCurrentFoo = foos[gRightFoo];
+                            right = 1;
+                            left = 0;
+                            stand = 0;
+                            x += 10;
+                            break;
+
+                            default:
+                            gCurrentFoo = foos[gStandFoo];
+                            stand = 1;
+                            right = 0;
+                            left = 0;
+                            break;
+                        }
+
+                    }
+                }
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 
 				gBackground.renderbg( 0, 0 );
-
-				SDL_Rect* currentClip = &gSpriteClips[ frame / 4 ];
-				//gSpriteSheetTexture.render( ( SCREEN_WIDTH - currentClip->w ) / 2, ( SCREEN_HEIGHT - currentClip->h ) / 2, currentClip );
-				gSpriteSheetTexture.render( ( SCREEN_WIDTH - currentClip->w ) / 2, ( 650 - currentClip->h ), currentClip );
-
-				++frame;
-				if( frame / 4 >= WALKING_ANIMATION_FRAMES )
-				{
-					frame = 0;
-				}
-
+                if(stand)
+                {
+                	gCurrentFoo.renderbg( x , 450 );
+                }
+                if(right)
+                {
+                    SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
+                    gCurrentFoo.render( x, 450, currentClip );
+                    ++frame;
+                    if( frame / 4 >= WALKING_ANIMATION_FRAMES )
+                    {
+                        frame = 0;
+                    }
+                }
+                if(left)
+                {
+                    SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
+                    gCurrentFoo.render( x, 450, currentClip );
+                    ++frame;
+                    if( frame / 4 >= WALKING_ANIMATION_FRAMES )
+                    {
+                        frame = 0;
+                    }
+                }
 				SDL_RenderPresent( gRenderer );
             }
         }
