@@ -1,3 +1,20 @@
+# 21/04
+
+## O que eu ia fazer durante a semana passada?
+* Escrever o TUTORIAL.md
+* Animar figuras
+  * criar eventos caso aconteça choque
+
+## O que eu realmente fiz durante a semana passada?
+* Começar o TUTORIAL.md
+
+## O que eu vou fazer durante a próxima semana?
+* passar o jogo.cpp para C (preciso ir à PUC tirar dúvidas)
+
+
+## Quantas horas de trabalho?
+1 hora
+
 # 14/04
 
 ## O que eu ia fazer durante a semana passada?
@@ -8,15 +25,16 @@
 ## O que eu realmente fiz durante a semana passada?
 * Movimenta o boneco conforme as setas do teclado para direita e esquerda e
 * Faz imagem para quando o boneco tiver fora de movimento ( a ser melhorada)
-* Caguei tudo dando checkout no lugar de rm no git, desculpa..
+* Estraguei tudo dando checkout no lugar de rm no git, desculpa..
 * Refiz o código, porém mais bem mais rápido
 * Pensar sobre e melhorar a ideia do jogo
 
 ## O que eu vou fazer durante a próxima semana?
-
+* Escrever o TUTORIAL.md
+* criar eventos caso aconteça choque na animaçãow
 
 ## Quantas horas de trabalho?
-4 horas e meia
+5 horas
 
 # 7/04
 
