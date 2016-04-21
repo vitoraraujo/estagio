@@ -45,12 +45,12 @@ int main( int argc, char* args[] )
 	SDL_Surface* screenSurface = NULL;
 ```
 
-Para iniciar o SDL, crie exceções (if/else) para se organizar melhor no código e saber os erros dentro do código. A função "SDL_INIT" iniciará o SDL, e retornará -1 caso ocorra algum erro. Inicializando o SDL:
+Para iniciar o SDL, crie exceções (if / else) para se organizar melhor e saber os erros dentro do código. A função "SDL_INIT" iniciará o SDL, e retornará -1 caso ocorra algum erro. Inicializando o SDL:
 
 ```
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0) 
 	{ 
-		printf("SDL não pode inicializar SDL_Error: %s\n", SDL_GetError());
+		printf("SDL não pode inicializar. SDL_Error: %s\n", SDL_GetError());
 	}
 ```
 
@@ -66,7 +66,7 @@ Caso não ocorra erro na função, cria-se a window através da função "SDL_Cr
 		}
 ```
 
-Com "window" criada, pega-se a superfície da window para que possamos desenhar nela, utilizando o comando "SDL_GetWindowSurface". Depois, tornamos a tela em branco. Por ultimo, deve-se atualizar a tela, para que possamos ver os desenhos feitos e espera-se 2000 milisegundo (2 segundos) para sair do else:
+Com "window" criada, pega-se a superfície da window, utilizando o comando "SDL_GetWindowSurface", para que possamos desenhar nela. Depois, tornamos a tela em branco. Por ultimo, deve-se atualizar a tela, para que possamos ver os desenhos feitos e espera-se 2000 milisegundo (2 segundos) para sair do else:
 
 ```
 		else
@@ -90,7 +90,7 @@ Por fim, deve-se destruir a window e sair do SDL, para finalizar o programa:
 ```
 
 
-Para compilar, basta escrever os seguintes comandos no terminal:
+Para compilar e executar, basta escrever os seguintes comandos no terminal:
 
 ```
 $ gcc main.cpp -o main -lSDL2

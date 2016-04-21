@@ -2,18 +2,18 @@
 
 ## O que eu ia fazer durante a semana passada?
 * Escrever o TUTORIAL.md
-* Animar figuras
-  * criar eventos caso aconteça choque
+* criar eventos caso aconteça choque na animação
 
 ## O que eu realmente fiz durante a semana passada?
 * Começar o TUTORIAL.md
+* TUTORIAL1.md (iniciar uma inteface de sdl)
+* TUTORIAL2.md (colocar imagem na tela e fechar no x)
 
 ## O que eu vou fazer durante a próxima semana?
 * passar o jogo.cpp para C (preciso ir à PUC tirar dúvidas)
 
-
 ## Quantas horas de trabalho?
-1 hora
+2 horas e meia
 
 # 14/04
 
@@ -31,7 +31,7 @@
 
 ## O que eu vou fazer durante a próxima semana?
 * Escrever o TUTORIAL.md
-* criar eventos caso aconteça choque na animaçãow
+* criar eventos caso aconteça choque na animação
 
 ## Quantas horas de trabalho?
 5 horas
