@@ -125,7 +125,7 @@ int init()
 }
 ```
 
-Crie a função loadMedia, que irá chamar a função "loadSurface("endereço da imagem")" para cada tecla:
+Crie a função "int loadMedia()", que irá chamar a função "loadSurface("endereço da imagem")" para cada tecla:
 
 ```
 int loadMedia()
@@ -183,7 +183,7 @@ void close()
 }
 ```
 
-Crie a main() e inicie a "gCurrentSurface" como tecla_default: 
+Crie a "int main()" e inicie a "gCurrentSurface" como tecla_default: 
 
 ```
 int main( int argc, char* args[] )
