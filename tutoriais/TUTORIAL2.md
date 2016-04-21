@@ -74,7 +74,7 @@ int loadMedia()
 Crie a função "close()", que deloca a superfíce, destroi a window e sai do SDL:
 
 ```
-int close()
+void close()
 {
 	SDL_FreeSurface( gHelloWorld );
 	gHelloWorld = NULL;
@@ -104,7 +104,7 @@ int main( int argc, char* args[] )
 		
 ```
 
-Com a imagem carregada, criaremos a variável do tipo int "quit" para que possamos torná-la 1 quando estiver na hora de sair e declaramos "SDL_Event e" para receber o evento (clique no "x"):
+Com a imagem carregada, crie a variável do tipo int "quit" para que possa torná-la 1 quando estiver na hora de sair e declare "SDL_Event e" para receber o evento (click no "x"):
 
 ```
 		else
@@ -113,7 +113,7 @@ Com a imagem carregada, criaremos a variável do tipo int "quit" para que possam
 			SDL_Event e;
 ```
 
-O programa estará rodando a leitura do "x" enquanto quit for 0, e se o evento "e" for do tipo "SDL_QUIT" (se o "x" for clicado) tornamos "quit = 1" para acabar o loop:
+O programa estará rodando a leitura do "x" enquanto quit for 0, e se o evento "e" for do tipo "SDL_QUIT" (se o "x" for clicado) torna-se "quit = 1" para acabar o loop:
 
 ```
 			while(!quit)
@@ -127,7 +127,7 @@ O programa estará rodando a leitura do "x" enquanto quit for 0, e se o evento "
 				}
 ```
 
-Enquanto o loop "while(!quit)" não acabar, iremos desenhar a imagem na tela e dar update nesta, para que o desenho apareça, e quando acabar o loop, close será chamado:
+Enquanto o loop "while(!quit)" não acabar, irá desenhar a imagem na tela e dar update nesta, para que o desenho apareça, e quando acabar o loop, close será chamado:
 
 ```
 			SDL_BlitSurface( gHelloWorld, NULL, gScreenSurface, NULL );		

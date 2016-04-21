@@ -17,6 +17,12 @@ No início de todos os códigos dos programas, inclua a biblioteca do SDL com es
  #include<SDL2/SDL.h>
 ```
 
+caso ocorra o erro "undefined reference to `__gxx_personality_v0'", faça:
+
+```
+void *__gxx_personality_v0;
+```
+ 
 ### Primeiro programa
 
 Primeiro precisamos fazer o mais simples: criar uma interface e compilar um exemplo de SDL somente com C (main.cpp):

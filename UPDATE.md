@@ -8,12 +8,14 @@
 * Começar o TUTORIAL.md
 * TUTORIAL1.md (iniciar uma inteface de sdl)
 * TUTORIAL2.md (colocar imagem na tela e fechar no x)
+* TUTORIAL3.md (ler teclado, imagem .png e ajustar imagem para tamanho da tela)
 
 ## O que eu vou fazer durante a próxima semana?
 * passar o jogo.cpp para C (preciso ir à PUC tirar dúvidas)
+* fazer mais tutoriais
 
 ## Quantas horas de trabalho?
-2 horas e meia
+4 horas
 
 # 14/04
 

@@ -1,10 +1,44 @@
-#include <SDL2/SDL.h>
-#include <stdio.h>
-#include <SDL2/SDL_image.h>
+# Objetivo (Céu)
 
-const int SCREEN_WIDTH = 1200;
-const int SCREEN_HEIGHT = 800;
+## SDL com C/C++
 
+## Preparando o ambiente para SDL_image no ubuntu 14.04 - 15.10
+
+Para trabalharmos com imagens .png, é necessário utilizar a biblioteca sdl_image. Para instalar essa biblioteca, abra o terminal e digite:
+
+```
+sudo apt-cache search libsdl2-image
+sudo apt-get install libsdl2-image-dev
+```
+
+No início de todos os códigos dos programas que usarem essa biblioteca, inclua o SDL_image com essa linha de comando, junto das outras inclusões:
+
+```
+ #include<SDL2/SDL_image.h>
+```
+
+## Lendo eventos do teclado e desenhando imagens .png, que se optimizam conforme o tamanho da tela, relativas à estes eventos (botoes.cpp)
+
+É necessário ter a pasta "imagens-tutorial" com as imagens "press.png, up.png, down.png, left.png e right.png" para esse tutorial (botoes.cpp). Veja o TUTORIAL1.md e o TUTORIAL2.md para enteder comandos e etapas já utilizadas. Você irá ler comandos do teclado, utilizar imagens .png e alterar o formato da imagem conforme o tamanho da tela
+
+Inclua as bibliotecas:
+
+```
+ #include <SDL2/SDL.h>
+ #include <SDL2/SDL_image.h>
+ #include <stdio.h>
+```
+
+Determine a resolução:
+
+```
+const int SCREEN_WIDTH = 1200; 
+const int SCREEN_HEIGHT = 800; 
+```
+
+Crie um enum para guardar as teclas que serão utilizadas:
+
+```
 enum teclas
 {
     tecla_default,
@@ -14,33 +48,49 @@ enum teclas
     tecla_direita,
     tecla_total
 };
+```
 
+Crie o ponteiro global do tipo "SDL_Window" que será renderizado, o ponteiro global do tipo "SDL_Surface" que será a superfice que a window conterá, declare o enum como um enum de ponteiros globais do tipo "SDL_Surface", e, já que haveram diferentes imagens conforme as teclas, deve-se declarar uma surperfície que estará guardando a imagem utilizada no momento: 
+
+```
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* teclas[ tecla_total ];
 SDL_Surface* gCurrentSurface = NULL;
-void *__gxx_personality_v0;
+```
 
+Crie uma função "loadSurface("endereço da imagem")" que retornará uma superfície com uma imagem .png carregada e optimizada. Para isso, declare uma superfície que terá imagens optimizadas "optimizedSurface" e uma que carregará a imagem desejada "loadedSurface", e checaremos se há erros:
+
+```
 SDL_Surface* loadSurface( const char* path )
 {
-    SDL_Surface* optimizedSurface = NULL;
-    SDL_Surface* loadedSurface = IMG_Load( path );
-    if( loadedSurface == NULL )
+	SDL_Surface* optimizedSurface = NULL;
+	SDL_Surface* loadedSurface = IMG_Load( path );
+	if( loadedSurface == NULL )
     {
-        printf("Unable to load image %s! SDL Error: %s\n", path, SDL_GetError());
+        printf("Não foi possível carregar imagem %s! SDL Error: %s\n", path, SDL_GetError());
     }
-   else
+```
+
+Caso não ocorra erro, optimize a imagem, deloque "loadedSurface" para que está possa receber mais imagens e não haja conflito, e retorne a optimizada:
+
+```
+	else
 	{
 		optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, 0 );
 		if( optimizedSurface == NULL )
 		{
-			printf( "Unable to optimize image %s! SDL Error: %s\n", path, SDL_GetError() );
+			printf( "Não foi possível optimizar a imagem %s! SDL Error: %s\n", path, SDL_GetError() );
 		}
 		SDL_FreeSurface( loadedSurface );
 	}
 	return optimizedSurface;
 }
+```
 
+Crie a função "int init()", que também irá inciar o SDL_image:
+
+```
 int init()
 {
 	int success = 1;
@@ -62,7 +112,7 @@ int init()
             int imgFlags = IMG_INIT_PNG;
 			if( !( IMG_Init( imgFlags ) & imgFlags ) )
 			{
-				printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+				printf( "SDL_image não pode iniciar! SDL_image Error: %s\n", IMG_GetError() );
 				success = 0;
 			}
 			else
@@ -73,7 +123,11 @@ int init()
 	}
 	return success;
 }
+```
 
+Crie a função loadMedia, que irá chamar a função "loadSurface("endereço da imagem")" para cada tecla:
+
+```
 int loadMedia()
 {
     int success = 1;
@@ -108,7 +162,11 @@ int loadMedia()
     }
     return success;
 }
+```
 
+Crie a função "void close()", que irá delocar tecla por tecla:
+
+```
 void close()
 {
     for( int i = 0; i < tecla_total; i++ )
@@ -123,7 +181,11 @@ void close()
 	SDL_Quit();
 
 }
+```
 
+Crie a main() e inicie a "gCurrentSurface" como tecla_default: 
+
+```
 int main( int argc, char* args[] )
 {
 	if( !init() )
@@ -140,7 +202,7 @@ int main( int argc, char* args[] )
 		{
 			int quit = 0;
 			SDL_Event e;
-            gCurrentSurface = teclas[ tecla_default ];
+			gCurrentSurface = teclas[ tecla_default ];
 			while( !quit )
 			{
 				while( SDL_PollEvent( &e ) != 0 )
@@ -149,7 +211,13 @@ int main( int argc, char* args[] )
 					{
 						quit = 1;
 					}
-                    else if( e.type == SDL_KEYDOWN )
+					
+```
+
+Utilize o leitor de eventos "e" para ler as teclas do teclado. Utilize o switch para fazer as condições das teclas:
+
+```
+					else if( e.type == SDL_KEYDOWN )
                     {
                         switch( e.key.keysym.sym )
                         {
@@ -173,22 +241,34 @@ int main( int argc, char* args[] )
                             gCurrentSurface = teclas[ tecla_default ];
                             break;
                         }
+					}
+				}
+```
 
-                    }
+Declare "stretchRect" do tipo "SDL_Rect" que irá conter o tamanho ta tela e irá forncer à imagem. Carregue a imagem e atualize a tela:
 
-                }
+```
                 SDL_Rect stretchRect;
 				stretchRect.x = 0;
 				stretchRect.y = 0;
 				stretchRect.w = SCREEN_WIDTH;
 				stretchRect.h = SCREEN_HEIGHT;
 				SDL_BlitScaled( gCurrentSurface, NULL, gScreenSurface, &stretchRect );
-
 				SDL_UpdateWindowSurface( gWindow );
             }
         }
     }
 	close();
-
 	return 0;
 }
+```
+
+Para compilar e executar, basta escrever os seguintes comandos no terminal:
+
+```
+$ gcc botoes.cpp -o botoes -lSDL2 -lSDL2_image
+$ ./botoes
+```
+
+
+
