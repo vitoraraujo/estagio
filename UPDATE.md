@@ -1,3 +1,19 @@
+# 12/05
+
+## O que eu ia fazer durante a semana passada?
+* passar o jogo.cpp para C (preciso ir à PUC tirar dúvidas)
+* fazer mais tutoriais
+
+## O que eu realmente fiz durante a semana passada?
+* Tutorial 4 (colocando duas imagens na interface, com o uso de colorkey)
+* Alteração nos 2 ultimos tutoriais
+
+## O que eu vou fazer durante a próxima semana?
+
+
+## Quantas horas de trabalho?
+* 2 horas e meia
+
 # 21/04
 
 ## O que eu ia fazer durante a semana passada?

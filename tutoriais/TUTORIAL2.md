@@ -28,7 +28,7 @@ SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* gHelloWorld = NULL; 
 ```
 
-Crie a função "int init()", com uma variável "success", que irá retornar 1 caso não ocorra erro e 0 caso ocorra, para inicializar o SDL, criar a window e pegar a superfície "gHelloWorld" para que possamos utilizá-la:
+Crie a função "int init()", com uma variável "success", que irá retornar 1 caso não ocorra erro, e 0 caso ocorra, que inicializará o SDL. Crie a window e pegue a superfície da window:
 
 ```
 int init()

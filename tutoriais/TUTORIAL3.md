@@ -88,7 +88,7 @@ Caso não ocorra erro, optimize a imagem, deloque "loadedSurface" para que está
 }
 ```
 
-Crie a função "int init()", que também irá inciar o SDL_image:
+Crie a função "int init()":
 
 ```
 int init()
@@ -96,7 +96,7 @@ int init()
 	int success = 1;
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
 	{
-		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
+		printf( "SDL não pôde ser inicializado! SDL_Error: %s\n", SDL_GetError() );
 		success = 0;
 	}
 	else
@@ -104,15 +104,20 @@ int init()
 		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
-			printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
+			printf( "Window não pôde ser criada! SDL_Error: %s\n", SDL_GetError() );
 			success = 0;
 		}
+```		
+
+Inicie o SDL_image, e pegue a surface gWindow :
+
+```
 		else
 		{
             int imgFlags = IMG_INIT_PNG;
 			if( !( IMG_Init( imgFlags ) & imgFlags ) )
 			{
-				printf( "SDL_image não pode iniciar! SDL_image Error: %s\n", IMG_GetError() );
+				printf( "SDL_image não pôde iniciar! SDL_image Error: %s\n", IMG_GetError() );
 				success = 0;
 			}
 			else
@@ -134,30 +139,30 @@ int loadMedia()
     teclas[ tecla_default ] = loadSurface( "imagens/press.png" );
     if( teclas[ tecla_default ] == NULL )
     {
-        printf( "Failed to load default image!\n" );
+        printf( "Falha ao carregar a imagem default!\n" );
         success = 0;
     }
     teclas[ tecla_cima ] = loadSurface( "imagens/up.png" );
     if(teclas[tecla_cima] == NULL)
     {
-        printf( "Failed to load up image!\n" );
+        printf( "Falha ao carregar a imagem cima!\n" );
         success = 0;
     }
     teclas[ tecla_baixo ] = loadSurface( "imagens/down.png" );
     if(teclas[tecla_baixo] == NULL)
     {
-        printf("Failed to load down image!\n");
+        printf("Falha ao carregar a imagem baixo!\n");
     }
     teclas[ tecla_esquerda ] = loadSurface( "imagens/left.png" );
     if( teclas[ tecla_esquerda ] == NULL )
     {
-        printf( "Failed to load left image!\n" );
+        printf( "Falha ao carregar a imagem esquerda!\n" );
         success = 0;
     }
     teclas[ tecla_direita ] = loadSurface( "imagens/right.png" );
     if(teclas[tecla_direita] == NULL)
     {
-        printf("Failed to load right image!\n");
+        printf("Falha ao carregar a imagem direita!\n");
         success = 0;
     }
     return success;
@@ -190,13 +195,13 @@ int main( int argc, char* args[] )
 {
 	if( !init() )
 	{
-		printf( "Failed to initialize!\n" );
+		printf( "Falha ao inicializar!\n" );
 	}
 	else
 	{
 		if( !loadMedia() )
 		{
-			printf( "Failed to load media!\n" );
+			printf( "Falha ao carregar a mídia!\n" );
 		}
 		else
 		{
