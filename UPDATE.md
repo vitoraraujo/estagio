@@ -7,12 +7,13 @@
 ## O que eu realmente fiz durante a semana passada?
 * Tutorial 4 (colocando duas imagens na interface, com o uso de colorkey)
 * Alteração nos 2 ultimos tutoriais
-
+* Alteração no código jogo.cpp, para quando não apertar nenhum botão ficar no modo stand com uso de keystate (bugado)
+* tentei resolver o bug acima 
 ## O que eu vou fazer durante a próxima semana?
 
 
 ## Quantas horas de trabalho?
-* 2 horas e meia
+* 4 horas
 
 # 21/04
 

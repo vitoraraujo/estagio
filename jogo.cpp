@@ -333,36 +333,33 @@ int main( int argc, char* args[] )
 					{
 						quit = true;
 					}
-                    else if( e.type == SDL_KEYDOWN )
-                    {
-                        switch( e.key.keysym.sym )
-                        {
-                            case SDLK_LEFT:
-                            gCurrentFoo = foos[gLeftFoo];
-                            left = 1;
-                            right = 0;
-                            stand = 0;
-                            x -= 10;
-                            break;
-
-                            case SDLK_RIGHT:
-                            gCurrentFoo = foos[gRightFoo];
-                            right = 1;
-                            left = 0;
-                            stand = 0;
-                            x += 10;
-                            break;
-
-                            default:
-                            gCurrentFoo = foos[gStandFoo];
-                            stand = 1;
-                            right = 0;
-                            left = 0;
-                            break;
-                        }
-
-                    }
                 }
+
+                const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+
+                    if( keystate[ SDLK_LEFT ] )
+                    {
+                        gCurrentFoo = foos[gLeftFoo];
+                        left = 1;
+                        right = 0;
+                        stand = 0;
+                        x -= 10;
+                    }
+                    if( keystate[ SDLK_RIGHT ])
+                    {
+                        gCurrentFoo = foos[gRightFoo];
+                        right = 1;
+                        left = 0;
+                        stand = 0;
+                        x += 10;
+                    }
+                    else{
+                        gCurrentFoo = foos[gStandFoo];
+                        stand = 1;
+                        right = 0;
+                        left = 0;
+                    }
+
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 
