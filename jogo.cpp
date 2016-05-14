@@ -325,7 +325,7 @@ int main( int argc, char* args[] )
             int frame = 0;
 
             float xf = 600.0;
-            float xe = 900.0
+            float xe = 900.0;
             int stand = 1;
             int right = 0;
             int left = 0;
@@ -408,7 +408,7 @@ int main( int argc, char* args[] )
                     }
                 }
 
-                if
+
 
 				SDL_RenderPresent( gRenderer );
             }
