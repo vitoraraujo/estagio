@@ -7,13 +7,17 @@
 ## O que eu realmente fiz durante a semana passada?
 * Tutorial 4 (colocando duas imagens na interface, com o uso de colorkey)
 * Alteração nos 2 ultimos tutoriais
-* Alteração no código jogo.cpp, para quando não apertar nenhum botão ficar no modo stand com uso de keystate (bugado)
-* tentei resolver o bug acima 
+* Alteração no codigo jogo.cpp para assim q o botao estiver apertado o boneco anda com uso de keystate, e travas no fim da tela
+* Alteração no código jogo.cpp para, quando não apertar nenhum botão, ficar no modo stand 
+* Resolver bugs acima 
+* passei o codigo de jogo.cpp para movimento.cpp, para ter salvo a mecanica de movimento, e poder aprimorar o jogo em si no codigo jogo.cpp
+* Criei imagem para inimigo
+
 ## O que eu vou fazer durante a próxima semana?
 
 
 ## Quantas horas de trabalho?
-* 4 horas
+* 5 horas
 
 # 21/04
 

@@ -56,7 +56,6 @@ SDL_Renderer* gRenderer = NULL;
 LTexture foos[gTotalFoo];
 LTexture gCurrentFoo;
 LTexture gBackground;
-LTexture gEnemyFoo;
 
 LTexture::LTexture()
 {
@@ -276,12 +275,6 @@ int loadMedia()
 		success = 0;
 	}
 
-    if( !gEnemyFoo.loadFromFile( "imagens/enemy.png" ) )
-	{
-		printf( "Failed to load enemy texture image!\n" );
-		success = 0;
-	}
-
 	return success;
 }
 
@@ -324,8 +317,8 @@ int main( int argc, char* args[] )
 
             int frame = 0;
 
-            float xf = 600.0;
-            float xe = 900.0
+            float x = 0;
+
             int stand = 1;
             int right = 0;
             int left = 0;
@@ -350,7 +343,7 @@ int main( int argc, char* args[] )
                     right = 1;
                     left = 0;
                     stand = 0;
-                    xf += 7.5;
+                    x += 7.5;
                 }
                 else if( keystate[ SDL_SCANCODE_LEFT ] )
                 {
@@ -358,7 +351,7 @@ int main( int argc, char* args[] )
                     left = 1;
                     right = 0;
                     stand = 0;
-                    xf -= 7.5;
+                    x -= 7.5;
                 }
 
                 else{
@@ -367,30 +360,29 @@ int main( int argc, char* args[] )
                     right = 0;
                     left = 0;
                 }
-                if ( xf >= 1150)
+                if ( x >= 1150)
                 {
-                    xf = 1150;
+                    x = 1150;
                 }
-                if (  xf <= -10 )
+                if (  x <= -10 )
                 {
-                    xf = -10;
+                    x = -10;
                 }
 
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 
 				gBackground.render( 0, 0, NULL );
-                gEnemyFoo.render(xe, 450, NULL);
 
                 if(stand)
                 {
-                	gCurrentFoo.render( xf , 450 , NULL);
+                	gCurrentFoo.render( x , 450 , NULL);
 
                 }
                 if(right)
                 {
                     SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
-                    gCurrentFoo.render( xf, 450, currentClip );
+                    gCurrentFoo.render( x, 450, currentClip );
                     ++frame;
                     if( frame / 4 >= WALKING_ANIMATION_FRAMES )
                     {
@@ -400,16 +392,13 @@ int main( int argc, char* args[] )
                 if(left)
                 {
                     SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
-                    gCurrentFoo.render( xf, 450, currentClip );
+                    gCurrentFoo.render( x, 450, currentClip );
                     ++frame;
                     if( frame / 4 >= WALKING_ANIMATION_FRAMES )
                     {
                         frame = 0;
                     }
                 }
-
-                if
-
 				SDL_RenderPresent( gRenderer );
             }
         }
