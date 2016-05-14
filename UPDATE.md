@@ -12,12 +12,13 @@
 * Resolver bugs acima 
 * passei o codigo de jogo.cpp para movimento.cpp, para ter salvo a mecanica de movimento, e poder aprimorar o jogo em si no codigo jogo.cpp
 * Criei imagem para inimigo
+* Evento ao colidir (incompleto)
 
 ## O que eu vou fazer durante a próxima semana?
 
 
 ## Quantas horas de trabalho?
-* 5 horas
+* 6 horas
 
 # 21/04
 

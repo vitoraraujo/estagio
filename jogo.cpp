@@ -158,6 +158,16 @@ int LTexture::getHeight()
 	return mHeight;
 }
 
+int checkCollision(float x1, float x2)
+{
+    int collision =0;
+    if (x1 == x2)
+    {
+        return 1;
+    }
+    return collision;
+}
+
 bool init()
 {
 	bool success = true;
@@ -367,6 +377,10 @@ int main( int argc, char* args[] )
                     right = 0;
                     left = 0;
                 }
+                if (xf == 856)
+                {
+                    xf = 856;
+                }
                 if ( xf >= 1150)
                 {
                     xf = 1150;
@@ -375,6 +389,7 @@ int main( int argc, char* args[] )
                 {
                     xf = -10;
                 }
+
 
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
@@ -407,8 +422,6 @@ int main( int argc, char* args[] )
                         frame = 0;
                     }
                 }
-
-
 
 				SDL_RenderPresent( gRenderer );
             }
