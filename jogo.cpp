@@ -142,12 +142,6 @@ void LTexture::render( int x, int y, SDL_Rect* clip )
 	SDL_RenderCopy( gRenderer, mTexture, clip, &renderQuad );
 }
 
-/*void LTexture::renderbg( int x, int y )
-{
-	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
-	SDL_RenderCopy( gRenderer, mTexture, NULL, &renderQuad );
-}*/
-
 int LTexture::getWidth()
 {
 	return mWidth;
@@ -160,10 +154,10 @@ int LTexture::getHeight()
 
 int checkCollision(float x1, float x2)
 {
-    int collision =0;
-    if (x1 == x2)
+    int collision = 0;
+    if (x1 >= x2)
     {
-        return 1;
+        collision = 1;
     }
     return collision;
 }
@@ -353,7 +347,6 @@ int main( int argc, char* args[] )
                 }
 
                 const Uint8 *keystate = SDL_GetKeyboardState(NULL);
-
                 if( keystate[ SDL_SCANCODE_RIGHT ])
                 {
                     gCurrentFoo = foos[gRightFoo];
@@ -377,19 +370,19 @@ int main( int argc, char* args[] )
                     right = 0;
                     left = 0;
                 }
-                if (xf == 856)
-                {
-                    xf = 856;
-                }
+
                 if ( xf >= 1150)
                 {
-                    xf = 1150;
+                    xf = 1150.0;
                 }
                 if (  xf <= -10 )
                 {
-                    xf = -10;
+                    xf = -10.0;
                 }
-
+                if (checkCollision(xf+50, xe))
+                {
+                    xf = xe - 50;
+                }
 
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
