@@ -7,18 +7,21 @@
 ## O que eu realmente fiz durante a semana passada?
 * Tutorial 4 (colocando duas imagens na interface, com o uso de colorkey)
 * Alteração nos 2 ultimos tutoriais
-* Alteração no codigo jogo.cpp para assim q o botao estiver apertado o boneco anda com uso de keystate, e travas no fim da tela
+* Alteração no codigo jogo.cpp para assim q o botao estiver apertado o boneco anda com uso de keystate, e travas nas laterais da tela
 * Alteração no código jogo.cpp para, quando não apertar nenhum botão, ficar no modo stand 
-* Resolver bugs acima 
+* Resolver alguns bugs acima 
 * passei o codigo de jogo.cpp para movimento.cpp, para ter salvo a mecanica de movimento, e poder aprimorar o jogo em si no codigo jogo.cpp
 * Criei imagem para inimigo
-* Evento ao colidir( não ultrapassa o boneco)
+* Evento ao colidir (não ultrapassa o boneco)
+* passei o codigo de jogo.cpp, com colisao, para colisao.cpp, para ter salvo a mecanica de colisao, e poder aprimorar o jogo em si no codigo jogo.cpp
+* Começa o jogo. quando aperta as teclas para o lado, o boneco vermelho some (não terminado)
+* Debugar para boneco sumir (ainda falta)
 
 ## O que eu vou fazer durante a próxima semana?
 
 
 ## Quantas horas de trabalho?
-* 6 horas e meia
+* 8 horas e meia
 
 # 21/04
 
