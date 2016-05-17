@@ -143,7 +143,7 @@ int loadMedia(LTexture* s)
 {
 	int success = 1;
 
-	if( !(s->path = loadFromFile( s, "imagens/foo.png" )) )
+	if( !(s->path = loadFromFile( s, "imagens/leftfoo.png" )) )
 	{
 		printf( "Failed to load walking animation texture!\n" );
 		success = 0;
@@ -188,9 +188,9 @@ void close()
 int main( int argc, char* args[] )
 {
 
-    LTexture* gSpriteSheetTexture;
-    gSpriteSheetTexture->mHeight = 0;
-    gSpriteSheetTexture->mWidth = 0;
+    LTexture gSpriteSheetTexture;
+    gSpriteSheetTexture.mHeight = 0;
+    gSpriteSheetTexture.mWidth = 0;
 
 	if( !init() )
 	{
@@ -198,7 +198,7 @@ int main( int argc, char* args[] )
 	}
 	else
 	{
-		if( !loadMedia(gSpriteSheetTexture) )
+		if( !loadMedia(&gSpriteSheetTexture) )
 		{
 			printf( "Failed to load media!\n" );
 		}
@@ -226,7 +226,7 @@ int main( int argc, char* args[] )
 				SDL_RenderClear( gRenderer );
 
 				SDL_Rect* currentClip = &gSpriteClips[ frame / 4 ];
-				render(gSpriteSheetTexture, ( SCREEN_WIDTH - currentClip->w ) / 2, ( SCREEN_HEIGHT - currentClip->h ) / 2, currentClip );
+				render(&gSpriteSheetTexture, ( SCREEN_WIDTH - currentClip->w ) / 2, ( SCREEN_HEIGHT - currentClip->h ) / 2, currentClip );
 
 				SDL_RenderPresent( gRenderer );
 
@@ -239,7 +239,6 @@ int main( int argc, char* args[] )
 			}
 		}
 	}
-    free(gSpriteSheetTexture);
 	close();
 
 	return 0;

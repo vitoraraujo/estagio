@@ -317,7 +317,7 @@ int main( int argc, char* args[] )
 
             int frame = 0;
 
-            float x = 0;
+            float x = 600;
 
             int stand = 1;
             int right = 0;

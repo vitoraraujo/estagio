@@ -155,7 +155,7 @@ int LTexture::getHeight()
 int checkCollision(float x1, float x2)
 {
     int collision = 0;
-    if (x1 >= x2)
+    if (x1 >= x2 && x1< x2+50)
     {
         collision = 1;
     }

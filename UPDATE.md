@@ -1,3 +1,22 @@
+# 19/05
+
+## O que eu ia fazer durante a semana passada?
+* Usar millis
+* Passar pra C
+* TTF
+* Sistema de dano
+* Telas de transição (inicio, jogo e fim)
+
+## O que eu realmente fiz durante a semana passada?
+* Aprimorei o código jogo.cpp
+* Passei o boneco.cpp para C
+
+## O que eu vou fazer durante a próxima semana?
+
+
+## Quantas horas de trabalho?
+* 2 horas e 50 minutos
+
 # 12/05
 
 ## O que eu ia fazer durante a semana passada?
@@ -18,7 +37,11 @@
 * Debugar para boneco sumir (ainda falta)
 
 ## O que eu vou fazer durante a próxima semana?
-
+* Usar millis
+* Passar pra C
+* TTF
+* Sistema de dano
+* Telas de transição (inicio, jogo e fim)
 
 ## Quantas horas de trabalho?
 * 8 horas e meia
