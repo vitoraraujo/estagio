@@ -370,10 +370,12 @@ int main( int argc, char* args[] )
 
             int frame = 0;
 
-			float speed = 10.0;
+			float speed = 5.0;
 
             float xf = 600.0;
             float xe = 0.0;
+
+            int tx = 0;
 
 			int left = 0;
 			int right = 1;
@@ -381,8 +383,18 @@ int main( int argc, char* args[] )
             gCurrentFoo = foos[gStandFoo];
             gCurrentEnemy = enemys[gRightEnemy];
 
+            Uint32 oldTime, currentTime;
+            currentTime = SDL_GetTicks();
 	        while( !quit )
 			{
+				oldTime = currentTime;
+				currentTime = SDL_GetTicks();
+				int current_time = currentTime;
+				if (current_time % 50 == 0)
+				{
+                    tx +=1;
+                }
+
 				while( SDL_PollEvent( &e ) != 0 )
 				{
 					if( e.type == SDL_QUIT )
@@ -398,6 +410,7 @@ int main( int argc, char* args[] )
 								right = 0;
 								left = 1;
 								xe = 1150;
+								tx = 0;
 		                    }
 		                break;
 
@@ -407,6 +420,7 @@ int main( int argc, char* args[] )
 								right = 1;
 								left = 0;
 								xe = 0;
+								tx = 0;
 		                    }
 		                break;
                     }
@@ -443,7 +457,7 @@ int main( int argc, char* args[] )
                    		{
                     	    frame = 0;
                     	}
-                    	xe += speed;
+                    	xe += (speed * tx);
 					}
 					if(left)
 					{
@@ -455,7 +469,7 @@ int main( int argc, char* args[] )
                    		{
                     	    frame = 0;
                     	}
-                    	xe -= speed;
+                    	xe -= (speed * tx);
 					}
                 }
 
