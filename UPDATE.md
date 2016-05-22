@@ -11,14 +11,16 @@
 ## O que eu realmente fiz durante a semana passada?
 * Aprimorei o código jogo.cpp
 * Passei o boneco.cpp para C
-* Aprimorar os tutoriais
+* Aprimorei os tutoriais
 * Coloquei o millis, mas ainda vou ver como usa-lo para movimento
 * Passa movimento.cpp para C, em funcionamento
+* Pesquisei sobre o funcinamento do millis
+* Coloquei o millis para fazer o movimento no jogo.cpp
 
 ## O que eu vou fazer durante a próxima semana?
 
 ## Quantas horas de trabalho?
-* 5 horas e meia
+* 6 horas e 40 minutos
 
 # 12/05
 

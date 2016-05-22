@@ -204,8 +204,6 @@ int main( int argc, char* args[] )
 		}
 		else
 		{
-
-
 			int quit = 0;
 
 			SDL_Event e;

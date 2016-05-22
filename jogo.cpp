@@ -370,30 +370,22 @@ int main( int argc, char* args[] )
 
             int frame = 0;
 
-			float speed = 5.0;
-
             float xf = 600.0;
             float xe = 0.0;
-
-            int tx = 0;
-
+            float speed = 7.0;
 			int left = 0;
 			int right = 1;
 
             gCurrentFoo = foos[gStandFoo];
             gCurrentEnemy = enemys[gRightEnemy];
 
-            Uint32 oldTime, currentTime;
+            Uint32 oldTime = 0;
+            Uint32 currentTime = 0;
             currentTime = SDL_GetTicks();
-	        while( !quit )
+            while( !quit )
 			{
+				speed = ((currentTime - oldTime)/1000.0) * 600.0;
 				oldTime = currentTime;
-				currentTime = SDL_GetTicks();
-				int current_time = currentTime;
-				if (current_time % 50 == 0)
-				{
-                    tx +=1;
-                }
 
 				while( SDL_PollEvent( &e ) != 0 )
 				{
@@ -406,11 +398,9 @@ int main( int argc, char* args[] )
 		                case SDLK_LEFT:
 		                    if( xe >= xf - 100.0 && xe <= xf - 10 )
 		                    {
-
 								right = 0;
 								left = 1;
 								xe = 1150;
-								tx = 0;
 		                    }
 		                break;
 
@@ -420,7 +410,6 @@ int main( int argc, char* args[] )
 								right = 1;
 								left = 0;
 								xe = 0;
-								tx = 0;
 		                    }
 		                break;
                     }
@@ -457,7 +446,7 @@ int main( int argc, char* args[] )
                    		{
                     	    frame = 0;
                     	}
-                    	xe += (speed * tx);
+                    	xe += speed;
 					}
 					if(left)
 					{
@@ -469,11 +458,13 @@ int main( int argc, char* args[] )
                    		{
                     	    frame = 0;
                     	}
-                    	xe -= (speed * tx);
+                    	xe -= speed;
 					}
                 }
-
+				currentTime = SDL_GetTicks();
 				SDL_RenderPresent( gRenderer );
+				printf("%f\n", speed);
+
             }
         }
     }
