@@ -4,14 +4,14 @@
 
 ## Preparando o ambiente para SDL_image no ubuntu 14.04 - 15.10
 
-Para trabalharmos com imagens '.png', é necessário utilizar a biblioteca sdl_image. Para instalar essa biblioteca, abra o terminal e digite:
+Para trabalharmos com imagens `.png`, é necessário utilizar a biblioteca sdl_image. Para instalar essa biblioteca, abra o terminal e digite:
 
 ```
 sudo apt-cache search libsdl2-image
 sudo apt-get install libsdl2-image-dev
 ```
 
-No início de todos os códigos dos programas que usarem essa biblioteca, inclua o 'SDL_image' com essa linha de comando, junto das outras inclusões:
+No início de todos os códigos dos programas que usarem essa biblioteca, inclua o `SDL_image` com essa linha de comando, junto das outras inclusões:
 
 ```
  #include<SDL2/SDL_image.h>
@@ -19,7 +19,7 @@ No início de todos os códigos dos programas que usarem essa biblioteca, inclua
 
 ## Lendo eventos do teclado e desenhando imagens .png, que se optimizam conforme o tamanho da tela, relativas à estes eventos (botoes.cpp)
 
-É necessário ter a pasta 'imagens-tutorial' com as imagens 'press.png', 'up.png', 'down.png', 'left.png' e 'right.png' para esse tutorial (botoes.cpp). Veja o TUTORIAL1.md e o TUTORIAL2.md para enteder comandos e etapas já utilizadas. Você irá ler comandos do teclado, utilizar imagens '.png' e alterar o formato da imagem conforme o tamanho da tela
+É necessário ter a pasta `imagens-tutorial` com as imagens `press.png`, `up.png`, `down.png`, `left.png` e `right.png` para esse tutorial (botoes.cpp). Veja o TUTORIAL1.md e o TUTORIAL2.md para enteder comandos e etapas já utilizadas. Você irá ler comandos do teclado, utilizar imagens `.png` e alterar o formato da imagem conforme o tamanho da tela
 
 Inclua as bibliotecas:
 
@@ -50,7 +50,7 @@ enum teclas
 };
 ```
 
-Crie o ponteiro global do tipo 'SDL_Window' que será renderizado, o ponteiro global do tipo 'SDL_Surface' que será a superfice que a window conterá, declare o enum como um enum de ponteiros globais do tipo 'SDL_Surface', e, já que haveram diferentes imagens conforme as teclas, deve-se declarar uma surperfície que estará guardando a imagem utilizada no momento: 
+Crie o ponteiro global do tipo `SDL_Window` que será renderizado, o ponteiro global do tipo `SDL_Surface` que será a superfice que a window conterá, declare o enum como um enum de ponteiros globais do tipo `SDL_Surface`, e, já que haveram diferentes imagens conforme as teclas, deve-se declarar uma surperfície que estará guardando a imagem utilizada no momento: 
 
 ```
 SDL_Window* gWindow = NULL;
@@ -59,7 +59,7 @@ SDL_Surface* teclas[ tecla_total ];
 SDL_Surface* gCurrentSurface = NULL;
 ```
 
-Crie uma função 'loadSurface("endereço da imagem")' que retornará uma superfície com uma imagem '.png' carregada e optimizada. Para isso, declare uma superfície que terá imagens optimizadas 'optimizedSurface' e uma que carregará a imagem desejada 'loadedSurface', e checaremos se há erros:
+Crie uma função `loadSurface("endereço da imagem")` que retornará uma superfície com uma imagem `.png` carregada e optimizada. Para isso, declare uma superfície que terá imagens optimizadas `optimizedSurface` e uma que carregará a imagem desejada `loadedSurface`, e checaremos se há erros:
 
 ```
 SDL_Surface* loadSurface( const char* path )
@@ -72,7 +72,7 @@ SDL_Surface* loadSurface( const char* path )
     }
 ```
 
-Caso não ocorra erro, optimize a imagem, deloque 'loadedSurface' para que está possa receber mais imagens e não haja conflito, e retorne a optimizada:
+Caso não ocorra erro, optimize a imagem, deloque `loadedSurface` para que está possa receber mais imagens e não haja conflito, e retorne a optimizada:
 
 ```
 	else
@@ -88,7 +88,7 @@ Caso não ocorra erro, optimize a imagem, deloque 'loadedSurface' para que está
 }
 ```
 
-Crie a função 'int init()':
+Crie a função `int init()`:
 
 ```
 int init()
@@ -109,7 +109,7 @@ int init()
 		}
 ```
 
-Inicie o SDL_image, e pegue a surface 'gWindow' :
+Inicie o SDL_image, e pegue a surface `gWindow` :
 
 ```
 		else
@@ -130,7 +130,7 @@ Inicie o SDL_image, e pegue a surface 'gWindow' :
 }
 ```
 
-Crie a função 'int loadMedia()', que irá chamar a função 'loadSurface("endereço da imagem")' para cada tecla:
+Crie a função `int loadMedia()`, que irá chamar a função `loadSurface("endereço da imagem")` para cada tecla:
 
 ```
 int loadMedia()
@@ -169,7 +169,7 @@ int loadMedia()
 }
 ```
 
-Crie a função 'void close()', que irá delocar tecla por tecla:
+Crie a função `void close()`, que irá delocar tecla por tecla:
 
 ```
 void close()
@@ -188,7 +188,7 @@ void close()
 }
 ```
 
-Crie a 'int main()' e inicie a 'gCurrentSurface' como tecla_default: 
+Crie a `int main()` e inicie a `gCurrentSurface` como tecla_default: 
 
 ```
 int main( int argc, char* args[] )
@@ -219,7 +219,7 @@ int main( int argc, char* args[] )
 					
 ```
 
-Utilize o leitor de eventos 'e' para ler as teclas do teclado. Utilize o switch para fazer as condições das teclas:
+Utilize o leitor de eventos `e` para ler as teclas do teclado. Utilize o switch para fazer as condições das teclas:
 
 ```
 					else if( e.type == SDL_KEYDOWN )
@@ -250,7 +250,7 @@ Utilize o leitor de eventos 'e' para ler as teclas do teclado. Utilize o switch 
 				}
 ```
 
-Declare 'stretchRect' do tipo 'SDL_Rect' que irá conter o tamanho ta tela e irá fornecer à imagem. Carregue a imagem e atualize a tela:
+Declare `stretchRect` do tipo `SDL_Rect` que irá conter o tamanho ta tela e irá fornecer à imagem. Carregue a imagem e atualize a tela:
 
 ```
                 SDL_Rect stretchRect;

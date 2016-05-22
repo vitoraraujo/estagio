@@ -4,7 +4,7 @@
 
 ## Renderizando multiplas imagens ao mesmo tempo (plano de fundo e boneco), com imagens com fundo transparente, ignorando o entorno (boneco)
 
-É necessário ter a pasta 'imagens-tutorial' com os arquivos 'boneco.png' e 'planodefundo.png' para para esse tutorial (colorkey.cpp). Caso queira expandir a resolução, utilize o ultimo tutorial. Veja os outros tutoriais para entender comandos e etapas já utilizadas. A partir de agora, Usa-se a linguagem C++ para os programas, pois usará classes, atributos de classe e métodos.
+É necessário ter a pasta `imagens-tutorial` com os arquivos `boneco.png` e `planodefundo.png` para para esse tutorial (colorkey.cpp). Caso queira expandir a resolução, utilize o ultimo tutorial. Veja os outros tutoriais para entender comandos e etapas já utilizadas. A partir de agora, Usa-se a linguagem C++ para os programas, pois usará classes, atributos de classe e métodos.
 
 Inclua as bibliotecas:
 
@@ -21,14 +21,14 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480; 
 ```
 
-Crie o ponteiro global do tipo 'SDL_Window' que será renderizado, e o  ponteiro global do tipo 'SDL_Renderer' que coterá as renderizações:
+Crie o ponteiro global do tipo `SDL_Window` que será renderizado, e o  ponteiro global do tipo `SDL_Renderer` que coterá as renderizações:
 
 ```
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 ```
 
-Crie a classe 'LTexture', que conterá, como públicos, o contrutor, o descontrutor, os métodos  'loadFromFile()', 'free()', 'render()', e getters para as dimenções da imagem:
+Crie a classe `LTexture`, que conterá, como públicos, o contrutor, o descontrutor, os métodos  `loadFromFile()`, `free()`, `render()`, e getters para as dimenções da imagem:
 
 ```
 class LTexture
@@ -48,7 +48,7 @@ class LTexture
 		int getHeight();
 ```
 
-E, como privados, o ponteiro do tipo 'SDL_Texture' que conterá a textura renderizada, e os atributos das dimensões da imagem:
+E, como privados, o ponteiro do tipo `SDL_Texture` que conterá a textura renderizada, e os atributos das dimensões da imagem:
 
 ```
 private:
@@ -86,7 +86,7 @@ LTexture::~LTexture()
 }
 ```
 
-Declare o método 'loadFromFile()', que carrega a imagem passada, ignorando o fundo. Primeiramente, deloque qualquer textura que já estivesse antes, para prevenir conflitos, declare a textura que será passada para o atributo de classe que deve contê-la, depois, declare o ponteiro do tipo 'SDL_Surface' para carregar a imagem passada ao método:
+Declare o método `loadFromFile()`, que carrega a imagem passada, ignorando o fundo. Primeiramente, deloque qualquer textura que já estivesse antes, para prevenir conflitos, declare a textura que será passada para o atributo de classe que deve contê-la, depois, declare o ponteiro do tipo `SDL_Surface` para carregar a imagem passada ao método:
 
 ```
 bool LTexture::loadFromFile( const char* path )
@@ -102,7 +102,7 @@ bool LTexture::loadFromFile( const char* path )
 	}
 ```
 
-Com a imagem carregada, utilize a função 'SDL_SetColorKey()' para determinar a cor que deverá ser ignorada, nesse caso, a mistura de verde e azul. Passe a textura da imagem para o ponteiro que irá ser passado à classe posteriormente:
+Com a imagem carregada, utilize a função `SDL_SetColorKey()` para determinar a cor que deverá ser ignorada, nesse caso, a mistura de verde e azul. Passe a textura da imagem para o ponteiro que irá ser passado à classe posteriormente:
 
 ```
 	else
@@ -128,7 +128,7 @@ Com a imagem passada, passe as dimenções da imagem para os atributos de classe
 	}
 ```
 
-Por fim, passe a imagem final para o atributo de classe 'mTexture' e retorne este sendo diferente de NULL:
+Por fim, passe a imagem final para o atributo de classe `mTexture` e retorne este sendo diferente de NULL:
 
 ```
 	mTexture = newTexture;
@@ -136,7 +136,7 @@ Por fim, passe a imagem final para o atributo de classe 'mTexture' e retorne est
 }
 ```
 
-Declare o método 'free()', que deloca a textura da memória caso exista:
+Declare o método `free()`, que deloca a textura da memória caso exista:
 
 ```
 void LTexture::free()
@@ -151,7 +151,7 @@ void LTexture::free()
 }
 ```
 
-Declare a função 'render()', que rendeizará a imagem na tela:
+Declare a função `render()`, que rendeizará a imagem na tela:
 
 ```
 void LTexture::render( int x, int y )
@@ -175,7 +175,7 @@ int LTexture::getHeight()
 }
 ```
 
-Crie a função 'init()', que botará o filtro da textura de modo linear: 
+Crie a função `init()`, que botará o filtro da textura de modo linear: 
 
 ```
 int init()
@@ -201,7 +201,7 @@ int init()
 		}			
 ```
 
-Com isso, crie o renderizador para a window, e inicie o 'SDL_Image':
+Com isso, crie o renderizador para a window, e inicie o `SDL_Image`:
 
 ```
 		else
@@ -230,7 +230,7 @@ Com isso, crie o renderizador para a window, e inicie o 'SDL_Image':
 }
 ```
 
-Crie a função 'loadMedia()', que carregará o boneco e o plano de fundo:
+Crie a função `loadMedia()`, que carregará o boneco e o plano de fundo:
 
 ```
 int loadMedia()
@@ -252,7 +252,7 @@ int loadMedia()
 	return success;
 }
 ```
-Crie a função 'close()' que delocará as imagens, destruirá o renderizador e a window, e fechará o SDL:
+Crie a função `close()` que delocará as imagens, destruirá o renderizador e a window, e fechará o SDL:
 
 ```
 void close()
@@ -270,7 +270,7 @@ void close()
 }
 ```
 
-Crie a função 'main()':
+Crie a função `main()`:
 
 ```
 int main( int argc, char* args[] )
@@ -302,7 +302,7 @@ int main( int argc, char* args[] )
 				}
 ```
 
-Limpe a tela e chame os métodos 'render()' para cada imagem, e atualize a tela:
+Limpe a tela e chame os métodos `render()` para cada imagem, e atualize a tela:
 
 ```
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -318,7 +318,7 @@ Limpe a tela e chame os métodos 'render()' para cada imagem, e atualize a tela:
 	}
 ``` 
 
-Por fim, finalize o programa com a função 'close()':
+Por fim, finalize o programa com a função `close()`:
 
 ```
 	close();

@@ -2,7 +2,7 @@
 
 ## SDL com C/C++
 
-## Colocando imagem .bmp na tela (Hello World!) no meio mais fácil e fechando programa com o botão "x"
+## Colocando imagem .bmp na tela (Hello World!) no meio mais fácil e fechando programa com o botao 'x' da interface:
 
 É necessário ter a pasta 'imagens-tutorial' com o arquivo 'hello_world.bmp' para esse tutorial (helloworld.cpp). Veja o TUTORIAL1.md para enteder comandos e etapas já utilizadas. Novas funções que serão utilizadas serão indispensáveis nos próximos tutoriais ('init()', 'loadMedia()' e 'close()').
 

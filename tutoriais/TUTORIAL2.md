@@ -2,9 +2,9 @@
 
 ## SDL com C/C++
 
-## Colocando imagem .bmp na tela (Hello World!) no meio mais fácil e fechando programa com o botão "x"
+## Colocando imagem .bmp na tela (Hello World!) no meio mais fácil e fechando programa com o botao `x` da interface:
 
-É necessário ter a pasta 'imagens-tutorial' com o arquivo 'hello_world.bmp' para esse tutorial (helloworld.cpp). Veja o TUTORIAL1.md para enteder comandos e etapas já utilizadas. Novas funções que serão utilizadas serão indispensáveis nos próximos tutoriais ('init()', 'loadMedia()' e 'close()').
+É necessário ter a pasta `imagens-tutorial` com o arquivo `hello_world.bmp` para esse tutorial (helloworld.cpp). Veja o TUTORIAL1.md para enteder comandos e etapas já utilizadas. Novas funções que serão utilizadas serão indispensáveis nos próximos tutoriais (`init()`, `loadMedia()` e `close()`).
 
 Inclua as bibliotecas:
 
@@ -20,7 +20,7 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480; 
 ```
 
-Crie o ponteiro global do tipo 'SDL_Window' que será renderizado, o ponteiro global do tipo 'SDL_Surface' que será a superfice que a window conterá, e o ponteiro global que irá armazenar a imagem 'hello_world.bmp':
+Crie o ponteiro global do tipo `SDL_Window` que será renderizado, o ponteiro global do tipo `SDL_Surface` que será a superfice que a window conterá, e o ponteiro global que irá armazenar a imagem `hello_world.bmp`:
 
 ```
 SDL_Window* gWindow = NULL;	
@@ -28,7 +28,7 @@ SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* gHelloWorld = NULL; 
 ```
 
-Crie a função 'int init()', com uma variável 'success', que irá retornar 1 caso não ocorra erro, e 0 caso ocorra, que inicializará o SDL. Crie a window e pegue a superfície da window:
+Crie a função `int init()`, com uma variável `success`, que irá retornar 1 caso não ocorra erro, e 0 caso ocorra, que inicializará o SDL. Crie a window e pegue a superfície da window:
 
 ```
 int init()
@@ -56,7 +56,7 @@ int init()
 }
 ```
 
-Crie a função 'loadMedia()', com uma variável 'success', que irá retornar 1 caso não ocorra erro e 0 caso ocorra, para carregar a imagem na superfície 'gHelloWorld' com o comando 'SDL_LoadBMP("endereço da imagem.bmp")' e cheque se a imagem foi carregada:
+Crie a função `loadMedia()`, com uma variável `success`, que irá retornar 1 caso não ocorra erro e 0 caso ocorra, para carregar a imagem na superfície `gHelloWorld` com o comando `SDL_LoadBMP("endereço da imagem.bmp")` e cheque se a imagem foi carregada:
 
 ```
 int loadMedia()
@@ -71,7 +71,7 @@ int loadMedia()
 	return success;
 }
 ```
-Crie a função 'close()', que deloca a superfíce, destroi a window e sai do SDL:
+Crie a função `close()`, que deloca a superfíce, destroi a window e sai do SDL:
 
 ```
 void close()
@@ -86,7 +86,7 @@ void close()
 }
 ```
 
-Inicie a main, chame a função 'init()'. Se não ocorrer erro, carregue a imagem com a função 'loadMedia()':
+Inicie a main, chame a função `init()`. Se não ocorrer erro, carregue a imagem com a função `loadMedia()`:
 
 ```
 int main( int argc, char* args[] )
@@ -104,7 +104,7 @@ int main( int argc, char* args[] )
 		
 ```
 
-Com a imagem carregada, crie a variável do tipo int 'quit' para que possa tornar 1 quando estiver na hora de sair e declare 'SDL_Event e' para receber o evento (click no 'x' no topo da interface):
+Com a imagem carregada, crie a variável do tipo int `quit` para que possa tornar 1 quando estiver na hora de sair e declare `SDL_Event e` para receber o evento (click no `x` no topo da interface):
 
 ```
 		else
@@ -113,7 +113,7 @@ Com a imagem carregada, crie a variável do tipo int 'quit' para que possa torna
 			SDL_Event e;
 ```
 
-O programa estará rodando a leitura do 'x' enquanto quit for 0, e se o evento 'e' for do tipo 'SDL_QUIT' (se o 'x' for clicado) torna 'quit = 1' para acabar o loop:
+O programa estará rodando a leitura do `x` enquanto quit for 0, e se o evento `e` for do tipo `SDL_QUIT` (se o `x` for clicado) torna `quit = 1` para acabar o loop:
 
 ```
 			while(!quit)
@@ -127,7 +127,7 @@ O programa estará rodando a leitura do 'x' enquanto quit for 0, e se o evento '
 				}
 ```
 
-Enquanto o loop 'while(!quit)' não acabar, irá desenhar a imagem na tela e dar update nesta, para que o desenho apareça, e quando acabar o loop, close será chamado:
+Enquanto o loop `while(!quit)` não acabar, irá desenhar a imagem na tela e dar update nesta, para que o desenho apareça, e quando acabar o loop, close será chamado:
 
 ```
 			SDL_BlitSurface( gHelloWorld, NULL, gScreenSurface, NULL );		
