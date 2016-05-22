@@ -1,6 +1,7 @@
 # 19/05
 
 ## O que eu ia fazer durante a semana passada?
+* Aprimorar os tutoriais
 * Usar millis
 * Passar pra C
 * TTF
@@ -15,7 +16,7 @@
 
 
 ## Quantas horas de trabalho?
-* 2 horas e 50 minutos
+* 3 horas e 20 minutos
 
 # 12/05
 

@@ -369,41 +369,41 @@ int main( int argc, char* args[] )
 			SDL_Event e;
 
             int frame = 0;
-			
+
 			float speed = 10.0;
 
             float xf = 600.0;
             float xe = 0.0;
-			
+
 			int left = 0;
-			int right = 1;           	
-			
+			int right = 1;
+
             gCurrentFoo = foos[gStandFoo];
             gCurrentEnemy = enemys[gRightEnemy];
-			
+
 	        while( !quit )
-			{              	
+			{
 				while( SDL_PollEvent( &e ) != 0 )
 				{
 					if( e.type == SDL_QUIT )
 					{
 						quit = 1;
-					}       
+					}
 					switch( e.key.keysym.sym )
                 	{
 		                case SDLK_LEFT:
 		                    if( xe >= xf - 100.0 && xe <= xf - 10 )
-		                    {   
-								
+		                    {
+
 								right = 0;
-								left = 1;								
+								left = 1;
 								xe = 1150;
 		                    }
 		                break;
-		                
-						case SDLK_RIGHT:	                    
+
+						case SDLK_RIGHT:
 							if( xe <= xf + 100.0 && xe >= xf + 10 )
-		                    {   
+		                    {
 								right = 1;
 								left = 0;
 								xe = 0;
@@ -432,10 +432,10 @@ int main( int argc, char* args[] )
 					}
                 }
                 else
-                {                    
+                {
 					if(right)
 					{
-						gCurrentEnemy = enemys[gRightEnemy];					
+						gCurrentEnemy = enemys[gRightEnemy];
 						SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
                     	gCurrentEnemy.render( xe, 450, currentClip );
                     	++frame;
@@ -443,11 +443,11 @@ int main( int argc, char* args[] )
                    		{
                     	    frame = 0;
                     	}
-                    	xe += speed;	
+                    	xe += speed;
 					}
 					if(left)
 					{
-						gCurrentEnemy = enemys[gLeftEnemy];	
+						gCurrentEnemy = enemys[gLeftEnemy];
 						SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
                     	gCurrentEnemy.render( xe, 450, currentClip );
                     	++frame;

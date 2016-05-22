@@ -72,7 +72,7 @@ Caso não ocorra erro na função, cria-se a window através da função 'SDL_Cr
 		}
 ```
 
-Com 'window' criada, pega-se a superfície da window, utilizando o comando 'SDL_GetWindowSurface', para que possamos desenhar nela. Depois, tornamos a tela em branco. Por ultimo, deve-se atualizar a tela, para que possamos ver os desenhos feitos e espera-se 2000 milisegundo (2 segundos) para sair do else:
+Com "window" criada, pega-se a superfície da window, utilizando o comando "SDL_GetWindowSurface", para que possamos desenhar nela. Depois, tornamos a tela em branco. Por ultimo, deve-se atualizar a tela, para que possamos ver os desenhos feitos e espera-se 2000 milisegundo (2 segundos) para sair do else:
 
 ```
 		else
