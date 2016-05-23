@@ -16,11 +16,18 @@
 * Passa movimento.cpp para C, em funcionamento
 * Pesquisei sobre o funcinamento do millis
 * Coloquei o millis para fazer o movimento no jogo.cpp
+* Passei o jogo.cpp para C e botei no código jogoc.cpp
+* pensei em uma nova ideia do jogo
+* No jogoc.cpp, comecei a trabalhar na nova ideia do jogo
 
 ## O que eu vou fazer durante a próxima semana?
+* TTF
+* Sistema de dano
+* Telas de transição (inicio, jogo e fim)
+* Randomizar o lado que o inimigo nasce
 
 ## Quantas horas de trabalho?
-* 6 horas e 40 minutos
+* 8 horas
 
 # 12/05
 

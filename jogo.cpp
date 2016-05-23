@@ -25,7 +25,6 @@ class LTexture
 		void setAlpha( Uint8 alpha );
 
 		void render( int x, int y, SDL_Rect* clip = NULL );
-        void renderbg(int x, int y);
 
 		int getWidth();
 		int getHeight();
@@ -372,7 +371,7 @@ int main( int argc, char* args[] )
 
             float xf = 600.0;
             float xe = 0.0;
-            float speed = 7.0;
+            float speed = 0;
 			int left = 0;
 			int right = 1;
 
@@ -382,6 +381,7 @@ int main( int argc, char* args[] )
             Uint32 oldTime = 0;
             Uint32 currentTime = 0;
             currentTime = SDL_GetTicks();
+
             while( !quit )
 			{
 				speed = ((currentTime - oldTime)/1000.0) * 600.0;
@@ -461,8 +461,9 @@ int main( int argc, char* args[] )
                     	xe -= speed;
 					}
                 }
-				currentTime = SDL_GetTicks();
+
 				SDL_RenderPresent( gRenderer );
+				currentTime = SDL_GetTicks();
 				printf("%f\n", speed);
 
             }

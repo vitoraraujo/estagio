@@ -21,9 +21,6 @@ SDL_Renderer* gRenderer = NULL;
 SDL_Rect gSpriteClipsRight[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gSpriteClipsLeft[ WALKING_ANIMATION_FRAMES ];
 
-LTexture gCurrentFoo;
-LTexture gBackground;
-
 int loadFromFile(LTexture* s, const char* path )
 {
 	SDL_Texture* newTexture = NULL;
@@ -92,6 +89,37 @@ int getWidth(LTexture* s)
 int getHeight(LTexture* s)
 {
 	return s->mHeight;
+}
+
+int checkCollision(float x1, float x2)
+{
+    int collision = 0;
+    if ( x2 <= x1 + 60 && x2 >= x1 || x2 >= x1 - 60  && x2 <= x1)
+    {
+        collision = 1;
+    }
+    return collision;
+}
+
+int checkHit(float x1, float x2, int side ) // side = 1 -> direita | side = 2 -> esquerda
+{
+    int hit = 0;
+
+    if (side == 1)
+    {
+        if( x2 <= x1 + 100.0 && x2 >= x1+10)
+        {
+            hit = 1;
+        }
+    }
+    if (side == 2)
+	{
+        if( x2 >= x1 - 100.0 && x2 <= x1-10)
+        {
+            hit = 1;
+        }
+    }
+    return hit;
 }
 
 int init()
@@ -223,6 +251,100 @@ int loadMediaStandFoo(LTexture* s)
     return success;
 }
 
+int loadMediaLeftEnemy(LTexture* s)
+{
+	int success = 1;
+
+	if( !(s->imgPath = loadFromFile( s, "imagens/leftenemy.png" )) )
+	{
+		printf( "Failed to load left walking animation texture!\n" );
+		success = 0;
+	}
+	else
+	{
+		gSpriteClipsLeft[ 0 ].x =   0;
+		gSpriteClipsLeft[ 0 ].y =   0;
+		gSpriteClipsLeft[ 0 ].w =  64;
+		gSpriteClipsLeft[ 0 ].h = 205;
+
+		gSpriteClipsLeft[ 1 ].x =  64;
+		gSpriteClipsLeft[ 1 ].y =   0;
+		gSpriteClipsLeft[ 1 ].w =  64;
+		gSpriteClipsLeft[ 1 ].h = 205;
+
+		gSpriteClipsLeft[ 2 ].x = 128;
+		gSpriteClipsLeft[ 2 ].y =   0;
+		gSpriteClipsLeft[ 2 ].w =  64;
+		gSpriteClipsLeft[ 2 ].h = 205;
+
+		gSpriteClipsLeft[ 3 ].x = 196;
+		gSpriteClipsLeft[ 3 ].y =   0;
+		gSpriteClipsLeft[ 3 ].w =  64;
+		gSpriteClipsLeft[ 3 ].h = 205;
+	}
+
+	return success;
+}
+
+int loadMediaRightEnemy(LTexture* s)
+{
+	int success = 1;
+
+	if( !(s->imgPath = loadFromFile( s, "imagens/rightenemy.png" )) )
+	{
+		printf( "Failed to load right walking animation texture!\n" );
+		success = 0;
+	}
+	else
+	{
+        gSpriteClipsRight[ 0 ].x = 196;
+		gSpriteClipsRight[ 0 ].y =   0;
+		gSpriteClipsRight[ 0 ].w =  64;
+		gSpriteClipsRight[ 0 ].h = 205;
+
+		gSpriteClipsRight[ 1 ].x = 128;
+		gSpriteClipsRight[ 1 ].y =   0;
+		gSpriteClipsRight[ 1 ].w =  64;
+		gSpriteClipsRight[ 1 ].h = 205;
+
+		gSpriteClipsRight[ 2 ].x =  64;
+		gSpriteClipsRight[ 2 ].y =   0;
+		gSpriteClipsRight[ 2 ].w =  64;
+		gSpriteClipsRight[ 2 ].h = 205;
+
+		gSpriteClipsRight[ 3 ].x =   0;
+		gSpriteClipsRight[ 3 ].y =   0;
+		gSpriteClipsRight[ 3 ].w =  64;
+		gSpriteClipsRight[ 3 ].h = 205;
+	}
+
+	return success;
+}
+
+int loadMediaRightStandEnemy(LTexture* s)
+{
+    int success = 1;
+
+    if(!(s->imgPath = loadFromFile(s, "imagens/rightstandenemy.png")) )
+    {
+        printf( "Failed to load stand animation texture!\n" );
+        success = 0;
+    }
+    return success;
+}
+
+int loadMediaLeftStandEnemy(LTexture* s)
+{
+    int success = 1;
+
+    if(!(s->imgPath = loadFromFile(s, "imagens/leftstandenemy.png")) )
+    {
+        printf( "Failed to load stand animation texture!\n" );
+        success = 0;
+    }
+    return success;
+}
+
 int loadMediaBackground(LTexture* s)
 {
     int success = 1;
@@ -265,6 +387,26 @@ int main( int argc, char* args[] )
     gLeftFoo.mHeight = 0;
     gLeftFoo.mWidth = 0;
 
+    LTexture gCurrentEnemy;
+    gCurrentEnemy.mHeight = 0;
+    gCurrentEnemy.mWidth = 0;
+
+    LTexture gRightStandEnemy;
+    gRightStandEnemy.mHeight = 0;
+    gRightStandEnemy.mWidth = 0;
+
+    LTexture gLeftStandEnemy;
+    gLeftStandEnemy.mHeight = 0;
+    gLeftStandEnemy.mWidth = 0;
+
+    LTexture gRightEnemy;
+    gLeftStandEnemy.mHeight = 0;
+    gLeftStandEnemy.mWidth = 0;
+
+    LTexture gLeftEnemy;
+    gLeftStandEnemy.mHeight = 0;
+    gLeftStandEnemy.mWidth = 0;
+
     LTexture gBackground;
     gBackground.mHeight = 0;
     gBackground.mWidth = 0;
@@ -291,6 +433,23 @@ int main( int argc, char* args[] )
 		{
 			printf( "Failed to load background media!\n" );
 		}
+        if( !loadMediaRightEnemy(&gRightEnemy) )
+		{
+			printf( "Failed to load right enemy media!\n" );
+		}
+		if( !loadMediaLeftEnemy(&gLeftEnemy) )
+		{
+			printf( "Failed to load left enemy media!\n" );
+		}
+			if( !loadMediaRightStandEnemy(&gRightStandEnemy) )
+		{
+			printf( "Failed to load background media!\n" );
+		}
+			if( !loadMediaLeftStandEnemy(&gLeftStandEnemy) )
+		{
+			printf( "Failed to load background media!\n" );
+		}
+
 		else
 		{
 			int quit = 0;
@@ -299,22 +458,57 @@ int main( int argc, char* args[] )
 
 			int frame = 0;
 
-			float x = 600;
+			float xf = 600;
+            float xe = 0.0;
+            float speedenemy = 0;
+            float speedfoo = 0;
 
-            int stand = 1;
-            int right = 0;
-            int left = 0;
+            int rightenemy = 1;
+            int leftenemy = 0;
+
+            int standfoo = 1;
+            int rightfoo = 0;
+            int leftfoo = 0;
 
 			gCurrentFoo = gStandFoo;
+            gCurrentEnemy = gRightEnemy;
+
+            Uint32 oldTime = 0;
+            Uint32 currentTime = 0;
+            currentTime = SDL_GetTicks();
 
 			while( !quit )
 			{
+                speedenemy = ((currentTime - oldTime)/1000.0) * 600.0;
+                speedfoo = ((currentTime - oldTime)/1000.0) * 500.0;
+				oldTime = currentTime;
+
 				while( SDL_PollEvent( &e ) != 0 )
 				{
                     if( e.type == SDL_QUIT )
 					{
 						quit = 1;
 					}
+					switch( e.key.keysym.sym )
+                	{
+		                case SDLK_a:
+		                    if( xe >= xf - 100.0 && xe <= xf - 10 )
+		                    {
+								rightenemy = 0;
+								leftenemy = 1;
+								xe = 1150;
+		                    }
+		                break;
+
+						case SDLK_d:
+							if( xe <= xf + 100.0 && xe >= xf + 10 )
+		                    {
+								rightenemy = 1;
+								leftenemy = 0;
+								xe = 0;
+		                    }
+		                break;
+                    }
 				}
 
 				const Uint8 *keystate = SDL_GetKeyboardState(NULL);
@@ -322,33 +516,46 @@ int main( int argc, char* args[] )
                 if( keystate[ SDL_SCANCODE_RIGHT ])
                 {
                     gCurrentFoo = gRightFoo;
-                    right = 1;
-                    left = 0;
-                    stand = 0;
-                    x += 7.5;
+                    rightfoo = 1;
+                    leftfoo = 0;
+                    standfoo = 0;
                 }
                 else if( keystate[ SDL_SCANCODE_LEFT ] )
                 {
                     gCurrentFoo = gLeftFoo;
-                    left = 1;
-                    right = 0;
-                    stand = 0;
-                    x -= 7.5;
+                    leftfoo = 1;
+                    rightfoo = 0;
+                    standfoo = 0;
                 }
 
-                else{
+                else
+                {
                     gCurrentFoo = gStandFoo;
-                    stand = 1;
-                    right = 0;
-                    left = 0;
+                    standfoo = 1;
+                    rightfoo = 0;
+                    leftfoo = 0;
                 }
-                if ( x >= 1150)
+                if ( xf >= 1150)
                 {
-                    x = 1150;
+                    xf = 1150;
                 }
-                if (  x <= -10 )
+                if (  xf <= -10 )
                 {
-                    x = -10;
+                    xf = -10;
+                }
+
+                if ( xe > 1150)
+                {
+                    rightenemy = 0;
+                    leftenemy = 1;
+					xe = 1150;
+
+                }
+                if (  xe < 0 )
+                {
+                    rightenemy = 1;
+                    leftenemy = 0;
+                    xe = 0;
                 }
 
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -356,31 +563,77 @@ int main( int argc, char* args[] )
 
                 render(&gBackground, 0 , 0, NULL);
 
-                if(stand)
+                if(standfoo)
                 {
-                    render(&gCurrentFoo, x, 450, NULL);
+                    render(&gCurrentFoo, xf, 450, NULL);
                 }
-                if(right)
+                if(rightfoo)
                 {
                     SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
-                    render(&gCurrentFoo, x, 450, currentClip );
+                    render(&gCurrentFoo, xf, 450, currentClip );
                     ++frame;
                     if( frame / 4 >= WALKING_ANIMATION_FRAMES )
                     {
                         frame = 0;
                     }
+                    xf += speedfoo;
                 }
-                if(left)
+                if(leftfoo)
                 {
                     SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
-                    render(&gCurrentFoo, x, 450, currentClip );
+                    render(&gCurrentFoo, xf, 450, currentClip );
                     ++frame;
                     if( frame / 4 >= WALKING_ANIMATION_FRAMES )
                     {
                         frame = 0;
                     }
+                    xf -= speedfoo;
+
                 }
+                if(checkCollision(xf , xe))
+                {
+                    if(rightenemy)
+					{
+						gCurrentEnemy = gRightStandEnemy;
+						render(&gCurrentEnemy, xe , 450, NULL);
+					}
+					if(leftenemy)
+					{
+						gCurrentEnemy = gLeftStandEnemy;
+						render(&gCurrentEnemy, xe, 450, NULL);
+					}
+                }
+                else
+                {
+					if(rightenemy)
+					{
+						gCurrentEnemy = gRightEnemy;
+						SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
+                    	render(&gCurrentEnemy, xe, 450, currentClip );
+                    	++frame;
+                   		if( frame / 4 >= WALKING_ANIMATION_FRAMES )
+                   		{
+                    	    frame = 0;
+                    	}
+                    	xe += speedenemy;
+					}
+					if(leftenemy)
+					{
+						gCurrentEnemy = gLeftEnemy;
+						SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
+                    	render(&gCurrentEnemy, xe, 450, currentClip );
+                    	++frame;
+                   		if( frame / 4 >= WALKING_ANIMATION_FRAMES )
+                   		{
+                    	    frame = 0;
+                    	}
+                    	xe -= speedenemy;
+					}
+                }
+
+
 				SDL_RenderPresent( gRenderer );
+				currentTime = SDL_GetTicks();
 			}
 		}
 	}
