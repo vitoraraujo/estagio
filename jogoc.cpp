@@ -1,10 +1,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
+#include <math.h>
 
 const int SCREEN_WIDTH = 1200;
 const int SCREEN_HEIGHT = 800;
 const int WALKING_ANIMATION_FRAMES = 4;
+
+const int BUTTON_HEIGHT = 150;
+const int BUTTON_WIDTH = 300;
 
 struct LTexture{
     SDL_Texture* mTexture = NULL;
@@ -13,6 +17,10 @@ struct LTexture{
 	int imgPath;
 };
 typedef struct LTexture LTexture;
+
+struct Mouse{
+    SDL_Point mPosition;
+};
 
 SDL_Window* gWindow = NULL;
 
@@ -91,6 +99,18 @@ int getHeight(LTexture* s)
 	return s->mHeight;
 }
 
+int clickButton(Mouse* m, float x1, float y1, float x2, float y2)
+{
+    if ( m->mPosition.x >= x1 && m->mPosition.x <= x2 && m->mPosition.y >= y1 && m->mPosition.y <= y2)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 int checkCollision(float x1, float x2)
 {
     int collision = 0;
@@ -99,27 +119,6 @@ int checkCollision(float x1, float x2)
         collision = 1;
     }
     return collision;
-}
-
-int checkHit(float x1, float x2, int side ) // side = 1 -> direita | side = 2 -> esquerda
-{
-    int hit = 0;
-
-    if (side == 1)
-    {
-        if( x2 <= x1 + 100.0 && x2 >= x1+10)
-        {
-            hit = 1;
-        }
-    }
-    if (side == 2)
-	{
-        if( x2 >= x1 - 100.0 && x2 <= x1-10)
-        {
-            hit = 1;
-        }
-    }
-    return hit;
 }
 
 int init()
@@ -411,6 +410,10 @@ int main( int argc, char* args[] )
     gBackground.mHeight = 0;
     gBackground.mWidth = 0;
 
+    Mouse mouse;
+    mouse.mPosition.x = 0;
+    mouse.mPosition.y = 0;
+
 	if( !init() )
 	{
 		printf( "Failed to initialize!\n" );
@@ -443,11 +446,11 @@ int main( int argc, char* args[] )
 		}
 			if( !loadMediaRightStandEnemy(&gRightStandEnemy) )
 		{
-			printf( "Failed to load background media!\n" );
+			printf( "Failed to load right stand enemy media!\n" );
 		}
 			if( !loadMediaLeftStandEnemy(&gLeftStandEnemy) )
 		{
-			printf( "Failed to load background media!\n" );
+			printf( "Failed to load left stand enemy media!\n" );
 		}
 
 		else
@@ -458,14 +461,21 @@ int main( int argc, char* args[] )
 
 			int frame = 0;
 
+            int startGame = 0;
+
+            int r = 0;
+
 			float xf = 600;
+            float yf = 450;
             float xe = 0.0;
+            float ye = 450;
             float speedenemy = 0;
             float speedfoo = 0;
 
             int rightenemy = 1;
             int leftenemy = 0;
 
+            int jumpfoo = 0;
             int standfoo = 1;
             int rightfoo = 0;
             int leftfoo = 0;
@@ -477,163 +487,231 @@ int main( int argc, char* args[] )
             Uint32 currentTime = 0;
             currentTime = SDL_GetTicks();
 
+            float x1 = SCREEN_WIDTH / 4;
+            float y1 = SCREEN_HEIGHT / 4;
+            float x2 = SCREEN_WIDTH / 2;
+            float y2 = SCREEN_HEIGHT / 2;
+
+            int mx = 0;
+            int my = 0;
+
 			while( !quit )
 			{
-                speedenemy = ((currentTime - oldTime)/1000.0) * 600.0;
-                speedfoo = ((currentTime - oldTime)/1000.0) * 500.0;
-				oldTime = currentTime;
-
-				while( SDL_PollEvent( &e ) != 0 )
-				{
-                    if( e.type == SDL_QUIT )
-					{
-						quit = 1;
-					}
-					switch( e.key.keysym.sym )
-                	{
-		                case SDLK_a:
-		                    if( xe >= xf - 100.0 && xe <= xf - 10 )
-		                    {
-								rightenemy = 0;
-								leftenemy = 1;
-								xe = 1150;
-		                    }
-		                break;
-
-						case SDLK_d:
-							if( xe <= xf + 100.0 && xe >= xf + 10 )
-		                    {
-								rightenemy = 1;
-								leftenemy = 0;
-								xe = 0;
-		                    }
-		                break;
-                    }
-				}
-
-				const Uint8 *keystate = SDL_GetKeyboardState(NULL);
-
-                if( keystate[ SDL_SCANCODE_RIGHT ])
+                if( startGame == 0)
                 {
-                    gCurrentFoo = gRightFoo;
-                    rightfoo = 1;
-                    leftfoo = 0;
-                    standfoo = 0;
-                }
-                else if( keystate[ SDL_SCANCODE_LEFT ] )
-                {
-                    gCurrentFoo = gLeftFoo;
-                    leftfoo = 1;
-                    rightfoo = 0;
-                    standfoo = 0;
-                }
-
-                else
-                {
-                    gCurrentFoo = gStandFoo;
-                    standfoo = 1;
-                    rightfoo = 0;
-                    leftfoo = 0;
-                }
-                if ( xf >= 1150)
-                {
-                    xf = 1150;
-                }
-                if (  xf <= -10 )
-                {
-                    xf = -10;
-                }
-
-                if ( xe > 1150)
-                {
-                    rightenemy = 0;
-                    leftenemy = 1;
-					xe = 1150;
-
-                }
-                if (  xe < 0 )
-                {
-                    rightenemy = 1;
-                    leftenemy = 0;
-                    xe = 0;
-                }
-
-				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-				SDL_RenderClear( gRenderer );
-
-                render(&gBackground, 0 , 0, NULL);
-
-                if(standfoo)
-                {
-                    render(&gCurrentFoo, xf, 450, NULL);
-                }
-                if(rightfoo)
-                {
-                    SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
-                    render(&gCurrentFoo, xf, 450, currentClip );
-                    ++frame;
-                    if( frame / 4 >= WALKING_ANIMATION_FRAMES )
+                    while( SDL_PollEvent( &e ) != 0 )
                     {
-                        frame = 0;
+                        if( e.type == SDL_QUIT )
+                        {
+                            quit = 1;
+                        }
+                        if (e.type == SDL_MOUSEBUTTONUP)
+                        {
+                            SDL_GetMouseState(&mx, &my);
+                            mouse.mPosition.x = mx;
+                            mouse.mPosition.y = my;
+                            startGame = clickButton(&mouse, x1, y1, x2, y2);
+                        }
                     }
-                    xf += speedfoo;
-                }
-                if(leftfoo)
-                {
-                    SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
-                    render(&gCurrentFoo, xf, 450, currentClip );
-                    ++frame;
-                    if( frame / 4 >= WALKING_ANIMATION_FRAMES )
-                    {
-                        frame = 0;
-                    }
-                    xf -= speedfoo;
 
-                }
-                if(checkCollision(xf , xe))
-                {
-                    if(rightenemy)
-					{
-						gCurrentEnemy = gRightStandEnemy;
-						render(&gCurrentEnemy, xe , 450, NULL);
-					}
-					if(leftenemy)
-					{
-						gCurrentEnemy = gLeftStandEnemy;
-						render(&gCurrentEnemy, xe, 450, NULL);
-					}
+                    SDL_Rect fillRect = { x1, y1, x2, y2 };
+                    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF );
+                    SDL_RenderFillRect( gRenderer, &fillRect );
+                    SDL_RenderPresent( gRenderer );
+
                 }
                 else
                 {
-					if(rightenemy)
-					{
-						gCurrentEnemy = gRightEnemy;
-						SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
-                    	render(&gCurrentEnemy, xe, 450, currentClip );
-                    	++frame;
-                   		if( frame / 4 >= WALKING_ANIMATION_FRAMES )
-                   		{
-                    	    frame = 0;
-                    	}
-                    	xe += speedenemy;
-					}
-					if(leftenemy)
-					{
-						gCurrentEnemy = gLeftEnemy;
-						SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
-                    	render(&gCurrentEnemy, xe, 450, currentClip );
-                    	++frame;
-                   		if( frame / 4 >= WALKING_ANIMATION_FRAMES )
-                   		{
-                    	    frame = 0;
-                    	}
-                    	xe -= speedenemy;
-					}
+
+                    speedenemy = ((currentTime - oldTime)/1000.0) * 600.0;
+                    speedfoo = ((currentTime - oldTime)/1000.0) * 500.0;
+                    oldTime = currentTime;
+
+                    while( SDL_PollEvent( &e ) != 0 )
+                    {
+                        if( e.type == SDL_QUIT )
+                        {
+                            quit = 1;
+                        }
+                        switch( e.key.keysym.sym )
+                        {
+                            case SDLK_a:
+                                if( xe >= xf - 100.0 && xe <= xf - 10 )
+                                {
+                                    r = rand() % 2;
+
+                                    switch (r)
+                                    {
+                                        case 0:
+                                        rightenemy = 0;
+                                        leftenemy = 1;
+                                        xe = 1150;
+                                        break;
+
+                                        case 1:
+                                        rightenemy = 1;
+                                        leftenemy = 0;
+                                        xe = 0;
+                                        break;
+                                    }
+                                }
+                            break;
+
+                            case SDLK_d:
+                                if( xe <= xf + 100.0 && xe >= xf + 10 )
+                                {
+                                    r = rand() % 2;
+
+                                    switch (r)
+                                    {
+                                        case 0:
+                                        rightenemy = 0;
+                                        leftenemy = 1;
+                                        xe = 1150;
+                                        break;
+
+                                        case 1:
+                                        rightenemy = 1;
+                                        leftenemy = 0;
+                                        xe = 0;
+                                        break;
+                                    }
+                                }
+                            break;
+                        }
+                    }
+
+                    const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+
+                    if( keystate[ SDL_SCANCODE_RIGHT ])
+                    {
+                        gCurrentFoo = gRightFoo;
+                        rightfoo = 1;
+                        leftfoo = 0;
+                        standfoo = 0;
+                    }
+                    else if( keystate[ SDL_SCANCODE_LEFT ] )
+                    {
+                        gCurrentFoo = gLeftFoo;
+                        leftfoo = 1;
+                        rightfoo = 0;
+                        standfoo = 0;
+                    }
+                    /*else if( keystate[ SDL_SCANCODE_UP ] )
+                    {
+                        gCurrentFoo = gStandFoo;
+                        leftfoo = 0;
+                        rightfoo = 0;
+                        standfoo = 0;
+
+                    }*/
+                    else
+                    {
+                        gCurrentFoo = gStandFoo;
+                        standfoo = 1;
+                        rightfoo = 0;
+                        leftfoo = 0;
+                    }
+                    if ( xf >= 1150)
+                    {
+                        xf = 1150;
+                    }
+                    if (  xf <= -10 )
+                    {
+                        xf = -10;
+                    }
+
+                    if ( xe > 1150)
+                    {
+                        rightenemy = 0;
+                        leftenemy = 1;
+                        xe = 1150;
+
+                    }
+                    if (  xe < 0 )
+                    {
+                        rightenemy = 1;
+                        leftenemy = 0;
+                        xe = 0;
+                    }
+
+                    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+                    SDL_RenderClear( gRenderer );
+
+                    render(&gBackground, 0 , 0, NULL);
+
+                    if(standfoo)
+                    {
+                        render(&gCurrentFoo, xf, yf, NULL);
+                    }
+                    if(rightfoo)
+                    {
+                        SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
+                        render(&gCurrentFoo, xf, yf, currentClip );
+                        ++frame;
+                        if( frame / 4 >= WALKING_ANIMATION_FRAMES )
+                        {
+                            frame = 0;
+                        }
+                        xf += speedfoo;
+                    }
+                    if(leftfoo)
+                    {
+                        SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
+                        render(&gCurrentFoo, xf, yf, currentClip );
+                        ++frame;
+                        if( frame / 4 >= WALKING_ANIMATION_FRAMES )
+                        {
+                            frame = 0;
+                        }
+                        xf -= speedfoo;
+
+                    }
+                    if(checkCollision(xf , xe))
+                    {
+                        if(rightenemy)
+                        {
+                            gCurrentEnemy = gRightStandEnemy;
+                            render(&gCurrentEnemy, xe , ye, NULL);
+                        }
+                        if(leftenemy)
+                        {
+                            gCurrentEnemy = gLeftStandEnemy;
+                            render(&gCurrentEnemy, xe, ye, NULL);
+                        }
+                    }
+                    else
+                    {
+                        if(rightenemy)
+                        {
+                            gCurrentEnemy = gRightEnemy;
+                            SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
+                            render(&gCurrentEnemy, xe, ye, currentClip );
+                            ++frame;
+                            if( frame / 4 >= WALKING_ANIMATION_FRAMES )
+                            {
+                                frame = 0;
+                            }
+                            xe += speedenemy;
+                        }
+                        if(leftenemy)
+                        {
+                            gCurrentEnemy = gLeftEnemy;
+                            SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
+                            render(&gCurrentEnemy, xe, ye, currentClip );
+                            ++frame;
+                            if( frame / 4 >= WALKING_ANIMATION_FRAMES )
+                            {
+                                frame = 0;
+                            }
+                            xe -= speedenemy;
+                        }
+                    }
+
+
+                    SDL_RenderPresent( gRenderer );
+                    currentTime = SDL_GetTicks();
                 }
-
-
-				SDL_RenderPresent( gRenderer );
-				currentTime = SDL_GetTicks();
 			}
 		}
 	}

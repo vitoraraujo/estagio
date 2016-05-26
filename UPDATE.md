@@ -1,3 +1,24 @@
+# 27/05
+
+## O que eu ia fazer durante a semana passada?
+* Telas de transição (inicio, jogo e fim)
+* Randomizar o lado que o inimigo nasce
+* TTF
+* Sistema de dano
+
+
+## O que eu realmente fiz durante a semana passada?
+* Procurei como instalar ttf na máquina e como utiliza-lo (ainda nao consegui)
+* Sistema para ler evento do mouse
+* Adicionei pagina de transição, porém, está com bug (só pode clicar na parte superior esquerda do botao vermelho para começar)
+* Os bonecos nascem de lados aleatórios
+* Pensei em um sistema de pulo 
+* Coloquei movimento.cpp relativo ao fps e vou trabalhar o sistema de pulo nele
+
+## O que eu vou fazer durante a próxima semana?
+
+## Quantas horas de trabalho?
+* 3 horas e 45 minutos
 # 19/05
 
 ## O que eu ia fazer durante a semana passada?

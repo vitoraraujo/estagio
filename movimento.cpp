@@ -305,10 +305,18 @@ int main( int argc, char* args[] )
             int right = 0;
             int left = 0;
 
+            Uint32 oldTime = 0;
+            Uint32 currentTime = 0;
+            currentTime = SDL_GetTicks();
+
+            float speedfoo = 0;
+
 			gCurrentFoo = gStandFoo;
 
 			while( !quit )
 			{
+                speedfoo = ((currentTime - oldTime)/1000.0) * 500.0;
+                oldTime = currentTime;
 				while( SDL_PollEvent( &e ) != 0 )
 				{
                     if( e.type == SDL_QUIT )
@@ -325,7 +333,6 @@ int main( int argc, char* args[] )
                     right = 1;
                     left = 0;
                     stand = 0;
-                    x += 7.5;
                 }
                 else if( keystate[ SDL_SCANCODE_LEFT ] )
                 {
@@ -333,7 +340,6 @@ int main( int argc, char* args[] )
                     left = 1;
                     right = 0;
                     stand = 0;
-                    x -= 7.5;
                 }
 
                 else{
@@ -369,6 +375,7 @@ int main( int argc, char* args[] )
                     {
                         frame = 0;
                     }
+                    x += speedfoo;
                 }
                 if(left)
                 {
@@ -379,8 +386,10 @@ int main( int argc, char* args[] )
                     {
                         frame = 0;
                     }
+                    x -= speedfoo;
                 }
 				SDL_RenderPresent( gRenderer );
+                currentTime = SDL_GetTicks();
 			}
 		}
 	}
