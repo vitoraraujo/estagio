@@ -14,11 +14,14 @@
 * Os bonecos nascem de lados aleatórios
 * Pensei em um sistema de pulo 
 * Coloquei movimento.cpp relativo ao fps e vou trabalhar o sistema de pulo nele
+* Sistema de pulo pronto no movimento.cpp
 
 ## O que eu vou fazer durante a próxima semana?
 
+
 ## Quantas horas de trabalho?
-* 3 horas e 45 minutos
+* 4 horas e 40 minutos
+
 # 19/05
 
 ## O que eu ia fazer durante a semana passada?

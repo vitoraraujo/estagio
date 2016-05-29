@@ -94,6 +94,7 @@ int getHeight(LTexture* s)
 	return s->mHeight;
 }
 
+
 int init()
 {
 	int  success = 1;
@@ -300,17 +301,20 @@ int main( int argc, char* args[] )
 			int frame = 0;
 
 			float x = 600;
+            float y = 450;
 
             int stand = 1;
             int right = 0;
             int left = 0;
+            int jump = 0;
 
             Uint32 oldTime = 0;
             Uint32 currentTime = 0;
+            Uint32 jumptime = 0;
             currentTime = SDL_GetTicks();
 
             float speedfoo = 0;
-
+            float speedjump = 0;
 			gCurrentFoo = gStandFoo;
 
 			while( !quit )
@@ -323,10 +327,19 @@ int main( int argc, char* args[] )
 					{
 						quit = 1;
 					}
+
 				}
 
 				const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 
+                if( jump == 0 )
+                {
+                    if( keystate[ SDL_SCANCODE_UP])
+                    {
+                        jumptime = currentTime;
+                        jump = 1;
+                    }
+                }
                 if( keystate[ SDL_SCANCODE_RIGHT ])
                 {
                     gCurrentFoo = gRightFoo;
@@ -341,7 +354,6 @@ int main( int argc, char* args[] )
                     right = 0;
                     stand = 0;
                 }
-
                 else{
                     gCurrentFoo = gStandFoo;
                     stand = 1;
@@ -362,14 +374,30 @@ int main( int argc, char* args[] )
 
                 render(&gBackground, 0 , 0, NULL);
 
+                if(jump)
+                {
+                    speedjump = 30;
+                    speedjump -= 0.0008*((currentTime - jumptime))*((currentTime - jumptime));
+                    y -= speedjump;
+                    if(speedjump <= 0)
+                    {
+                        speedjump += 0.0008*((currentTime - jumptime))*((currentTime - jumptime));
+                        if( y >= 450)
+                        {
+                            y = 450;
+                            jump = 0;
+                        }
+                    }
+                }
+
                 if(stand)
                 {
-                    render(&gCurrentFoo, x, 450, NULL);
+                    render(&gCurrentFoo, x, y, NULL);
                 }
                 if(right)
                 {
                     SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
-                    render(&gCurrentFoo, x, 450, currentClip );
+                    render(&gCurrentFoo, x, y, currentClip );
                     ++frame;
                     if( frame / 4 >= WALKING_ANIMATION_FRAMES )
                     {
@@ -380,7 +408,7 @@ int main( int argc, char* args[] )
                 if(left)
                 {
                     SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
-                    render(&gCurrentFoo, x, 450, currentClip );
+                    render(&gCurrentFoo, x, y, currentClip );
                     ++frame;
                     if( frame / 4 >= WALKING_ANIMATION_FRAMES )
                     {
@@ -388,8 +416,10 @@ int main( int argc, char* args[] )
                     }
                     x -= speedfoo;
                 }
-				SDL_RenderPresent( gRenderer );
+
+                SDL_RenderPresent( gRenderer );
                 currentTime = SDL_GetTicks();
+                printf("%f\n", speedjump);
 			}
 		}
 	}
