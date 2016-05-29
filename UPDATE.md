@@ -17,11 +17,21 @@
 * Sistema de pulo pronto no movimento.cpp
 * Coloca pulo no jogoc.cpp e altera os casos de colisões e hits 
 * O personagem não atravessa mais os inimigos
+* Pesquisei e tentei instalar mais vezes o ttf com .tar.gz, make install e etc, mas ainda não deu certo
+* Fiz imagem punchright e punchleft
+* Implementei os socos no jogoc.cpp, porém, falta tirar do modo punch depois que soltar o botao
 
 ## O que eu vou fazer durante a próxima semana?
+* TTF
+* Sistema de dano
+* Consertar o modo punch do jogoc.cpp
+* Melhorar a distancia do soco esquerdo
+* Consertar o botão da tela de transicao inicial
 
 ## Quantas horas de trabalho?
-* 5 horas e 40 minutos
+* 8 horas
+
+=======
 
 # 19/05
 
@@ -53,6 +63,8 @@
 
 ## Quantas horas de trabalho?
 * 8 horas
+
+=======
 
 # 12/05
 
@@ -102,6 +114,8 @@
 ## Quantas horas de trabalho?
 4 horas
 
+=======
+
 # 14/04
 
 ## O que eu ia fazer durante a semana passada?
@@ -113,7 +127,7 @@
 * Movimenta o boneco conforme as setas do teclado para direita e esquerda e
 * Faz imagem para quando o boneco tiver fora de movimento ( a ser melhorada)
 * Estraguei tudo dando checkout no lugar de rm no git, desculpa..
-* Refiz o código, porém mais bem mais rápido
+* Refiz o código, porém bem mais rápido
 * Pensar sobre e melhorar a ideia do jogo
 
 ## O que eu vou fazer durante a próxima semana?
@@ -122,6 +136,8 @@
 
 ## Quantas horas de trabalho?
 5 horas
+
+=======
 
 # 7/04
 

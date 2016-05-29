@@ -344,6 +344,30 @@ int loadMediaLeftStandEnemy(LTexture* s)
     return success;
 }
 
+int loadMediaLeftPunch(LTexture* s)
+{
+    int success = 1;
+
+    if(!(s->imgPath = loadFromFile(s, "imagens/punchleft.png")) )
+    {
+        printf( "Failed to load left punch animation texture!\n" );
+        success = 0;
+    }
+    return success;
+}
+
+int loadMediaRightPunch(LTexture* s)
+{
+    int success = 1;
+
+    if(!(s->imgPath = loadFromFile(s, "imagens/punchright.png")) )
+    {
+        printf( "Failed to load right punch animation texture!\n" );
+        success = 0;
+    }
+    return success;
+}
+
 int loadMediaBackground(LTexture* s)
 {
     int success = 1;
@@ -406,6 +430,14 @@ int main( int argc, char* args[] )
     gLeftStandEnemy.mHeight = 0;
     gLeftStandEnemy.mWidth = 0;
 
+    LTexture gLeftPunch;
+    gLeftPunch.mHeight = 0;
+    gLeftPunch.mWidth = 0;
+
+    LTexture gRightPunch;
+    gRightPunch.mHeight = 0;
+    gRightPunch.mWidth = 0;
+
     LTexture gBackground;
     gBackground.mHeight = 0;
     gBackground.mWidth = 0;
@@ -444,11 +476,19 @@ int main( int argc, char* args[] )
 		{
 			printf( "Failed to load left enemy media!\n" );
 		}
-			if( !loadMediaRightStandEnemy(&gRightStandEnemy) )
+        if( !loadMediaRightStandEnemy(&gRightStandEnemy) )
 		{
 			printf( "Failed to load right stand enemy media!\n" );
 		}
-			if( !loadMediaLeftStandEnemy(&gLeftStandEnemy) )
+		if( !loadMediaRightPunch(&gRightPunch) )
+		{
+			printf( "Failed to load right stand enemy media!\n" );
+		}
+		if( !loadMediaLeftPunch(&gLeftPunch) )
+		{
+			printf( "Failed to load right stand enemy media!\n" );
+		}
+		if( !loadMediaLeftStandEnemy(&gLeftStandEnemy) )
 		{
 			printf( "Failed to load left stand enemy media!\n" );
 		}
@@ -476,6 +516,8 @@ int main( int argc, char* args[] )
 
             int rightenemy = 1;
             int leftenemy = 0;
+            int rightpunch = 0;
+            int leftpunch = 0;
 
             int jumpfoo = 0;
             int standfoo = 1;
@@ -525,7 +567,6 @@ int main( int argc, char* args[] )
                 }
                 else
                 {
-
                     speedenemy = ((currentTime - oldTime)/1000.0) * 600.0;
                     speedfoo = ((currentTime - oldTime)/1000.0) * 500.0;
                     oldTime = currentTime;
@@ -539,7 +580,11 @@ int main( int argc, char* args[] )
                         switch( e.key.keysym.sym )
                         {
                             case SDLK_a:
-                                if( xe >= xf - 100.0 && xe <= xf - 10 && ye == yf)
+
+                                leftpunch = 1;
+                                rightpunch = 0;
+
+                                if( xe >= xf - 80.0 && xe <= xf - 10 && ye == yf)
                                 {
                                     r = rand() % 2;
 
@@ -561,6 +606,9 @@ int main( int argc, char* args[] )
                             break;
 
                             case SDLK_d:
+
+                                rightpunch = 1;
+                                leftpunch = 0;
                                 if( xe <= xf + 100.0 && xe >= xf + 10 && ye == yf )
                                 {
                                     r = rand() % 2;
@@ -592,6 +640,8 @@ int main( int argc, char* args[] )
                         {
                             jumptime = currentTime;
                             jumpfoo = 1;
+                            leftpunch = 0;
+                            rightpunch = 0;
                         }
                     }
                     if( keystate[ SDL_SCANCODE_RIGHT ])
@@ -600,6 +650,8 @@ int main( int argc, char* args[] )
                         rightfoo = 1;
                         leftfoo = 0;
                         standfoo = 0;
+                        leftpunch = 0;
+                        rightpunch = 0;
                     }
                     else if( keystate[ SDL_SCANCODE_LEFT ] )
                     {
@@ -607,6 +659,24 @@ int main( int argc, char* args[] )
                         leftfoo = 1;
                         rightfoo = 0;
                         standfoo = 0;
+                        leftpunch = 0;
+                        rightpunch = 0;
+                    }
+                    else if(rightpunch)
+                    {
+                        gCurrentFoo = gRightPunch;
+                        standfoo = 1;
+                        rightfoo = 0;
+                        leftfoo = 0;
+                        leftpunch = 0;
+                    }
+                    else if(leftpunch)
+                    {
+                        gCurrentFoo = gLeftPunch;
+                        standfoo = 1;
+                        rightfoo = 0;
+                        leftfoo = 0;
+                        rightpunch = 0;
                     }
 
                     else
@@ -615,7 +685,10 @@ int main( int argc, char* args[] )
                         standfoo = 1;
                         rightfoo = 0;
                         leftfoo = 0;
+                        rightpunch = 0;
+                        leftpunch = 0;
                     }
+
                     if ( xf >= 1150 )
                     {
                         xf = 1150;
@@ -659,7 +732,7 @@ int main( int argc, char* args[] )
                             }
                         }
                     }
-                    if(standfoo)
+                    if(standfoo || rightpunch || leftpunch)
                     {
                         render(&gCurrentFoo, xf, yf, NULL);
                     }
@@ -738,6 +811,8 @@ int main( int argc, char* args[] )
 
                     SDL_RenderPresent( gRenderer );
                     currentTime = SDL_GetTicks();
+
+
                 }
 			}
 		}
