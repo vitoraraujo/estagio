@@ -111,10 +111,10 @@ int clickButton(Mouse* m, float x1, float y1, float x2, float y2)
     }
 }
 
-int checkCollision(float x1, float x2)
+int checkCollision(float x1, float x2, float y1, float y2)
 {
     int collision = 0;
-    if ( x2 <= x1 + 60 && x2 >= x1 || x2 >= x1 - 60  && x2 <= x1)
+    if ( x2 <= x1 + 60 && x2 >= x1 && y2 <= y1+100 && y2 >= y1 - 50  || x2 >= x1 - 60  && x2 <= x1 && y2 <= y1 + 100 && y2 >= y1 - 50)
     {
         collision = 1;
     }
@@ -469,8 +469,10 @@ int main( int argc, char* args[] )
             float yf = 450;
             float xe = 0.0;
             float ye = 450;
+
             float speedenemy = 0;
             float speedfoo = 0;
+            float speedjump = 0;
 
             int rightenemy = 1;
             int leftenemy = 0;
@@ -483,6 +485,7 @@ int main( int argc, char* args[] )
 			gCurrentFoo = gStandFoo;
             gCurrentEnemy = gRightEnemy;
 
+            Uint32 jumptime = 0;
             Uint32 oldTime = 0;
             Uint32 currentTime = 0;
             currentTime = SDL_GetTicks();
@@ -536,7 +539,7 @@ int main( int argc, char* args[] )
                         switch( e.key.keysym.sym )
                         {
                             case SDLK_a:
-                                if( xe >= xf - 100.0 && xe <= xf - 10 )
+                                if( xe >= xf - 100.0 && xe <= xf - 10 && ye == yf)
                                 {
                                     r = rand() % 2;
 
@@ -558,7 +561,7 @@ int main( int argc, char* args[] )
                             break;
 
                             case SDLK_d:
-                                if( xe <= xf + 100.0 && xe >= xf + 10 )
+                                if( xe <= xf + 100.0 && xe >= xf + 10 && ye == yf )
                                 {
                                     r = rand() % 2;
 
@@ -583,6 +586,14 @@ int main( int argc, char* args[] )
 
                     const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 
+                    if( jumpfoo == 0 )
+                    {
+                        if( keystate[ SDL_SCANCODE_UP])
+                        {
+                            jumptime = currentTime;
+                            jumpfoo = 1;
+                        }
+                    }
                     if( keystate[ SDL_SCANCODE_RIGHT ])
                     {
                         gCurrentFoo = gRightFoo;
@@ -597,14 +608,7 @@ int main( int argc, char* args[] )
                         rightfoo = 0;
                         standfoo = 0;
                     }
-                    /*else if( keystate[ SDL_SCANCODE_UP ] )
-                    {
-                        gCurrentFoo = gStandFoo;
-                        leftfoo = 0;
-                        rightfoo = 0;
-                        standfoo = 0;
 
-                    }*/
                     else
                     {
                         gCurrentFoo = gStandFoo;
@@ -612,7 +616,7 @@ int main( int argc, char* args[] )
                         rightfoo = 0;
                         leftfoo = 0;
                     }
-                    if ( xf >= 1150)
+                    if ( xf >= 1150 )
                     {
                         xf = 1150;
                     }
@@ -626,7 +630,6 @@ int main( int argc, char* args[] )
                         rightenemy = 0;
                         leftenemy = 1;
                         xe = 1150;
-
                     }
                     if (  xe < 0 )
                     {
@@ -635,11 +638,27 @@ int main( int argc, char* args[] )
                         xe = 0;
                     }
 
+
                     SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
                     SDL_RenderClear( gRenderer );
 
                     render(&gBackground, 0 , 0, NULL);
 
+                    if(jumpfoo)
+                    {
+                        speedjump = 30;
+                        speedjump -= 0.0008*((currentTime - jumptime))*((currentTime - jumptime));
+                        yf -= speedjump;
+                        if(speedjump <= 0)
+                        {
+                            speedjump += 0.0008*((currentTime - jumptime))*((currentTime - jumptime));
+                            if( yf >= 450)
+                            {
+                                yf = 450;
+                                jumpfoo = 0;
+                            }
+                        }
+                    }
                     if(standfoo)
                     {
                         render(&gCurrentFoo, xf, yf, NULL);
@@ -667,17 +686,25 @@ int main( int argc, char* args[] )
                         xf -= speedfoo;
 
                     }
-                    if(checkCollision(xf , xe))
+                    if(checkCollision(xf , xe, yf, ye))
                     {
                         if(rightenemy)
                         {
                             gCurrentEnemy = gRightStandEnemy;
                             render(&gCurrentEnemy, xe , ye, NULL);
+                            if(xf <= xe + 20)
+                            {
+                                xf += speedfoo;
+                            }
                         }
                         if(leftenemy)
                         {
                             gCurrentEnemy = gLeftStandEnemy;
                             render(&gCurrentEnemy, xe, ye, NULL);
+                            if(xf >= xe - 20)
+                            {
+                                xf -= speedfoo;
+                            }
                         }
                     }
                     else

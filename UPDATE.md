@@ -13,14 +13,15 @@
 * Adicionei pagina de transição, porém, está com bug (só pode clicar na parte superior esquerda do botao vermelho para começar)
 * Os bonecos nascem de lados aleatórios
 * Pensei em um sistema de pulo 
-* Coloquei movimento.cpp relativo ao fps e vou trabalhar o sistema de pulo nele
+* Coloquei a velocidade no movimento.cpp relativa ao fps e vou trabalhar o sistema de pulo neste código
 * Sistema de pulo pronto no movimento.cpp
+* Coloca pulo no jogoc.cpp e altera os casos de colisões e hits 
+* O personagem não atravessa mais os inimigos
 
 ## O que eu vou fazer durante a próxima semana?
 
-
 ## Quantas horas de trabalho?
-* 4 horas e 40 minutos
+* 5 horas e 40 minutos
 
 # 19/05
 
