@@ -1,7 +1,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
-#include <math.h>
+#include <cmath>
 
 const int SCREEN_WIDTH = 1200;
 const int SCREEN_HEIGHT = 800;
@@ -25,6 +26,8 @@ struct Mouse{
 SDL_Window* gWindow = NULL;
 
 SDL_Renderer* gRenderer = NULL;
+
+TTF_Font *gFont = NULL;
 
 SDL_Rect gSpriteClipsRight[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gSpriteClipsLeft[ WALKING_ANIMATION_FRAMES ];
@@ -61,6 +64,32 @@ int loadFromFile(LTexture* s, const char* path )
 	return s->mTexture != NULL;
 }
 
+int loadFromRenderedText(LTexture* s, const char* textureText, SDL_Color textColor )
+{
+	SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText, textColor );
+	if( textSurface == NULL )
+	{
+		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+	}
+	else
+	{
+		s->mTexture = SDL_CreateTextureFromSurface( gRenderer, textSurface );
+		if( s->mTexture == NULL )
+		{
+			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+		}
+		else
+		{
+			s->mWidth = textSurface->w;
+			s->mHeight = textSurface->h;
+		}
+
+		SDL_FreeSurface( textSurface );
+	}
+
+	return s->mTexture != NULL;
+}
+
 void setColor(LTexture* s, Uint8 red, Uint8 green, Uint8 blue )
 {
 	SDL_SetTextureColorMod( s->mTexture, red, green, blue );
@@ -76,7 +105,7 @@ void setAlpha(LTexture* s, Uint8 alpha )
 	SDL_SetTextureAlphaMod( s->mTexture, alpha );
 }
 
-void render(LTexture* s, int x, int y, SDL_Rect* clip )
+void render(LTexture* s, int x, int y, SDL_Rect* clip,  double angle, SDL_Point* center, SDL_RendererFlip flip )
 {
 	SDL_Rect renderQuad = { x, y, s->mWidth, s->mHeight };
 
@@ -86,7 +115,7 @@ void render(LTexture* s, int x, int y, SDL_Rect* clip )
 		renderQuad.h = clip->h;
 	}
 
-	SDL_RenderCopy( gRenderer, s->mTexture, clip, &renderQuad );
+	SDL_RenderCopyEx( gRenderer, s->mTexture, clip, &renderQuad, angle, center, flip );
 }
 
 int getWidth(LTexture* s)
@@ -114,7 +143,7 @@ int clickButton(Mouse* m, float x1, float y1, float x2, float y2)
 int checkCollision(float x1, float x2, float y1, float y2)
 {
     int collision = 0;
-    if ( x2 <= x1 + 60 && x2 >= x1 && y2 <= y1+100 && y2 >= y1 - 50  || x2 >= x1 - 60  && x2 <= x1 && y2 <= y1 + 100 && y2 >= y1 - 50)
+    if ( x2 <= x1 + 60 && x2 >= x1 && y2 <= y1+100 && y2 >= y1 - 60  || x2 >= x1 - 60  && x2 <= x1 && y2 <= y1 + 100 && y2 >= y1 - 50)
     {
         collision = 1;
     }
@@ -137,7 +166,7 @@ int init()
 			printf( "Warning: Linear texture filtering not enabled!" );
 		}
 
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "SDL GAME", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -161,10 +190,112 @@ int init()
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = 0;
 				}
+
+				if( TTF_Init() == -1 )
+				{
+					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+					success = 0;
+				}
 			}
 		}
 	}
 
+	return success;
+}
+
+int loadMediaHealthText(LTexture* s)
+{
+	int success = 1;
+
+
+
+	gFont = TTF_OpenFont( "imagens/lazy.ttf", 35 );
+	if( gFont == NULL )
+	{
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = 0;
+	}
+	else
+	{
+		SDL_Color textColor = { 0, 0, 0 };
+		if( !(s->imgPath = loadFromRenderedText(s, "HP:", textColor ) ) )
+		{
+			printf( "Failed to render text texture!\n" );
+			success = 0;
+		}
+	}
+	return success;
+}
+
+int loadMediaHealth(LTexture* s, int hp)
+{
+	int success = 1;
+
+    char vc[2];
+    sprintf(vc, "%d", hp );
+
+	gFont = TTF_OpenFont( "imagens/lazy.ttf", 35 );
+	if( gFont == NULL )
+	{
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = 0;
+	}
+	else
+	{
+		SDL_Color textColor = { 0, 0, 0 };
+		if( !(s->imgPath = loadFromRenderedText(s, vc , textColor ) ) )
+		{
+			printf( "Failed to render text texture!\n" );
+			success = 0;
+		}
+	}
+	return success;
+}
+
+int loadMediaScoreText(LTexture* s)
+{
+	int success = 1;
+
+	gFont = TTF_OpenFont( "imagens/lazy.ttf", 35 );
+	if( gFont == NULL )
+	{
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = 0;
+	}
+	else
+	{
+		SDL_Color textColor = { 0, 0, 0 };
+		if( !(s->imgPath = loadFromRenderedText(s, "Score:", textColor ) ) )
+		{
+			printf( "Failed to render text texture!\n" );
+			success = 0;
+		}
+	}
+	return success;
+}
+
+int loadMediaScore(LTexture* s, int score)
+{
+	int success = 1;
+
+    char vc[2];
+    sprintf(vc, "%d", score );
+
+	gFont = TTF_OpenFont( "imagens/lazy.ttf", 35 );
+	if( gFont == NULL )
+	{
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = 0;
+	}
+	else
+	{
+		SDL_Color textColor = { 0, 0, 0 };
+		if( !(s->imgPath = loadFromRenderedText(s, vc , textColor ) ) )
+		{
+			printf( "Failed to render text texture!\n" );
+			success = 0;
+		}
+	}
 	return success;
 }
 
@@ -368,6 +499,18 @@ int loadMediaRightPunch(LTexture* s)
     return success;
 }
 
+int loadMediaStartButton(LTexture* s)
+{
+    int success = 1;
+
+    if(!(s->imgPath = loadFromFile(s, "imagens/start.png")) )
+    {
+        printf( "Failed to load background texture!\n" );
+        success = 0;
+    }
+    return success;
+}
+
 int loadMediaBackground(LTexture* s)
 {
     int success = 1;
@@ -387,12 +530,32 @@ void close()
 	gWindow = NULL;
 	gRenderer = NULL;
 
+    TTF_CloseFont( gFont );
+	gFont = NULL;
+
+    TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
 
 int main( int argc, char* args[] )
 {
+
+    LTexture gTextHealthTexture;
+    gTextHealthTexture.mHeight = 0;
+    gTextHealthTexture.mWidth = 0;
+
+    LTexture gTextScoreTexture;
+    gTextScoreTexture.mHeight = 0;
+    gTextScoreTexture.mWidth = 0;
+
+    LTexture gTextHealth;
+    gTextHealth.mHeight = 0;
+    gTextHealth.mWidth = 0;
+
+    LTexture gTextScore;
+    gTextScore.mHeight = 0;
+    gTextScore.mWidth = 0;
 
     LTexture gCurrentFoo;
     gCurrentFoo.mHeight = 0;
@@ -441,6 +604,10 @@ int main( int argc, char* args[] )
     LTexture gBackground;
     gBackground.mHeight = 0;
     gBackground.mWidth = 0;
+
+    LTexture gStartButton;
+    gStartButton.mHeight = 0;
+    gStartButton.mWidth = 0;
 
     Mouse mouse;
     mouse.mPosition.x = 0;
@@ -492,6 +659,26 @@ int main( int argc, char* args[] )
 		{
 			printf( "Failed to load left stand enemy media!\n" );
 		}
+		if( !loadMediaStartButton(&gStartButton) )
+		{
+			printf( "Failed to load start button media!\n" );
+		}
+        if( !loadMediaHealthText(&gTextHealthTexture) )
+		{
+			printf( "Failed to load Health text media!\n" );
+		}
+		if( !loadMediaScoreText(&gTextScoreTexture) )
+		{
+			printf( "Failed to load Score text media!\n" );
+		}
+		if( !loadMediaHealth(&gTextHealth, 10) )
+        {
+            printf( "Failed to load score media!\n" );
+        }
+        if( !loadMediaScore(&gTextScore, 0) )
+        {
+            printf( "Failed to load score media!\n" );
+        }
 
 		else
 		{
@@ -534,8 +721,11 @@ int main( int argc, char* args[] )
 
             float x1 = SCREEN_WIDTH / 4;
             float y1 = SCREEN_HEIGHT / 4;
-            float x2 = SCREEN_WIDTH / 2;
-            float y2 = SCREEN_HEIGHT / 2;
+            float x2 = x1+550;
+            float y2 = y1+450;
+
+            int hp = 1;
+            int score = 0;
 
             int mx = 0;
             int my = 0;
@@ -559,16 +749,18 @@ int main( int argc, char* args[] )
                         }
                     }
 
-                    SDL_Rect fillRect = { x1, y1, x2, y2 };
-                    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF );
-                    SDL_RenderFillRect( gRenderer, &fillRect );
+                    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+                    SDL_RenderClear( gRenderer );
+
+                    render(&gStartButton, x1 , y1, NULL, 0, NULL, SDL_FLIP_NONE);
+
                     SDL_RenderPresent( gRenderer );
 
                 }
                 else
                 {
                     speedenemy = ((currentTime - oldTime)/1000.0) * 600.0;
-                    speedfoo = ((currentTime - oldTime)/1000.0) * 500.0;
+                    speedfoo = ((currentTime - oldTime)/1000.0) * 600.0;
                     oldTime = currentTime;
 
                     while( SDL_PollEvent( &e ) != 0 )
@@ -576,59 +768,6 @@ int main( int argc, char* args[] )
                         if( e.type == SDL_QUIT )
                         {
                             quit = 1;
-                        }
-                        switch( e.key.keysym.sym )
-                        {
-                            case SDLK_a:
-
-                                leftpunch = 1;
-                                rightpunch = 0;
-
-                                if( xe >= xf - 80.0 && xe <= xf - 10 && ye == yf)
-                                {
-                                    r = rand() % 2;
-
-                                    switch (r)
-                                    {
-                                        case 0:
-                                        rightenemy = 0;
-                                        leftenemy = 1;
-                                        xe = 1150;
-                                        break;
-
-                                        case 1:
-                                        rightenemy = 1;
-                                        leftenemy = 0;
-                                        xe = 0;
-                                        break;
-                                    }
-                                }
-                            break;
-
-                            case SDLK_d:
-
-                                rightpunch = 1;
-                                leftpunch = 0;
-                                if( xe <= xf + 100.0 && xe >= xf + 10 && ye == yf )
-                                {
-                                    r = rand() % 2;
-
-                                    switch (r)
-                                    {
-                                        case 0:
-                                        rightenemy = 0;
-                                        leftenemy = 1;
-                                        xe = 1150;
-                                        break;
-
-                                        case 1:
-                                        rightenemy = 1;
-                                        leftenemy = 0;
-                                        xe = 0;
-                                        break;
-                                    }
-                                }
-                            break;
                         }
                     }
 
@@ -662,22 +801,74 @@ int main( int argc, char* args[] )
                         leftpunch = 0;
                         rightpunch = 0;
                     }
-                    else if(rightpunch)
+                    else if( keystate[ SDL_SCANCODE_A ] )
                     {
+                        leftpunch = 1;
+                        rightpunch = 0;
+                        if( xe >= xf - 80.0 && xe <= xf - 10 && ye == yf)
+                                {
+                                    r = rand() % 2;
+                                    score += 1;
+                                    if( !loadMediaScore(&gTextScore, score) )
+                                    {
+                                        printf( "Failed to load score media!\n" );
+                                    }
+                                    switch (r)
+                                    {
+                                        case 0:
+                                        rightenemy = 0;
+                                        leftenemy = 1;
+                                        xe = 1150;
+                                        break;
+
+                                        case 1:
+                                        rightenemy = 1;
+                                        leftenemy = 0;
+                                        xe = 0;
+                                        break;
+                                    }
+                                }
+
+
+                        gCurrentFoo = gLeftPunch;
+                        standfoo = 0;
+                        rightfoo = 0;
+                        leftfoo = 0;
+
+                    }
+                    else if( keystate[ SDL_SCANCODE_D ] )
+                    {
+                            rightpunch = 1;
+                            leftpunch = 0;
+                            if( xe <= xf + 100.0 && xe >= xf + 10 && ye == yf )
+                            {
+                                r = rand() % 2;
+                                score += 1;
+                                if( !loadMediaScore(&gTextScore, score) )
+                                {
+                                    printf( "Failed to load score media!\n" );
+                                }
+                                switch (r)
+                                {
+                                    case 0:
+                                    rightenemy = 0;
+                                    leftenemy = 1;
+                                    xe = 1150;
+                                    break;
+
+                                    case 1:
+                                    rightenemy = 1;
+                                    leftenemy = 0;
+                                    xe = 0;
+                                    break;
+                                }
+                            }
+
                         gCurrentFoo = gRightPunch;
                         standfoo = 1;
                         rightfoo = 0;
                         leftfoo = 0;
-                        leftpunch = 0;
-                    }
-                    else if(leftpunch)
-                    {
-                        gCurrentFoo = gLeftPunch;
-                        standfoo = 1;
-                        rightfoo = 0;
-                        leftfoo = 0;
-                        rightpunch = 0;
-                    }
+                }
 
                     else
                     {
@@ -715,7 +906,14 @@ int main( int argc, char* args[] )
                     SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
                     SDL_RenderClear( gRenderer );
 
-                    render(&gBackground, 0 , 0, NULL);
+                    //render(&gBackground, 0 , 0, NULL, 0, NULL, SDL_FLIP_NONE);
+
+                    render(&gTextHealthTexture, (SCREEN_WIDTH - getWidth(&gTextHealthTexture) ) / 20,( SCREEN_HEIGHT - getHeight(&gTextHealthTexture) ) / 15 , NULL, 0, NULL, SDL_FLIP_NONE);
+                    render(&gTextScoreTexture, (SCREEN_WIDTH - getWidth(&gTextScoreTexture) ) / 20,( SCREEN_HEIGHT - getHeight(&gTextScoreTexture) ) / 10 , NULL, 0, NULL, SDL_FLIP_NONE);
+                    render(&gTextHealth, (SCREEN_WIDTH - getWidth(&gTextHealth) ) / 10,( SCREEN_HEIGHT - getHeight(&gTextHealth) ) / 15 , NULL, 0, NULL, SDL_FLIP_NONE);
+                    render(&gTextScore, (SCREEN_WIDTH - getWidth(&gTextScore) ) / 7,( SCREEN_HEIGHT - getHeight(&gTextScore) ) / 10 , NULL, 0, NULL, SDL_FLIP_NONE);
+
+
 
                     if(jumpfoo)
                     {
@@ -732,14 +930,18 @@ int main( int argc, char* args[] )
                             }
                         }
                     }
-                    if(standfoo || rightpunch || leftpunch)
+                    if(standfoo || rightpunch )
                     {
-                        render(&gCurrentFoo, xf, yf, NULL);
+                        render(&gCurrentFoo, xf, yf, NULL, 0, NULL, SDL_FLIP_NONE);
+                    }
+                    if (leftpunch)
+                    {
+                        render(&gCurrentFoo, xf-50, yf, NULL, 0, NULL, SDL_FLIP_NONE);
                     }
                     if(rightfoo)
                     {
                         SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
-                        render(&gCurrentFoo, xf, yf, currentClip );
+                        render(&gCurrentFoo, xf, yf, currentClip, 0, NULL, SDL_FLIP_NONE );
                         ++frame;
                         if( frame / 4 >= WALKING_ANIMATION_FRAMES )
                         {
@@ -750,7 +952,7 @@ int main( int argc, char* args[] )
                     if(leftfoo)
                     {
                         SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
-                        render(&gCurrentFoo, xf, yf, currentClip );
+                        render(&gCurrentFoo, xf, yf, currentClip, 0, NULL, SDL_FLIP_NONE );
                         ++frame;
                         if( frame / 4 >= WALKING_ANIMATION_FRAMES )
                         {
@@ -764,8 +966,8 @@ int main( int argc, char* args[] )
                         if(rightenemy)
                         {
                             gCurrentEnemy = gRightStandEnemy;
-                            render(&gCurrentEnemy, xe , ye, NULL);
-                            if(xf <= xe + 20)
+                            render(&gCurrentEnemy, xe , ye, NULL, 0, NULL, SDL_FLIP_NONE);
+                            if(xf <= xe + 50)
                             {
                                 xf += speedfoo;
                             }
@@ -773,8 +975,8 @@ int main( int argc, char* args[] )
                         if(leftenemy)
                         {
                             gCurrentEnemy = gLeftStandEnemy;
-                            render(&gCurrentEnemy, xe, ye, NULL);
-                            if(xf >= xe - 20)
+                            render(&gCurrentEnemy, xe, ye, NULL, 0, NULL, SDL_FLIP_NONE);
+                            if(xf >= xe - 50)
                             {
                                 xf -= speedfoo;
                             }
@@ -786,7 +988,7 @@ int main( int argc, char* args[] )
                         {
                             gCurrentEnemy = gRightEnemy;
                             SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
-                            render(&gCurrentEnemy, xe, ye, currentClip );
+                            render(&gCurrentEnemy, xe, ye, currentClip, 0, NULL, SDL_FLIP_NONE );
                             ++frame;
                             if( frame / 4 >= WALKING_ANIMATION_FRAMES )
                             {
@@ -798,7 +1000,7 @@ int main( int argc, char* args[] )
                         {
                             gCurrentEnemy = gLeftEnemy;
                             SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
-                            render(&gCurrentEnemy, xe, ye, currentClip );
+                            render(&gCurrentEnemy, xe, ye, currentClip, 0, NULL, SDL_FLIP_NONE );
                             ++frame;
                             if( frame / 4 >= WALKING_ANIMATION_FRAMES )
                             {
@@ -811,8 +1013,8 @@ int main( int argc, char* args[] )
 
                     SDL_RenderPresent( gRenderer );
                     currentTime = SDL_GetTicks();
-
-
+                    float mili = currentTime-oldTime;
+                    printf("%f\n", mili);
                 }
 			}
 		}

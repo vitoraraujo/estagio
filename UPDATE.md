@@ -1,3 +1,29 @@
+# 02/06
+
+## O que eu ia fazer durante a semana passada?
+* TTF
+* Sistema de dano
+* Consertar o modo punch do jogoc.cpp
+* Melhorar a distancia do soco esquerdo
+* Consertar o botão da tela de transicao inicial
+
+## O que eu realmente fiz durante a semana passada?
+* Consertei a distancia do soco esquerdo, agora o boneco não se move para tras quando soca pra esquerda
+* Consertei o botão da tela de transicao inicial
+* Consertar o modo punch do jogoc.cpp, agora ele volta pro stand quando não está socando
+* Pesquisei ainda mais como colocar o SDL2_TTF na máquina e finalmente achei
+* Passei o ttf para C, para usar no jogo (ttf.cpp)
+* Implementei no jogoc.cpp
+* Pesquisei como usar o ttf para colocar escrever variaveis como vida e score, já que é obrigatório o uso de const char* no tff
+* Coloquei contador de vida e score, e score incrementa 1 a cada soco acertado
+
+## O que eu vou fazer durante a próxima semana?
+
+
+## Quantas horas de trabalho?
+* 5 horas
+
+=======
 # 27/05
 
 ## O que eu ia fazer durante a semana passada?
@@ -5,7 +31,6 @@
 * Randomizar o lado que o inimigo nasce
 * TTF
 * Sistema de dano
-
 
 ## O que eu realmente fiz durante a semana passada?
 * Procurei como instalar ttf na máquina e como utiliza-lo (ainda nao consegui)
