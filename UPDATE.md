@@ -16,12 +16,14 @@
 * Implementei no jogoc.cpp
 * Pesquisei como usar o ttf para colocar escrever variaveis como vida e score, já que é obrigatório o uso de const char* no tff
 * Coloquei contador de vida e score, e score incrementa 1 a cada soco acertado
+* Fiz o TUTORIAL5.md sobre SDL_ttf, junto com um código de apoio
 
 ## O que eu vou fazer durante a próxima semana?
-
+* Tutorial ttf
+* Sistema de dano
 
 ## Quantas horas de trabalho?
-* 5 horas
+* 6 horas e meia
 
 =======
 # 27/05

@@ -79,7 +79,7 @@ int loadFromRenderedText(LTexture* s, const char* textureText, SDL_Color textCol
 	return s->mTexture != NULL;
 }
 
-void setColor(LTexture* s, Uint8 red, Uint8 green, Uint8 blue )
+/*void setColor(LTexture* s, Uint8 red, Uint8 green, Uint8 blue )
 {
 	SDL_SetTextureColorMod( s->mTexture, red, green, blue );
 }
@@ -92,7 +92,7 @@ void setBlendMode(LTexture* s, SDL_BlendMode blending )
 void setAlpha(LTexture* s, Uint8 alpha )
 {
 	SDL_SetTextureAlphaMod( s->mTexture, alpha );
-}
+}*/
 
 void render(LTexture* s, int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip )
 {
@@ -133,7 +133,7 @@ int init()
 			printf( "Warning: Linear texture filtering not enabled!" );
 		}
 
-		gWindow = SDL_CreateWindow( "SDL GAME", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "SDL TTF", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -183,7 +183,7 @@ int loadMediaText(LTexture* s)
 	else
 	{
 		SDL_Color textColor = { 0, 0, 0 };
-		if( !(s->imgPath = loadFromRenderedText(s, "Argolo", textColor ) ) )
+		if( !(s->imgPath = loadFromRenderedText(s, "Hello World!", textColor ) ) )
 		{
 			printf( "Failed to render text texture!\n" );
 			success = 0;
@@ -242,7 +242,7 @@ int main( int argc, char* args[] )
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 
-				render(&gTextTexture, (SCREEN_WIDTH - getWidth(&gTextTexture) ) / 20,( SCREEN_HEIGHT - getHeight(&gTextTexture) ) / 15 , NULL, 0, NULL, SDL_FLIP_NONE);
+				render(&gTextTexture, (SCREEN_WIDTH - getWidth(&gTextTexture) ) / 2,( SCREEN_HEIGHT - getHeight(&gTextTexture) ) / 2 , NULL, 0, NULL, SDL_FLIP_NONE);
 
 				SDL_RenderPresent( gRenderer );
 			}

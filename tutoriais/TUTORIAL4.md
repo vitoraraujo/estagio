@@ -86,7 +86,7 @@ LTexture::~LTexture()
 }
 ```
 
-Declare o método `loadFromFile()`, que carrega a imagem passada, ignorando o fundo. Primeiramente, deloque qualquer textura que já estivesse antes, para prevenir conflitos, declare a textura que será passada para o atributo de classe que deve contê-la, depois, declare o ponteiro do tipo `SDL_Surface` para carregar a imagem passada ao método:
+Declare o método `loadFromFile()`, que carrega a imagem passada, ignorando o fundo desta imagem. Primeiramente, deloque qualquer textura que já estivesse antes, para prevenir conflitos, declare o ponteiro do tipo `SDL_Texture` que conterá textura que será passada para o atributo de classe que deve contê-la, depois, declare o ponteiro do tipo `SDL_Surface` para carregar a imagem passada ao método:
 
 ```
 bool LTexture::loadFromFile( const char* path )
@@ -98,7 +98,7 @@ bool LTexture::loadFromFile( const char* path )
 	SDL_Surface* loadedSurface = IMG_Load( path );
 	if( loadedSurface == NULL )
 	{
-		printf( "Não pode carregar imagem %s! SDL_image Error: %s\n", path, IMG_GetError() );
+		printf( "Não pôde carregar imagem %s! SDL_image Error: %s\n", path, IMG_GetError() );
 	}
 ```
 
@@ -329,7 +329,7 @@ Por fim, finalize o programa com a função `close()`:
 Para compilar e executar, basta escrever os seguintes comandos no terminal:
 
 ```
-$ gcc colorkey.cpp -o colorkey -lSDL2 -lSDL2_image
+$ g++ colorkey.cpp -o colorkey -lSDL2 -lSDL2_image
 $ ./colorkey
 ```
 
