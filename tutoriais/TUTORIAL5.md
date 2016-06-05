@@ -323,7 +323,7 @@ Por fim, finalize o programa com a função `close()`:
 }
 ```
 
-Para compilar e executar, basta escrever os seguintes comandos no terminal:]
+Para compilar e executar, basta escrever os seguintes comandos no terminal:
 
 ```
 $ gcc ttf.cpp -o ttf -lSDL2 -lSDL2_image -lSDL2_ttf
