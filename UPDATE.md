@@ -1,3 +1,25 @@
+# 9/06
+
+## O que eu ia fazer durante a semana passada?
+
+## O que eu realmente fiz durante a semana passada?
+* Passei o sistema de dano pro jogoc.cpp. Acabei esquecendo de dar git add no dano.cpp na semana passada
+* Fiz imagens para o soco dos inimigos
+* Pensei em um jeito de fazer o inimigo socar quando estiver em contato e em um jeito de parecer um pouco mais realista (o soco estava durando 1 frame)
+* Soco do inimigo pronto
+* Põe titulo no início do jogo
+* Coloquei o score no início do jogo
+* Procurei por bugs na mecanica do jogo
+
+## O que eu vou fazer durante a próxima semana?
+
+
+## Quantas horas de trabalho?
+* 2 hora e meia
+
+09:45
+
+=======
 # 02/06
 
 ## O que eu ia fazer durante a semana passada?
@@ -17,13 +39,15 @@
 * Pesquisei como usar o ttf para colocar escrever variaveis como vida e score, já que é obrigatório o uso de const char* no tff
 * Coloquei contador de vida e score, e score incrementa 1 a cada soco acertado
 * Fiz o TUTORIAL5.md sobre SDL_ttf, junto com um código de apoio
+* Pensei em como contar o tempo quando o inimigo se encontra com o personagem, para fazer o sistema de dano
+* Sistema de dano pronto (dano.cpp)
+* Procurei por bugs e achei que as vezes, depois de dar restart no jogo, a imagem do lazy.ttf não consegue ser aberta
 
 ## O que eu vou fazer durante a próxima semana?
-* Tutorial ttf
-* Sistema de dano
+
 
 ## Quantas horas de trabalho?
-* 6 horas e meia
+* 8 horas e meia
 
 =======
 # 27/05
