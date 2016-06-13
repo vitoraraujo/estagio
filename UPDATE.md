@@ -7,17 +7,20 @@
 * Fiz imagens para o soco dos inimigos
 * Pensei em um jeito de fazer o inimigo socar quando estiver em contato e em um jeito de parecer um pouco mais realista (o soco estava durando 1 frame)
 * Soco do inimigo pronto
-* Põe titulo no início do jogo
+* Põe título no início do jogo
 * Coloquei o score no início do jogo
-* Procurei por bugs na mecanica do jogo
+* Procurei por bugs na mecânica do jogo
+* Achei um bug quando o boneco inimigo vem do lado esquerdo: ele continua andando, mesmo depois da colisão com o personagem
+* Conserta o bug
+* Criei jogoc2.cpp para por 2 inimigos ao inves de um 
+* Tenta consertar o bug do inicio do jogo, que o boneco inimigo não nasce no lugar certo, porém ainda falta alguma coisa
+* 2 inimigos prontos no jogoc2.cpp, passarei para o jogoc.cpp quando for a PUC
 
 ## O que eu vou fazer durante a próxima semana?
 
 
 ## Quantas horas de trabalho?
-* 2 hora e meia
-
-09:45
+* 5 horas e meia
 
 =======
 # 02/06
