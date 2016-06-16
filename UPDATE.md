@@ -3,7 +3,7 @@
 ## O que eu ia fazer durante a semana passada?
 
 ## O que eu realmente fiz durante a semana passada?
-* Procurei por sites com game sprites open source
+* Procurei por sites com game sprites open source e achei um de zoombie que pode ser implementado posteriormente
 * Procurei sobre o SDL_mixer para por som no jogo e tentei instalar
 * Procurei musica para por no jogo
 * SDL_mixer instalado na máquina (libsdl2-mixer-dev)
@@ -14,12 +14,13 @@
 * Passa jogoc.cpp para jogo1.cpp e jogoc2.cpp para jogo2.cpp
 * Tentei consertar um bug no código jogo2.cpp, em que o inimigo 2 não aparece entre os socos dele, mas não funcionou
 * Coloca som no botão ao clicar no botão inicial no jogo1 e jogo2
+* Fiz tutorial6 com som e imagem 
 
 ## O que eu vou fazer durante a próxima semana?
 * Achar bonecos melhores na internet
 
 ## Quantas horas de trabalho?
-* 3  horas
+* 4 horas
 
 =======
 

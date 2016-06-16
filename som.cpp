@@ -3,8 +3,8 @@
 #include <SDL2/SDL_mixer.h>
 #include <stdio.h>
 
-const int SCREEN_WIDTH = 1200;
-const int SCREEN_HEIGHT = 800;
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
 
 struct LTexture{
     SDL_Texture* mTexture = NULL;
@@ -19,6 +19,11 @@ SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 
 Mix_Music *gMusic = NULL;
+
+Mix_Chunk *gScratch = NULL;
+Mix_Chunk *gHigh = NULL;
+Mix_Chunk *gMedium = NULL;
+Mix_Chunk *gLow = NULL;
 
 int loadFromFile(LTexture* s, const char* path )
 {
@@ -147,7 +152,7 @@ int loadMediaTela(LTexture* s)
 {
 	int success = 1;
 
-	if( !(s->imgPath = loadFromFile( s, "imagens/background.png" )) )
+	if( !(s->imgPath = loadFromFile( s, "imagens/somtela.png" )) )
 	{
 		printf( "Falha para carregar imagem da tela!\n" );
 		success = 0;
@@ -155,16 +160,44 @@ int loadMediaTela(LTexture* s)
 	return success;
 }
 
-int loadMediaMusic()
+int loadMediaSound()
 {
     int success = 1;
 
-    gMusic = Mix_LoadMUS( "sons/backsound.wav" );
+    gMusic = Mix_LoadMUS( "sons/backsong.wav" );
 	if( gMusic == NULL )
 	{
 		printf( "Falha ao carregar a música! SDL_mixer Error: %s\n", Mix_GetError() );
 		success = 0;
 	}
+	gScratch = Mix_LoadWAV( "sons/scratch.wav" );
+	if( gScratch == NULL )
+	{
+		printf( "Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = 0;
+	}
+
+	gHigh = Mix_LoadWAV( "sons/high.wav" );
+	if( gHigh == NULL )
+	{
+		printf( "Failed to load high sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = 0;
+	}
+
+	gMedium = Mix_LoadWAV( "sons/medium.wav" );
+	if( gMedium == NULL )
+	{
+		printf( "Failed to load medium sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = 0;
+	}
+
+	gLow = Mix_LoadWAV( "sons/low.wav" );
+	if( gLow == NULL )
+	{
+		printf( "Failed to load low sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = 0;
+	}
+
     return success;
 }
 
@@ -172,6 +205,15 @@ void close()
 {
     Mix_FreeMusic( gMusic );
 	gMusic = NULL;
+
+    Mix_FreeChunk( gScratch );
+	Mix_FreeChunk( gHigh );
+	Mix_FreeChunk( gMedium );
+	Mix_FreeChunk( gLow );
+	gScratch = NULL;
+	gHigh = NULL;
+	gMedium = NULL;
+	gLow = NULL;
 
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );
@@ -199,7 +241,7 @@ int main()
 		{
 			printf( "Falha ao carregar a tela!\n" );
 		}
-		if (!loadMediaMusic())
+		if (!loadMediaSound())
 		{
             printf("Falha ao carregar a musica!\n");
 		}
@@ -217,20 +259,57 @@ int main()
                     {
                         quit = 1;
                     }
-                    else
+                    else if( e.type == SDL_KEYDOWN )
 					{
-						if( Mix_PlayingMusic() == 0 )
-                        {
-                            Mix_PlayMusic( gMusic, -1 );
-                        }
-                        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-                        SDL_RenderClear( gRenderer );
+						switch( e.key.keysym.sym )
+						{
+							case SDLK_1:
+							Mix_PlayChannel( -1, gHigh, 0 );
+							break;
 
-                        render(&gScreen, 0, 0, NULL, 0, NULL, SDL_FLIP_NONE);
+							case SDLK_2:
+							Mix_PlayChannel( -1, gMedium, 0 );
+							break;
 
-                        SDL_RenderPresent( gRenderer );
-                    }
-                }
+							case SDLK_3:
+							Mix_PlayChannel( -1, gLow, 0 );
+							break;
+
+							case SDLK_4:
+							Mix_PlayChannel( -1, gScratch, 0 );
+							break;
+
+							case SDLK_9:
+							if( Mix_PlayingMusic() == 0 )
+							{
+								Mix_PlayMusic( gMusic, -1 );
+							}
+							else
+							{
+								if( Mix_PausedMusic() == 1 )
+								{
+									Mix_ResumeMusic();
+								}
+								else
+								{
+									Mix_PauseMusic();
+								}
+							}
+							break;
+
+							case SDLK_0:
+							Mix_HaltMusic();
+							break;
+						}
+					}
+				}
+
+                SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+                SDL_RenderClear( gRenderer );
+
+                render(&gScreen, 0, 0, NULL, 0, NULL, SDL_FLIP_NONE);
+
+                SDL_RenderPresent( gRenderer );
             }
         }
     }
@@ -239,3 +318,4 @@ int main()
 
     return 0;
 }
+
