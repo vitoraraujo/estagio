@@ -3,6 +3,29 @@
 ## O que eu ia fazer durante a semana passada?
 
 ## O que eu realmente fiz durante a semana passada?
+* Procurei por sites com game sprites open source
+* Procurei sobre o SDL_mixer para por som no jogo e tentei instalar
+* Procurei musica para por no jogo
+* SDL_mixer instalado na máquina (libsdl2-mixer-dev)
+* Comecei um código com o sistema de som e imagem em C (som.cpp).
+* Converti os tutoriais de SDL_mixer para C, adapatando a biblioteca-a e estudando
+* som.cpp pronto
+* Põe som no jogoc.cpp e no jogoc2.cpp
+* Passa jogoc.cpp para jogo1.cpp e jogoc2.cpp para jogo2.cpp
+
+
+## O que eu vou fazer durante a próxima semana?
+
+## Quantas horas de trabalho?
+* 2 horas e 30 minutos
+
+=======
+
+# 9/06
+
+## O que eu ia fazer durante a semana passada?
+
+## O que eu realmente fiz durante a semana passada?
 * Passei o sistema de dano pro jogoc.cpp. Acabei esquecendo de dar git add no dano.cpp na semana passada
 * Fiz imagens para o soco dos inimigos
 * Pensei em um jeito de fazer o inimigo socar quando estiver em contato e em um jeito de parecer um pouco mais realista (o soco estava durando 1 frame)

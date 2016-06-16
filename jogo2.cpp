@@ -1,8 +1,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include <stdio.h>
-#include <cmath>
 
 const int SCREEN_WIDTH = 1200;
 const int SCREEN_HEIGHT = 800;
@@ -28,6 +28,8 @@ SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 
 TTF_Font *gFont = NULL;
+
+Mix_Music *gMusic = NULL;
 
 SDL_Rect gSpriteClipsRight[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gSpriteClipsLeft[ WALKING_ANIMATION_FRAMES ];
@@ -196,6 +198,12 @@ int init()
 					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
 					success = 0;
 				}
+
+				if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+				{
+					printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+					success = 0;
+				}
 			}
 		}
 	}
@@ -321,6 +329,18 @@ int loadMediaTitle(LTexture* s)
 	return success;
 }
 
+int loadMediaMusic()
+{
+    int success = 1;
+
+    gMusic = Mix_LoadMUS( "sons/backsound.wav" );
+	if( gMusic == NULL )
+	{
+		printf( "Falha ao carregar a música! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = 0;
+	}
+    return success;
+}
 
 int loadMediaLeftFoo(LTexture* s)
 {
@@ -706,6 +726,10 @@ int main( int argc, char* args[] )
 	}
 	else
 	{
+        if (!loadMediaMusic())
+		{
+            printf("Falha ao carregar a musica!\n");
+		}
 		if( !loadMediaRightFoo(&gRightFoo) )
 		{
 			printf( "Failed to load right foo media!\n" );
@@ -872,6 +896,11 @@ int main( int argc, char* args[] )
 			{
                 if( startGame == 0 )
                 {
+                    if( Mix_PlayingMusic() == 1 )
+                    {
+                        Mix_PauseMusic();
+                    }
+
                     while( SDL_PollEvent( &e ) != 0 )
                     {
                         if( e.type == SDL_QUIT )
@@ -927,6 +956,15 @@ int main( int argc, char* args[] )
                 }
                 else
                 {
+                    if( Mix_PlayingMusic() == 0 && startGame == 1)
+                    {
+                        Mix_PlayMusic( gMusic, -1 );
+                    }
+                    if( Mix_PausedMusic() == 1 )
+                    {
+                        Mix_ResumeMusic();
+                    }
+
                     speedenemy = ((currentTime - oldTime)/1000.0) * 600.0;
                     speedfoo = ((currentTime - oldTime)/1000.0) * 600.0;
                     oldTime = currentTime;
