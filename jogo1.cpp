@@ -30,6 +30,7 @@ SDL_Renderer* gRenderer = NULL;
 TTF_Font *gFont = NULL;
 
 Mix_Music *gMusic = NULL;
+Mix_Chunk *gButtonSound = NULL;
 
 SDL_Rect gSpriteClipsRight[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gSpriteClipsLeft[ WALKING_ANIMATION_FRAMES ];
@@ -211,17 +212,24 @@ int init()
 	return success;
 }
 
-int loadMediaMusic()
+int loadMediaSound()
 {
     int success = 1;
 
-    gMusic = Mix_LoadMUS( "sons/backsound.wav" );
+    gMusic = Mix_LoadMUS( "sons/backsong.wav" );
 	if( gMusic == NULL )
 	{
 		printf( "Falha ao carregar a música! SDL_mixer Error: %s\n", Mix_GetError() );
 		success = 0;
 	}
-    return success;
+
+    gButtonSound= Mix_LoadWAV( "sons/buttonsound.wav" );
+	if( gButtonSound == NULL )
+	{
+		printf( "Failed to load button sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = 0;
+	}
+	return success;
 }
 
 int loadMediaHealthText(LTexture* s)
@@ -591,6 +599,11 @@ int loadMediaBackground(LTexture* s)
 
 void close()
 {
+	Mix_FreeMusic( gMusic );
+	gMusic = NULL;
+	Mix_FreeChunk( gButtonSound );
+	gButtonSound = NULL;
+
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
@@ -599,6 +612,7 @@ void close()
     TTF_CloseFont( gFont );
 	gFont = NULL;
 
+    Mix_Quit();
     TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
@@ -698,7 +712,7 @@ int main( int argc, char* args[] )
 	}
 	else
 	{
-		if (!loadMediaMusic())
+		if (!loadMediaSound())
 		{
             printf("Falha ao carregar a musica!\n");
 		}
@@ -840,7 +854,7 @@ int main( int argc, char* args[] )
                 {
                     if( Mix_PlayingMusic() == 1 )
                     {
-                        Mix_PauseMusic();
+                        Mix_HaltMusic();
                     }
 
                     while( SDL_PollEvent( &e ) != 0 )
@@ -854,9 +868,11 @@ int main( int argc, char* args[] )
                             SDL_GetMouseState(&mx, &my);
                             mouse.mPosition.x = mx;
                             mouse.mPosition.y = my;
-                            startGame = clickButton(&mouse, x1, y1, x2, y2);
-                            if(startGame == 1)
+                            if(clickButton(&mouse, x1, y1, x2, y2))
                             {
+                                Mix_PlayChannel( -1, gButtonSound, 0 );
+
+                                startGame = 1;
                                 xf = 600;
                                 yf = 450;
                                 xe = 0.0;
@@ -864,6 +880,9 @@ int main( int argc, char* args[] )
 
                                 hp = 10;
                                 score = 0;
+
+                                rightenemy = 1;
+                                leftenemy = 0;
                             }
                         }
                     }
@@ -883,8 +902,6 @@ int main( int argc, char* args[] )
                     rightenemy = 1;
                     leftenemy = 0;
 
-
-
                     if( !loadMediaHealth(&gTextHealth, hp) )
                     {
                         printf( "Failed to load health media!\n" );
@@ -896,13 +913,10 @@ int main( int argc, char* args[] )
                 }
                 else
                 {
+
                     if( Mix_PlayingMusic() == 0 && startGame == 1)
                     {
                         Mix_PlayMusic( gMusic, -1 );
-                    }
-                    if( Mix_PausedMusic() == 1 )
-                    {
-                        Mix_ResumeMusic();
                     }
 
                     speedenemy = ((currentTime - oldTime)/1000.0) * 720.0;
@@ -1203,3 +1217,4 @@ int main( int argc, char* args[] )
 
 	return 0;
 }
+

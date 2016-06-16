@@ -12,12 +12,14 @@
 * som.cpp pronto
 * Põe som no jogoc.cpp e no jogoc2.cpp
 * Passa jogoc.cpp para jogo1.cpp e jogoc2.cpp para jogo2.cpp
-
+* Tentei consertar um bug no código jogo2.cpp, em que o inimigo 2 não aparece entre os socos dele, mas não funcionou
+* Coloca som no botão ao clicar no botão inicial no jogo1 e jogo2
 
 ## O que eu vou fazer durante a próxima semana?
+* Achar bonecos melhores na internet
 
 ## Quantas horas de trabalho?
-* 2 horas e 30 minutos
+* 3  horas
 
 =======
 

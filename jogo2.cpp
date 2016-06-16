@@ -30,6 +30,7 @@ SDL_Renderer* gRenderer = NULL;
 TTF_Font *gFont = NULL;
 
 Mix_Music *gMusic = NULL;
+Mix_Chunk *gButtonSound = NULL;
 
 SDL_Rect gSpriteClipsRight[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gSpriteClipsLeft[ WALKING_ANIMATION_FRAMES ];
@@ -329,14 +330,21 @@ int loadMediaTitle(LTexture* s)
 	return success;
 }
 
-int loadMediaMusic()
+int loadMediaSound()
 {
     int success = 1;
 
-    gMusic = Mix_LoadMUS( "sons/backsound.wav" );
+    gMusic = Mix_LoadMUS( "sons/backsong.wav" );
 	if( gMusic == NULL )
 	{
 		printf( "Falha ao carregar a música! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = 0;
+	}
+
+	gButtonSound= Mix_LoadWAV( "sons/buttonsound.wav" );
+	if( gButtonSound == NULL )
+	{
+		printf( "Failed to load button sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
 		success = 0;
 	}
     return success;
@@ -591,6 +599,11 @@ int loadMediaBackground(LTexture* s)
 
 void close()
 {
+	Mix_FreeMusic( gMusic );
+	gMusic = NULL;
+	Mix_FreeChunk( gButtonSound );
+	gButtonSound = NULL;
+
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
@@ -599,6 +612,7 @@ void close()
     TTF_CloseFont( gFont );
 	gFont = NULL;
 
+    Mix_Quit();
     TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
@@ -726,7 +740,7 @@ int main( int argc, char* args[] )
 	}
 	else
 	{
-        if (!loadMediaMusic())
+        if (!loadMediaSound())
 		{
             printf("Falha ao carregar a musica!\n");
 		}
@@ -898,7 +912,7 @@ int main( int argc, char* args[] )
                 {
                     if( Mix_PlayingMusic() == 1 )
                     {
-                        Mix_PauseMusic();
+                        Mix_HaltMusic();
                     }
 
                     while( SDL_PollEvent( &e ) != 0 )
@@ -914,6 +928,8 @@ int main( int argc, char* args[] )
                             mouse.mPosition.y = my;
                             if(clickButton(&mouse, x1, y1, x2, y2))
                             {
+                                Mix_PlayChannel( -1, gButtonSound, 0 );
+
                                 startGame = 1;
                                 xf = 600;
                                 yf = 450;
@@ -960,16 +976,13 @@ int main( int argc, char* args[] )
                     {
                         Mix_PlayMusic( gMusic, -1 );
                     }
-                    if( Mix_PausedMusic() == 1 )
-                    {
-                        Mix_ResumeMusic();
-                    }
+
 
                     speedenemy = ((currentTime - oldTime)/1000.0) * 600.0;
                     speedfoo = ((currentTime - oldTime)/1000.0) * 600.0;
                     oldTime = currentTime;
 
-                    while( SDL_PollEvent( &e ) != 0 )
+                    while( SDL_PollEvent( &e ) != 0 && startGame == 1)
                     {
                         if( e.type == SDL_QUIT )
                         {
@@ -1355,7 +1368,6 @@ int main( int argc, char* args[] )
                             }
                         }
                     }
-
                     else
                     {
                         enemyStandTime2 = 0;

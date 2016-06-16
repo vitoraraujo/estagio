@@ -170,7 +170,8 @@ int loadMediaMusic()
 
 void close()
 {
-
+    Mix_FreeMusic( gMusic );
+	gMusic = NULL;
 
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );
