@@ -573,11 +573,23 @@ int loadMediaRightPunchEnemy(LTexture* s)
     return success;
 }
 
-int loadMediaStartButton(LTexture* s)
+int loadMediaButton1(LTexture* s)
 {
     int success = 1;
 
-    if(!(s->imgPath = loadFromFile(s, "imagens/start.png")) )
+    if(!(s->imgPath = loadFromFile(s, "imagens/button1.png")) )
+    {
+        printf( "Failed to load background texture!\n" );
+        success = 0;
+    }
+    return success;
+}
+
+int loadMediaButton2(LTexture* s)
+{
+    int success = 1;
+
+    if(!(s->imgPath = loadFromFile(s, "imagens/button2.png")) )
     {
         printf( "Failed to load background texture!\n" );
         success = 0;
@@ -738,9 +750,13 @@ int main( int argc, char* args[] )
     gBackground.mHeight = 0;
     gBackground.mWidth = 0;
 
-    LTexture gStartButton;
-    gStartButton.mHeight = 0;
-    gStartButton.mWidth = 0;
+    LTexture gDifButton1;
+    gDifButton1.mHeight = 0;
+    gDifButton1.mWidth = 0;
+
+    LTexture gDifButton2;
+    gDifButton2.mHeight = 0;
+    gDifButton2.mWidth = 0;
 
     LTexture gMedikit;
     gMedikit.mHeight = 0;
@@ -832,7 +848,11 @@ int main( int argc, char* args[] )
 		{
 			printf( "Failed to load right stand enemy2 media!\n" );
 		}
-		if( !loadMediaStartButton(&gStartButton) )
+		if( !loadMediaButton1(&gDifButton1) )
+		{
+			printf( "Failed to load start button media!\n" );
+		}
+		if( !loadMediaButton2(&gDifButton2) )
 		{
 			printf( "Failed to load start button media!\n" );
 		}
@@ -872,6 +892,8 @@ int main( int argc, char* args[] )
             int medikittempo = 0;
 
             int startGame = 0;
+
+            int dificuldade = 0;
 
             int r = 0;
 
@@ -920,10 +942,16 @@ int main( int argc, char* args[] )
 
             currentTime = SDL_GetTicks();
 
-            float x1 = SCREEN_WIDTH / 3.75;
-            float y1 = SCREEN_HEIGHT / 3.75;
-            float x2 = x1+550;
-            float y2 = y1+450;
+            float button1x1 = SCREEN_WIDTH / 3.75;
+            float button1y1 = SCREEN_HEIGHT / 3.75;
+            float button1x2 = button1x1 + 550;
+            float button1y2 = button1y1 + 200;
+
+            float button2x1 = SCREEN_WIDTH / 3.75;
+            float button2y1 = (SCREEN_HEIGHT / 3.75) + 250.0;
+            float button2x2 = button2x1 + 550;
+            float button2y2 = button2y1 + 200;
+
 
             int hp = 10;
             int score = 0;
@@ -951,7 +979,7 @@ int main( int argc, char* args[] )
                             SDL_GetMouseState(&mx, &my);
                             mouse.mPosition.x = mx;
                             mouse.mPosition.y = my;
-                            if(clickButton(&mouse, x1, y1, x2, y2))
+                            if(clickButton(&mouse, button1x1, button1y1, button1x2, button1y2))
                             {
                                 Mix_PlayChannel( -1, gButtonSound, 0 );
 
@@ -970,6 +998,30 @@ int main( int argc, char* args[] )
                                 leftenemy1 = 0;
                                 rightenemy2 = 0;
                                 leftenemy2 = 1;
+
+                                dificuldade = 1;
+                            }
+                            else if(clickButton(&mouse, button2x1, button2y1, button2x2, button2y2))
+                            {
+                                Mix_PlayChannel( -1, gButtonSound, 0 );
+
+                                startGame = 1;
+                                xf = 600;
+                                yf = 450;
+                                xe1 = 0.0;
+                                ye1 = 450;
+                                xe2 = 1150.0;
+                                ye2 = 450;
+
+                                hp = 10;
+                                score = 0;
+
+                                rightenemy1 = 1;
+                                leftenemy1 = 0;
+                                rightenemy2 = 0;
+                                leftenemy2 = 1;
+
+                                dificuldade = 2;
                             }
                         }
                     }
@@ -979,7 +1031,8 @@ int main( int argc, char* args[] )
 
                     render(&gTextTitle, (SCREEN_WIDTH - getWidth(&gTextTitle) ) / 2,( SCREEN_HEIGHT - getHeight(&gTextTitle) ) / 10 , NULL, 0, NULL, SDL_FLIP_NONE);
 
-                    render(&gStartButton, x1 , y1, NULL, 0, NULL, SDL_FLIP_NONE);
+                    render(&gDifButton1, button1x1 , button1y1, NULL, 0, NULL, SDL_FLIP_NONE);
+                    render(&gDifButton2, button2x1 , button2y1, NULL, 0, NULL, SDL_FLIP_NONE);
 
                     render(&gTextScoreTexture, (SCREEN_WIDTH - getWidth(&gTextScoreTexture) ) / 2.2 ,( SCREEN_HEIGHT - getHeight(&gTextScoreTexture) ) / 1.05 , NULL, 0, NULL, SDL_FLIP_NONE);
                     render(&gTextScore, (SCREEN_WIDTH - getWidth(&gTextScore) ) / 1.8,( SCREEN_HEIGHT - getHeight(&gTextScore) ) / 1.05, NULL, 0, NULL, SDL_FLIP_NONE);
@@ -1362,85 +1415,87 @@ int main( int argc, char* args[] )
                             xe1 -= speedenemy;
                         }
                     }
-                    if(checkCollision(xf , xe2, yf, ye2))
+                    if(dificuldade == 2)
                     {
-                        enemyStandTime2 +=1;
-                        if(enemyStandTime2 == 10 )
+                        if(checkCollision(xf , xe2, yf, ye2))
+                        {
+                            enemyStandTime2 +=1;
+                            if(enemyStandTime2 == 10 )
+                            {
+                                enemyStandTime2 = 0;
+                                hp -= 1;
+                            }
+                            if(enemyStandTime2 > 6 )
+                            {
+                                if(leftenemy2)
+                                {
+                                    gCurrentEnemy2 = gLeftPunchenemy2;
+                                    render(&gCurrentEnemy2, xe2-50, ye2, NULL, 0, NULL, SDL_FLIP_NONE);
+                                }
+
+                                if(rightenemy2)
+                                {
+                                    gCurrentEnemy2 = gRightPunchenemy2;
+                                    render(&gCurrentEnemy2, xe2, ye2, NULL, 0, NULL, SDL_FLIP_NONE);
+                                }
+
+                                if( !loadMediaHealth(&gTextHealth, hp) )
+                                {
+                                    printf( "Failed to load health media!\n" );
+                                }
+                                if( hp == 0)
+                                {
+                                    startGame = 0;
+                                }
+                            }
+                            else if(rightenemy2)
+                            {
+                                gCurrentEnemy2 = gRightStandEnemy2;
+                                render(&gCurrentEnemy2, xe2 , ye2, NULL, 0, NULL, SDL_FLIP_NONE);
+                                if(xf <= xe2 + 50)
+                                {
+                                    xf += speedfoo;
+                                }
+                            }
+                            else if(leftenemy2)
+                            {
+                                gCurrentEnemy2 = gLeftStandEnemy2;
+                                render(&gCurrentEnemy2, xe2, ye2, NULL, 0, NULL, SDL_FLIP_NONE);
+                                if(xf >= xe2 - 50)
+                                {
+                                    xf -= speedfoo;
+                                }
+                            }
+                        }
+                        else
                         {
                             enemyStandTime2 = 0;
-                            hp -= 1;
-                        }
-                        if(enemyStandTime2 > 6 )
-                        {
-                            if(leftenemy2)
-                            {
-                                gCurrentEnemy2 = gLeftPunchenemy2;
-                                render(&gCurrentEnemy2, xe2-50, ye2, NULL, 0, NULL, SDL_FLIP_NONE);
-                            }
-
                             if(rightenemy2)
                             {
-                                gCurrentEnemy2 = gRightPunchenemy2;
-                                render(&gCurrentEnemy2, xe2, ye2, NULL, 0, NULL, SDL_FLIP_NONE);
+                                gCurrentEnemy2 = gRightEnemy2;
+                                SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
+                                render(&gCurrentEnemy2, xe2, ye2, currentClip, 0, NULL, SDL_FLIP_NONE );
+                                ++frame;
+                                if( frame / 4 >= WALKING_ANIMATION_FRAMES )
+                                {
+                                    frame = 0;
+                                }
+                                xe2 += speedenemy;
                             }
-
-                            if( !loadMediaHealth(&gTextHealth, hp) )
+                            if(leftenemy2)
                             {
-                                printf( "Failed to load health media!\n" );
-                            }
-                            if( hp == 0)
-                            {
-                                startGame = 0;
-                            }
-                        }
-                        else if(rightenemy2)
-                        {
-                            gCurrentEnemy2 = gRightStandEnemy2;
-                            render(&gCurrentEnemy2, xe2 , ye2, NULL, 0, NULL, SDL_FLIP_NONE);
-                            if(xf <= xe2 + 50)
-                            {
-                                xf += speedfoo;
-                            }
-                        }
-                        else if(leftenemy2)
-                        {
-                            gCurrentEnemy2 = gLeftStandEnemy2;
-                            render(&gCurrentEnemy2, xe2, ye2, NULL, 0, NULL, SDL_FLIP_NONE);
-                            if(xf >= xe2 - 50)
-                            {
-                                xf -= speedfoo;
+                                gCurrentEnemy2 = gLeftEnemy2;
+                                SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
+                                render(&gCurrentEnemy2, xe2, ye2, currentClip, 0, NULL, SDL_FLIP_NONE );
+                                ++frame;
+                                if( frame / 4 >= WALKING_ANIMATION_FRAMES )
+                                {
+                                    frame = 0;
+                                }
+                                xe2 -= speedenemy;
                             }
                         }
                     }
-                    else
-                    {
-                        enemyStandTime2 = 0;
-                        if(rightenemy2)
-                        {
-                            gCurrentEnemy2 = gRightEnemy2;
-                            SDL_Rect* currentClip = &gSpriteClipsRight[ frame / 4 ];
-                            render(&gCurrentEnemy2, xe2, ye2, currentClip, 0, NULL, SDL_FLIP_NONE );
-                            ++frame;
-                            if( frame / 4 >= WALKING_ANIMATION_FRAMES )
-                            {
-                                frame = 0;
-                            }
-                            xe2 += speedenemy;
-                        }
-                        if(leftenemy2)
-                        {
-                            gCurrentEnemy2 = gLeftEnemy2;
-                            SDL_Rect* currentClip = &gSpriteClipsLeft[ frame / 4 ];
-                            render(&gCurrentEnemy2, xe2, ye2, currentClip, 0, NULL, SDL_FLIP_NONE );
-                            ++frame;
-                            if( frame / 4 >= WALKING_ANIMATION_FRAMES )
-                            {
-                                frame = 0;
-                            }
-                            xe2 -= speedenemy;
-                        }
-                    }
-
                     SDL_RenderPresent( gRenderer );
                     currentTime = SDL_GetTicks();
                     //float mili = currentTime-oldTime;

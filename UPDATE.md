@@ -15,12 +15,17 @@
 * Tentei consertar um bug no código jogo2.cpp, em que o inimigo 2 não aparece entre os socos dele, mas não funcionou
 * Coloca som no botão ao clicar no botão inicial no jogo1 e jogo2
 * Fiz tutorial6 para usar som SDL_mixer junto de imagens
+* Procurei imagem de um medic kit, para recuperar a vida do personagem, mas não achei, entao fiz paint.
+* Medikit no jogo1.cpp e no jogo2.cpp
+* Procurei por sons de soco e de medikit
+* Pensei como fazer 2 dificuldade diferentes no jogo.cpp
+* Fiz imagens dos botões
+* Dificuldades prontas no jogo.cpp
 
 ## O que eu vou fazer durante a próxima semana?
-* Achar bonecos melhores na internet
 
 ## Quantas horas de trabalho?
-* 4 horas
+* 7 horas e meia
 
 =======
 

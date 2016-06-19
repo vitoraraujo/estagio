@@ -597,6 +597,18 @@ int loadMediaBackground(LTexture* s)
     return success;
 }
 
+int loadMediaMedikit(LTexture* s)
+{
+    int success = 1;
+
+    if(!(s->imgPath = loadFromFile(s, "imagens/medikit.png")))
+    {
+        printf("Failed to load medikit texture!\n" );
+        success = 0;
+    }
+    return success;
+}
+
 void close()
 {
 	Mix_FreeMusic( gMusic );
@@ -702,6 +714,10 @@ int main( int argc, char* args[] )
     gStartButton.mHeight = 0;
     gStartButton.mWidth = 0;
 
+    LTexture gMedikit;
+    gMedikit.mHeight = 0;
+    gMedikit.mWidth = 0;
+
     Mouse mouse;
     mouse.mPosition.x = 0;
     mouse.mPosition.y = 0;
@@ -788,6 +804,10 @@ int main( int argc, char* args[] )
         {
             printf( "Failed to load text media!\n" );
         }
+        if( !loadMediaMedikit(&gMedikit))
+        {
+            printf( "Failed to load medikit media!\n");
+        }
 
 		else
 		{
@@ -796,6 +816,8 @@ int main( int argc, char* args[] )
 			SDL_Event e;
 
 			int frame = 0;
+
+            int medikittempo = 0;
 
             int startGame = 0;
             int music = 1;
@@ -827,6 +849,9 @@ int main( int argc, char* args[] )
             int standfoo = 1;
             int rightfoo = 0;
             int leftfoo = 0;
+
+            int medikit = 0;
+            int medikitx = 0;
 
 			gCurrentFoo = gStandFoo;
             gCurrentEnemy = gRightEnemy;
@@ -897,8 +922,6 @@ int main( int argc, char* args[] )
                     render(&gTextScoreTexture, (SCREEN_WIDTH - getWidth(&gTextScoreTexture) ) / 2.2 ,( SCREEN_HEIGHT - getHeight(&gTextScoreTexture) ) / 1.05 , NULL, 0, NULL, SDL_FLIP_NONE);
                     render(&gTextScore, (SCREEN_WIDTH - getWidth(&gTextScore) ) / 1.8,( SCREEN_HEIGHT - getHeight(&gTextScore) ) / 1.05, NULL, 0, NULL, SDL_FLIP_NONE);
 
-                    SDL_RenderPresent( gRenderer );
-
                     rightenemy = 1;
                     leftenemy = 0;
 
@@ -910,6 +933,8 @@ int main( int argc, char* args[] )
                     {
                         printf( "Failed to load score media!\n" );
                     }
+
+                    SDL_RenderPresent( gRenderer );
                 }
                 else
                 {
@@ -1075,6 +1100,27 @@ int main( int argc, char* args[] )
 
 
 
+                    if(medikittempo == 1000 && medikit == 0)
+                    {
+                        medikit = 1;
+                        medikitx = rand() % 1151;
+                    }
+                    if(medikit == 1)
+                    {
+                        render(&gMedikit, medikitx, 500, NULL, 0, NULL, SDL_FLIP_NONE);
+                    }
+                    if(checkCollision(xf, medikitx, yf, 450))
+                    {
+                        medikit = 0;
+                        medikittempo = 0;
+                        hp = 10;
+                        if( !loadMediaHealth(&gTextHealth, hp) )
+                        {
+                            printf( "Failed to load health media!\n" );
+                        }
+                    }
+
+
                     if(jumpfoo)
                     {
                         speedjump = 30;
@@ -1209,6 +1255,7 @@ int main( int argc, char* args[] )
                     currentTime = SDL_GetTicks();
                     float mili = currentTime-oldTime;
                     //printf("%f\n", mili);
+                    medikittempo+=1;
                 }
 			}
 		}
