@@ -8,9 +8,6 @@ const int SCREEN_WIDTH = 1200;
 const int SCREEN_HEIGHT = 800;
 const int WALKING_ANIMATION_FRAMES = 4;
 
-const int BUTTON_HEIGHT = 150;
-const int BUTTON_WIDTH = 300;
-
 struct LTexture{
     SDL_Texture* mTexture = NULL;
 	int mWidth;

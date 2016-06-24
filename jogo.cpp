@@ -1263,7 +1263,11 @@ int main( int argc, char* args[] )
                     SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
                     SDL_RenderClear( gRenderer );
 
-                    //render(&gBackground, 0 , 0, NULL, 0, NULL, SDL_FLIP_NONE);
+                    render(&gBackground, 0 , 0, NULL, 0, NULL, SDL_FLIP_NONE);
+
+                    SDL_Rect fillRect = { 50, 50 , 140 , 55};
+                    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+                    SDL_RenderFillRect( gRenderer, &fillRect );
 
                     render(&gTextHealthTexture, (SCREEN_WIDTH - getWidth(&gTextHealthTexture) ) / 20,( SCREEN_HEIGHT - getHeight(&gTextHealthTexture) ) / 15 , NULL, 0, NULL, SDL_FLIP_NONE);
                     render(&gTextScoreTexture, (SCREEN_WIDTH - getWidth(&gTextScoreTexture) ) / 20,( SCREEN_HEIGHT - getHeight(&gTextScoreTexture) ) / 10 , NULL, 0, NULL, SDL_FLIP_NONE);
