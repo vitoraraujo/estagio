@@ -1265,7 +1265,7 @@ int main( int argc, char* args[] )
 
                     render(&gBackground, 0 , 0, NULL, 0, NULL, SDL_FLIP_NONE);
 
-                    SDL_Rect fillRect = { 50, 50 , 140 , 55};
+                    SDL_Rect fillRect = { 50, 50 , 180 , 55};
                     SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
                     SDL_RenderFillRect( gRenderer, &fillRect );
 

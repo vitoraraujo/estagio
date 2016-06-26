@@ -1,4 +1,29 @@
-# 9/06
+# 23/06
+
+## O que eu ia fazer durante a semana passada?
+
+## O que eu realmente fiz durante a semana passada?
+* Tentei consertar bug (Failed to load lazy font! SDL_ttf Error: Couldn't open imagens/lazy.ttf), pesquisei, mas não consegui
+* Começa um jogo com os sprites que achei na internet (zombie.cpp)
+* Fiz uma imagem (lefthuman.cpp) com os sprites para o boneco andar para esquerda, mas a imagem  não ficou bem na tela então descartei
+* Redesenhei as imagens em um novo editor de imagens que não deixa borda azul dos bonecos no jogo quando tem plano de fundo, alterando em todos os códigos
+* Fiz um retangulo branco para ficar o hp e score do personagem
+* Fiz botão start.png para jogo1 e jogo2
+* Aumentei o retangulo branco para caber melhor o score
+* Comecei a pensar numa ideia para outro jogo
+* Começa a  trabalhar na mecânica: um boneco que tenta sair do seu mouse, e você tem q clicar nele, com o tempo sendo contabilizado. (pointnclick.cpp)
+* Pensei em algum modo de contextualizar essa dinamica de jogo. Por exemplo, um mosquito fugindo de alguem tentando matar.
+* Desenhei o personagem e o plano de fundo (falta terminar o fundo)
+
+## O que eu vou fazer durante a próxima semana?
+* Terminar o plano de fundo
+
+## Quantas horas de trabalho?
+* 9 horas 
+
+=======
+
+# 16/06
 
 ## O que eu ia fazer durante a semana passada?
 
