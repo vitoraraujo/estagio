@@ -1,3 +1,24 @@
+# 30/06
+
+## O que eu ia fazer durante a semana passada?
+* Terminar o plano de fundo
+
+## O que eu realmente fiz durante a semana passada?
+* Fiz o plano de fundo do novo jogo (pointnclick.cpp)
+* Determinei os locais onde o boneco pode ir aleatoriamente (pointnclick.cpp)
+* Pensei em como esperar cerca de 1 segundo após o fim do jogo logo antes de selecionar a dificuldade, para que o jogodor não acabe clicando sem querer em alguma dificuldade, depois de acertar o boneco
+* Pensei em um nome pro jogo
+* Altera o nome pointnclick.cpp para donttouchit.cpp
+* Altera pequenos detalhes no rambo.cpp 
+
+## O que eu vou fazer durante a próxima semana?
+* Colocar mais uma criança no travessura.cpp para dificuldade 2
+
+## Quantas horas de trabalho?
+* 4 horas
+
+=======
+
 # 23/06
 
 ## O que eu ia fazer durante a semana passada?

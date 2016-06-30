@@ -579,7 +579,7 @@ int loadMediaButton1(LTexture* s)
 
     if(!(s->imgPath = loadFromFile(s, "imagens/button1.png")) )
     {
-        printf( "Failed to load background texture!\n" );
+        printf( "Failed to load button1 texture!\n" );
         success = 0;
     }
     return success;
@@ -591,7 +591,7 @@ int loadMediaButton2(LTexture* s)
 
     if(!(s->imgPath = loadFromFile(s, "imagens/button2.png")) )
     {
-        printf( "Failed to load background texture!\n" );
+        printf( "Failed to load button2 texture!\n" );
         success = 0;
     }
     return success;
@@ -1036,15 +1036,6 @@ int main( int argc, char* args[] )
 
                     render(&gTextScoreTexture, (SCREEN_WIDTH - getWidth(&gTextScoreTexture) ) / 2.2 ,( SCREEN_HEIGHT - getHeight(&gTextScoreTexture) ) / 1.05 , NULL, 0, NULL, SDL_FLIP_NONE);
                     render(&gTextScore, (SCREEN_WIDTH - getWidth(&gTextScore) ) / 1.8,( SCREEN_HEIGHT - getHeight(&gTextScore) ) / 1.05, NULL, 0, NULL, SDL_FLIP_NONE);
-
-                    if( !loadMediaHealth(&gTextHealth, hp) )
-                    {
-                        printf( "Failed to load health media!\n" );
-                    }
-                    if( !loadMediaScore(&gTextScore, score) )
-                    {
-                        printf( "Failed to load score media!\n" );
-                    }
 
                     SDL_RenderPresent( gRenderer );
 

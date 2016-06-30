@@ -244,6 +244,28 @@ int loadMediaTime(LTexture* s, int time)
 	return success;
 }
 
+int loadMediaTitle(LTexture* s)
+{
+	int success = 1;
+
+	gFont = TTF_OpenFont( "imagens/lazy.ttf", 80 );
+	if( gFont == NULL )
+	{
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = 0;
+	}
+	else
+	{
+		SDL_Color textColor = { 0, 0, 0 };
+		if( !(s->imgPath = loadFromRenderedText(s, "Don't Touch It!" , textColor ) ) )
+		{
+			printf( "Failed to render title text texture!\n" );
+			success = 0;
+		}
+	}
+	return success;
+}
+
 int loadMediaBackground(LTexture* s)
 {
     int success = 1;
@@ -251,6 +273,30 @@ int loadMediaBackground(LTexture* s)
     if(!(s->imgPath = loadFromFile(s, "imagens/cozinha.png")) )
     {
         printf( "Failed to load background texture!\n" );
+        success = 0;
+    }
+    return success;
+}
+
+int loadMediaButton1(LTexture* s)
+{
+    int success = 1;
+
+    if(!(s->imgPath = loadFromFile(s, "imagens/button1.png")) )
+    {
+        printf( "Failed to load button1 texture!\n" );
+        success = 0;
+    }
+    return success;
+}
+
+int loadMediaButton2(LTexture* s)
+{
+    int success = 1;
+
+    if(!(s->imgPath = loadFromFile(s, "imagens/button2.png")) )
+    {
+        printf( "Failed to load button2 texture!\n" );
         success = 0;
     }
     return success;
@@ -285,6 +331,14 @@ int main( int argc, char* args[] )
     mouse.mPosition.x = 0;
     mouse.mPosition.y = 0;
 
+    LTexture gDifButton1;
+    gDifButton1.mHeight = 0;
+    gDifButton1.mWidth = 0;
+
+    LTexture gDifButton2;
+    gDifButton2.mHeight = 0;
+    gDifButton2.mWidth = 0;
+
     LTexture gTextTimeTexture;
     gTextTimeTexture.mHeight = 0;
     gTextTimeTexture.mWidth = 0;
@@ -292,6 +346,10 @@ int main( int argc, char* args[] )
     LTexture gTextTime;
     gTextTime.mHeight = 0;
     gTextTime.mWidth = 0;
+
+    LTexture gTextTitle;
+    gTextTitle.mHeight = 0;
+    gTextTitle.mWidth = 0;
 
     if( !init() )
 	{
@@ -313,6 +371,18 @@ int main( int argc, char* args[] )
     {
         printf( "Failed to load background media!\n" );
     }
+    if( !loadMediaButton1(&gDifButton1) )
+    {
+        printf( "Failed to load start button media!\n" );
+    }
+    if( !loadMediaButton2(&gDifButton2) )
+    {
+        printf( "Failed to load start button media!\n" );
+    }
+    if( !loadMediaTitle(&gTextTitle) )
+    {
+        printf( "Failed to load text media!\n" );
+    }
     else
     {
         int quit = 0;
@@ -321,7 +391,13 @@ int main( int argc, char* args[] )
 
         int time = 0;
 
-        float x1 = 600;
+        int startGame = 0;
+
+        int place = rand() % 6;
+
+        int dificuldade = 0;
+
+        float x1 = 1080;
         float y1 = 450;
         float x2 = 664;
         float y2 = 600;
@@ -333,79 +409,178 @@ int main( int argc, char* args[] )
 
         gCurrentFoo = gBoy;
 
+        float button1x1 = SCREEN_WIDTH / 3.75;
+        float button1y1 = SCREEN_HEIGHT / 3.75;
+        float button1x2 = button1x1 + 550;
+        float button1y2 = button1y1 + 200;
+
+        float button2x1 = SCREEN_WIDTH / 3.75;
+        float button2y1 = (SCREEN_HEIGHT / 3.75) + 250.0;
+        float button2x2 = button2x1 + 550;
+        float button2y2 = button2y1 + 200;
+
         Uint32 oldTime = 0;
         Uint32 mouseOverTime = 0;
         Uint32 currentTime = 0;
         Uint32 countTime = 0;
+        Uint32 endGame = 0;
         currentTime = SDL_GetTicks();
 
         while( !quit )
         {
-            oldTime = currentTime;
-            while( SDL_PollEvent( &e ) != 0)
+            if( startGame == 0 )
             {
-                if( e.type == SDL_QUIT )
-                {
-                    quit = 1;
-                }
-                SDL_GetMouseState(&mouseX, &mouseY);
-                mouse.mPosition.x = mouseX;
-                mouse.mPosition.y = mouseY;
-                if (e.type == SDL_MOUSEBUTTONDOWN && checkMouse(&mouse, x1, y1, x2, y2))
-                {
-                    quit = 1;
-                }
+                    while( SDL_PollEvent( &e ) != 0 )
+                    {
+                        if( e.type == SDL_QUIT )
+                        {
+                            quit = 1;
+                        }
+                        if(currentTime - endGame > 1000)
+                        {
+                            if (e.type == SDL_MOUSEBUTTONUP)
+                            {
+                                SDL_GetMouseState(&mouseX, &mouseY);
+                                mouse.mPosition.x = mouseX;
+                                mouse.mPosition.y = mouseY;
+                                if(checkMouse(&mouse, button1x1, button1y1, button1x2, button1y2))
+                                {
+                                    //Mix_PlayChannel( -1, gButtonSound, 0 );
+
+                                    startGame = 1;
+
+                                    dificuldade = 1;
+                                }
+                                else if(checkMouse(&mouse, button2x1, button2y1, button2x2, button2y2))
+                                {
+                                    //Mix_PlayChannel( -1, gButtonSound, 0 );
+
+                                    startGame = 1;
+
+                                    dificuldade = 2;
+                                }
+
+                                time = -1;
+                            }
+                        }
+                    }
+
+                    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+                    SDL_RenderClear( gRenderer );
+
+                    render(&gTextTitle, (SCREEN_WIDTH - getWidth(&gTextTitle) ) / 2,( SCREEN_HEIGHT - getHeight(&gTextTitle) ) / 10 , NULL, 0, NULL, SDL_FLIP_NONE);
+
+                    render(&gDifButton1, button1x1 , button1y1, NULL, 0, NULL, SDL_FLIP_NONE);
+                    render(&gDifButton2, button2x1 , button2y1, NULL, 0, NULL, SDL_FLIP_NONE);
+
+                    render(&gTextTimeTexture, (SCREEN_WIDTH - getWidth(&gTextTimeTexture) ) / 2.2 ,( SCREEN_HEIGHT - getHeight(&gTextTimeTexture) ) / 1.05 , NULL, 0, NULL, SDL_FLIP_NONE);
+                    render(&gTextTime, (SCREEN_WIDTH - getWidth(&gTextTime) ) / 1.8,( SCREEN_HEIGHT - getHeight(&gTextTime) ) / 1.05, NULL, 0, NULL, SDL_FLIP_NONE);
+
+                    SDL_RenderPresent( gRenderer );
             }
 
-            if(checkMouse(&mouse, x1, y1, x2, y2))
+            else if (startGame == 1)
             {
-                if(mouseOver == 0)
+                oldTime = currentTime;
+                while( SDL_PollEvent( &e ) != 0)
                 {
-                    mouseOver = 1;
-                    mouseOverTime = oldTime;
+                    if( e.type == SDL_QUIT )
+                    {
+                        quit = 1;
+                    }
+                    SDL_GetMouseState(&mouseX, &mouseY);
+                    mouse.mPosition.x = mouseX;
+                    mouse.mPosition.y = mouseY;
+                    if (e.type == SDL_MOUSEBUTTONDOWN && checkMouse(&mouse, x1, y1, x2, y2))
+                    {
+                        startGame = 0;
+                        endGame = currentTime;
+                        break;
+                    }
                 }
-                if( currentTime - mouseOverTime >= 15 )
+
+                if(checkMouse(&mouse, x1, y1, x2, y2))
                 {
-                    x1 = rand() % 1100;
-                    x2 = x1 + 64;
+                    if(mouseOver == 0)
+                    {
+                        mouseOver = 1;
+                        mouseOverTime = oldTime;
+                    }
+                    if( currentTime - mouseOverTime >= 15 )
+                    {
+                        place = rand() % 6;
+                        mouseOver = 0;
+                    }
+                }
+                if(!(checkMouse(&mouse, x1, y1, x2, y2)))
+                {
+                    mouseOverTime = oldTime;
                     mouseOver = 0;
                 }
-            }
-            if(!(checkMouse(&mouse, x1, y1, x2, y2)))
-            {
-                mouseOverTime = oldTime;
-                mouseOver = 0;
-            }
 
-            SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-            SDL_RenderClear( gRenderer );
+                SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+                SDL_RenderClear( gRenderer );
 
-            render(&gBackground, 0 , 0, NULL, 0, NULL, SDL_FLIP_NONE);
+                render(&gBackground, 0 , 0, NULL, 0, NULL, SDL_FLIP_NONE);
 
-            render(&gCurrentFoo, x1, y1, NULL, 0, NULL, SDL_FLIP_NONE);
-
-            if(currentTime - countTime >= 1000)
-            {
-                countTime = currentTime;
-                time +=1;
-                if( !loadMediaTime(&gTextTime, time) )
+                switch( place )
                 {
-                    printf( "Failed to load text media!\n" );
+                    case 0:
+                    x1 = 25;
+
+                    break;
+
+                    case 1:
+                    x1 = 210;
+                    break;
+
+                    case 2:
+                    x1 = 400;
+                    break;
+
+                    case 3:
+                    x1 = 600;
+                    break;
+
+                    case 4:
+                    x1 = 700;
+                    break;
+
+                    case 5:
+                    x1 = 980;
+                    break;
+
+                    case 6:
+                    x1 = 1080;
+                    break;
                 }
+
+                x2 = x1 + 64;
+
+                render(&gCurrentFoo, x1, y1, NULL, 0, NULL, SDL_FLIP_NONE);
+
+                if(currentTime - countTime >= 1000)
+                {
+                    countTime = currentTime;
+                    time +=1;
+                    if( !loadMediaTime(&gTextTime, time) )
+                    {
+                        printf( "Failed to load time text media!\n" );
+                    }
+                }
+
+                render(&gTextTimeTexture, (SCREEN_WIDTH - getWidth(&gTextTimeTexture) ) / 2.2 ,( SCREEN_HEIGHT - getHeight(&gTextTimeTexture) ) / 1.05 , NULL, 0, NULL, SDL_FLIP_NONE);
+                render(&gTextTime, (SCREEN_WIDTH - getWidth(&gTextTime) ) / 1.9,( SCREEN_HEIGHT - getHeight(&gTextTime) ) / 1.05, NULL, 0, NULL, SDL_FLIP_NONE);
+
+
+
+
+                SDL_RenderPresent( gRenderer );
+
             }
-
-            render(&gTextTimeTexture, (SCREEN_WIDTH - getWidth(&gTextTimeTexture) ) / 2.2 ,( SCREEN_HEIGHT - getHeight(&gTextTimeTexture) ) / 1.05 , NULL, 0, NULL, SDL_FLIP_NONE);
-            render(&gTextTime, (SCREEN_WIDTH - getWidth(&gTextTime) ) / 1.9,( SCREEN_HEIGHT - getHeight(&gTextTime) ) / 1.05, NULL, 0, NULL, SDL_FLIP_NONE);
-
-
-
-
-            SDL_RenderPresent( gRenderer );
-            currentTime = SDL_GetTicks();
-            printf("%d\n", currentTime);
+        currentTime = SDL_GetTicks();
         }
     }
-
     close();
 
 	return 0;
