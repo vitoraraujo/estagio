@@ -10,12 +10,18 @@
 * Pensei em um nome pro jogo
 * Altera o nome pointnclick.cpp para donttouchit.cpp
 * Altera pequenos detalhes no rambo.cpp 
+* Fiz a imagem da menina (girl.png)
+* Pensei em como colocar simultaneamente o menino e a menina
+* Fiz um jeito para quando apertar no menino ele some, para que tenha q pegar a menina, e vice-versa
+* Dificuldade 2 pronta
+* Mexe na imagem cozinha.cpp
+* Pinta boy.png e girl.png
 
 ## O que eu vou fazer durante a próxima semana?
-* Colocar mais uma criança no travessura.cpp para dificuldade 2
+* Coloca cor na cozinha
 
 ## Quantas horas de trabalho?
-* 4 horas
+* 8 horas 
 
 =======
 

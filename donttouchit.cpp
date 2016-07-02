@@ -197,6 +197,18 @@ int loadMediaBoy(LTexture* s)
     return success;
 }
 
+int loadMediaGirl(LTexture* s)
+{
+    int success = 1;
+
+    if(!(s->imgPath = loadFromFile(s, "imagens/girl.png")) )
+    {
+        printf( "Failed to load boy texture!\n" );
+        success = 0;
+    }
+    return success;
+}
+
 int loadMediaTimeText(LTexture* s)
 {
 	int success = 1;
@@ -315,13 +327,21 @@ void close()
 
 int main( int argc, char* args[] )
 {
-    LTexture gCurrentFoo;
-    gCurrentFoo.mHeight = 0;
-    gCurrentFoo.mWidth = 0;
+    LTexture gCurrentBoy;
+    gCurrentBoy.mHeight = 0;
+    gCurrentBoy.mWidth = 0;
+
+    LTexture gCurrentGirl;
+    gCurrentGirl.mHeight = 0;
+    gCurrentGirl.mWidth = 0;
 
     LTexture gBoy;
     gBoy.mHeight = 0;
     gBoy.mWidth = 0;
+
+    LTexture gGirl;
+    gGirl.mHeight = 0;
+    gGirl.mWidth = 0;
 
     LTexture gBackground;
     gBackground.mHeight = 0;
@@ -359,6 +379,10 @@ int main( int argc, char* args[] )
     {
         printf( "Failed to load boy media!\n" );
     }
+    if( !loadMediaGirl(&gGirl) )
+    {
+        printf( "Failed to load boy media!\n" );
+    }
     if( !loadMediaTimeText(&gTextTimeTexture) )
     {
         printf( "Failed to load text time media!\n" );
@@ -393,21 +417,32 @@ int main( int argc, char* args[] )
 
         int startGame = 0;
 
-        int place = rand() % 6;
+        int placeB = rand() % 6;
+        int placeG = rand() % 6;
+
+        int gottenChild = 0;
 
         int dificuldade = 0;
 
-        float x1 = 1080;
-        float y1 = 450;
-        float x2 = 664;
-        float y2 = 600;
+        float bx1 ;
+        float by1 = 450;
+        float bx2 = bx1 + 64;
+        float by2 = by1 + 150;
+
+        float gx1;
+        float gy1 = 450;
+        float gx2 = gx1 + 64;
+        float gy2 = gy1 + 150;
 
         int mouseX = 0;
         int mouseY = 0;
 
-        int mouseOver = 0;
+        int mouseOverBoy = 0;
+        int mouseOverGirl = 0;
 
-        gCurrentFoo = gBoy;
+
+        gCurrentBoy = gBoy;
+        gCurrentGirl = gGirl;
 
         float button1x1 = SCREEN_WIDTH / 3.75;
         float button1y1 = SCREEN_HEIGHT / 3.75;
@@ -420,10 +455,11 @@ int main( int argc, char* args[] )
         float button2y2 = button2y1 + 200;
 
         Uint32 oldTime = 0;
-        Uint32 mouseOverTime = 0;
+        Uint32 mouseOverBoyTime = 0;
+        Uint32 mouseOverGirlTime = 0;
         Uint32 currentTime = 0;
         Uint32 countTime = 0;
-        Uint32 endGame = 0;
+        Uint32 endGame = -1000;
         currentTime = SDL_GetTicks();
 
         while( !quit )
@@ -436,7 +472,7 @@ int main( int argc, char* args[] )
                         {
                             quit = 1;
                         }
-                        if(currentTime - endGame > 1000)
+                        if(currentTime - endGame >= 1000)
                         {
                             if (e.type == SDL_MOUSEBUTTONUP)
                             {
@@ -450,6 +486,13 @@ int main( int argc, char* args[] )
                                     startGame = 1;
 
                                     dificuldade = 1;
+
+                                    gottenChild = 1;
+                                    time = -1;
+
+                                    placeB = rand() % 6;
+                                    by1 = 450;
+                                    by2 = by1 + 150;
                                 }
                                 else if(checkMouse(&mouse, button2x1, button2y1, button2x2, button2y2))
                                 {
@@ -458,9 +501,20 @@ int main( int argc, char* args[] )
                                     startGame = 1;
 
                                     dificuldade = 2;
+
+                                    gottenChild = 2;
+                                    time = -1;
+
+                                    placeB = rand() % 6;
+                                    placeG = rand() % 6;
+
+                                    by1 = 450;
+                                    by2 = by1 + 150;
+
+                                    gy1 = 450;
+                                    gy2 = gy1 + 150;
                                 }
 
-                                time = -1;
                             }
                         }
                     }
@@ -491,31 +545,52 @@ int main( int argc, char* args[] )
                     SDL_GetMouseState(&mouseX, &mouseY);
                     mouse.mPosition.x = mouseX;
                     mouse.mPosition.y = mouseY;
-                    if (e.type == SDL_MOUSEBUTTONDOWN && checkMouse(&mouse, x1, y1, x2, y2))
+                    if (e.type == SDL_MOUSEBUTTONDOWN && checkMouse(&mouse, bx1, by1, bx2, by2))
                     {
-                        startGame = 0;
-                        endGame = currentTime;
-                        break;
+                        gottenChild -= 1;
+
+
+                        printf("Click!\n");
+
+                        by1 = 1000;
+                        by2 = 1000;
+
                     }
+                    if (e.type == SDL_MOUSEBUTTONDOWN && checkMouse(&mouse, gx1, gy1, gx2, gy2))
+                    {
+                        gottenChild -= 1;
+
+
+                        printf("Click!\n");
+
+                        gy1 = 1000;
+                        gy2 = 1000;
+
+                    }
+
                 }
 
-                if(checkMouse(&mouse, x1, y1, x2, y2))
+                if(checkMouse(&mouse, bx1, by1, bx2, by2))
                 {
-                    if(mouseOver == 0)
-                    {
-                        mouseOver = 1;
-                        mouseOverTime = oldTime;
-                    }
-                    if( currentTime - mouseOverTime >= 15 )
-                    {
-                        place = rand() % 6;
-                        mouseOver = 0;
-                    }
+                    //if(mouseOverBoy == 0)
+                    //{
+                        //mouseOverBoy = 1;
+                        //mouseOverBoyTime = oldTime;
+                    //}
+                    //if( currentTime - mouseOverBoyTime >= 2 )
+                    //{
+                        placeB = rand() % 6;
+                        if(placeB == placeG)
+                        {
+                            placeB = rand() % 6;
+                        }
+                        //mouseOverBoy = 0;
+                    //}
                 }
-                if(!(checkMouse(&mouse, x1, y1, x2, y2)))
+                if(!(checkMouse(&mouse, bx1, by1, bx2, by2)))
                 {
-                    mouseOverTime = oldTime;
-                    mouseOver = 0;
+                    mouseOverBoyTime = oldTime;
+                    mouseOverBoy = 0;
                 }
 
                 SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -523,41 +598,108 @@ int main( int argc, char* args[] )
 
                 render(&gBackground, 0 , 0, NULL, 0, NULL, SDL_FLIP_NONE);
 
-                switch( place )
+                switch( placeB )
                 {
                     case 0:
-                    x1 = 25;
+                    bx1 = 25;
 
                     break;
 
                     case 1:
-                    x1 = 210;
+                    bx1 = 210;
                     break;
 
                     case 2:
-                    x1 = 400;
+                    bx1 = 400;
                     break;
 
                     case 3:
-                    x1 = 600;
+                    bx1 = 600;
                     break;
 
                     case 4:
-                    x1 = 700;
+                    bx1 = 700;
                     break;
 
                     case 5:
-                    x1 = 980;
+                    bx1 = 980;
                     break;
 
                     case 6:
-                    x1 = 1080;
+                    bx1 = 1080;
                     break;
                 }
 
-                x2 = x1 + 64;
+                bx2 = bx1 + 64;
 
-                render(&gCurrentFoo, x1, y1, NULL, 0, NULL, SDL_FLIP_NONE);
+                render(&gCurrentBoy, bx1, by1, NULL, 0, NULL, SDL_FLIP_NONE);
+
+                if(dificuldade == 2)
+                {
+                    if(checkMouse(&mouse, gx1, gy1, gx2, gy2))
+                    {
+                        //if(mouseOverGirl == 0)
+                        //{
+                            //mouseOverGirl = 1;
+                            //mouseOverGirlTime = oldTime;
+                        //}
+                        //if( currentTime - mouseOverGirlTime >= 1 )
+                        //{
+                            placeG = rand() % 6;
+                            if(placeG == placeB)
+                            {
+                                placeG = rand() % 6;
+                            }
+                            //mouseOverGirl = 0;
+                        //}
+                    }
+                    if(!(checkMouse(&mouse, gx1, gy1, gx2, gy2)))
+                    {
+                        mouseOverGirlTime = oldTime;
+                        mouseOverGirl = 0;
+                    }
+
+                    switch( placeG )
+                    {
+                        case 0:
+                        gx1 = 25;
+
+                        break;
+
+                        case 1:
+                        gx1 = 210;
+                        break;
+
+                        case 2:
+                        gx1 = 400;
+                        break;
+
+                        case 3:
+                        gx1 = 600;
+                        break;
+
+                        case 4:
+                        gx1 = 700;
+                        break;
+
+                        case 5:
+                        gx1 = 980;
+                        break;
+
+                        case 6:
+                        gx1 = 1080;
+                        break;
+                    }
+                    gx2 = gx1 + 64;
+
+                    render(&gCurrentGirl, gx1, gy1, NULL, 0, NULL, SDL_FLIP_NONE);
+                }
+
+                if( gottenChild == 0 )
+                {
+                    startGame = 0;
+                    endGame = currentTime;
+                }
 
                 if(currentTime - countTime >= 1000)
                 {
@@ -571,9 +713,6 @@ int main( int argc, char* args[] )
 
                 render(&gTextTimeTexture, (SCREEN_WIDTH - getWidth(&gTextTimeTexture) ) / 2.2 ,( SCREEN_HEIGHT - getHeight(&gTextTimeTexture) ) / 1.05 , NULL, 0, NULL, SDL_FLIP_NONE);
                 render(&gTextTime, (SCREEN_WIDTH - getWidth(&gTextTime) ) / 1.9,( SCREEN_HEIGHT - getHeight(&gTextTime) ) / 1.05, NULL, 0, NULL, SDL_FLIP_NONE);
-
-
-
 
                 SDL_RenderPresent( gRenderer );
 
