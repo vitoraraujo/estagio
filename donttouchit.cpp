@@ -455,8 +455,8 @@ int main( int argc, char* args[] )
         float button2y2 = button2y1 + 200;
 
         Uint32 oldTime = 0;
-        Uint32 mouseOverBoyTime = 0;
-        Uint32 mouseOverGirlTime = 0;
+        //Uint32 mouseOverBoyTime = 0;
+        //Uint32 mouseOverGirlTime = 0;
         Uint32 currentTime = 0;
         Uint32 countTime = 0;
         Uint32 endGame = -1000;
@@ -587,11 +587,11 @@ int main( int argc, char* args[] )
                         //mouseOverBoy = 0;
                     //}
                 }
-                if(!(checkMouse(&mouse, bx1, by1, bx2, by2)))
+                /*if(!(checkMouse(&mouse, bx1, by1, bx2, by2)))
                 {
                     mouseOverBoyTime = oldTime;
                     mouseOverBoy = 0;
-                }
+                }*/
 
                 SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
                 SDL_RenderClear( gRenderer );
@@ -653,11 +653,11 @@ int main( int argc, char* args[] )
                             //mouseOverGirl = 0;
                         //}
                     }
-                    if(!(checkMouse(&mouse, gx1, gy1, gx2, gy2)))
+                    /*if(!(checkMouse(&mouse, gx1, gy1, gx2, gy2)))
                     {
                         mouseOverGirlTime = oldTime;
                         mouseOverGirl = 0;
-                    }
+                    }*/
 
                     switch( placeG )
                     {

@@ -1098,6 +1098,8 @@ int main( int argc, char* args[] )
                         {
                             r = rand() % 2;
                             score += 1;
+
+                            SDL_DestroyTexture(gTextScore.mTexture);
                             if( !loadMediaScore(&gTextScore, score) )
                             {
                                 printf( "Failed to load score media!\n" );
@@ -1121,6 +1123,8 @@ int main( int argc, char* args[] )
                         {
                             r = rand() % 2;
                             score += 1;
+
+                            SDL_DestroyTexture(gTextScore.mTexture);
                             if( !loadMediaScore(&gTextScore, score) )
                             {
                                 printf( "Failed to load score media!\n" );
@@ -1157,6 +1161,8 @@ int main( int argc, char* args[] )
                         {
                             r = rand() % 2;
                             score += 1;
+
+                            SDL_DestroyTexture(gTextScore.mTexture);
                             if( !loadMediaScore(&gTextScore, score) )
                             {
                                 printf( "Failed to load score media!\n" );
@@ -1180,6 +1186,8 @@ int main( int argc, char* args[] )
                         {
                             r = rand() % 2;
                             score += 1;
+
+                            SDL_DestroyTexture(gTextScore.mTexture);
                             if( !loadMediaScore(&gTextScore, score) )
                             {
                                 printf( "Failed to load score media!\n" );
@@ -1354,11 +1362,12 @@ int main( int argc, char* args[] )
                                 render(&gCurrentEnemy1, xe1, ye1, NULL, 0, NULL, SDL_FLIP_NONE);
                             }
 
+                            SDL_DestroyTexture(gTextHealth.mTexture);
                             if( !loadMediaHealth(&gTextHealth, hp) )
                             {
                                 printf( "Failed to load health media!\n" );
                             }
-                            if( hp == 0)
+                            if( hp <= 0)
                             {
                                 startGame = 0;
                             }
@@ -1434,11 +1443,12 @@ int main( int argc, char* args[] )
                                     render(&gCurrentEnemy2, xe2, ye2, NULL, 0, NULL, SDL_FLIP_NONE);
                                 }
 
+                                SDL_DestroyTexture(gTextHealth.mTexture);
                                 if( !loadMediaHealth(&gTextHealth, hp) )
                                 {
                                     printf( "Failed to load health media!\n" );
                                 }
-                                if( hp == 0)
+                                if( hp >= 0)
                                 {
                                     startGame = 0;
                                 }

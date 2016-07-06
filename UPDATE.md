@@ -1,3 +1,23 @@
+# 5/07
+
+## O que eu ia fazer durante a semana passada?
+* Coloca cor na cozinha
+
+## O que eu realmente fiz durante a semana passada?
+* Fui á puc
+* Conserta o bug do ttf
+* Começa a estudar valgrind
+
+## O que eu vou fazer durante a próxima semana?
+* Dealocar todas as instancias
+* checar o valgrind dos códigos
+* Tutorial de valgrind
+
+## Quantas horas de trabalho?
+* 2 horas
+
+=======
+
 # 30/06
 
 ## O que eu ia fazer durante a semana passada?
