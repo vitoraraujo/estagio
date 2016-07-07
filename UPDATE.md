@@ -7,6 +7,9 @@
 * Fui á puc
 * Conserta o bug do ttf
 * Começa a estudar valgrind
+* Tenta dealocar as instancias do rambo.cpp( erro: double free or corruption) e donttouchit.cpp, mas não fez diferença na memoria definitivamente perdida no teste com o donttouchit.cpp
+* Procurei por coisas que possam estar alocadas
+* Li os sites http://valgrind.org/docs/manual/quick-start.html e http://www.linuxprogrammingblog.com/using-valgrind-to-debug-memory-leakscomo para entender como usar o valgrind 
 
 ## O que eu vou fazer durante a próxima semana?
 * Dealocar todas as instancias
@@ -14,7 +17,7 @@
 * Tutorial de valgrind
 
 ## Quantas horas de trabalho?
-* 2 horas
+* 4 horas
 
 =======
 

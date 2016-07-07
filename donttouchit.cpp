@@ -327,14 +327,6 @@ void close()
 
 int main( int argc, char* args[] )
 {
-    LTexture gCurrentBoy;
-    gCurrentBoy.mHeight = 0;
-    gCurrentBoy.mWidth = 0;
-
-    LTexture gCurrentGirl;
-    gCurrentGirl.mHeight = 0;
-    gCurrentGirl.mWidth = 0;
-
     LTexture gBoy;
     gBoy.mHeight = 0;
     gBoy.mWidth = 0;
@@ -441,8 +433,8 @@ int main( int argc, char* args[] )
         int mouseOverGirl = 0;
 
 
-        gCurrentBoy = gBoy;
-        gCurrentGirl = gGirl;
+        //gCurrentBoy = gBoy;
+        //gCurrentGirl = gGirl;
 
         float button1x1 = SCREEN_WIDTH / 3.75;
         float button1y1 = SCREEN_HEIGHT / 3.75;
@@ -472,7 +464,7 @@ int main( int argc, char* args[] )
                         {
                             quit = 1;
                         }
-                        if(currentTime - endGame >= 1000)
+                        if(currentTime - endGame >= 500)
                         {
                             if (e.type == SDL_MOUSEBUTTONUP)
                             {
@@ -632,7 +624,7 @@ int main( int argc, char* args[] )
 
                 bx2 = bx1 + 64;
 
-                render(&gCurrentBoy, bx1, by1, NULL, 0, NULL, SDL_FLIP_NONE);
+                render(&gBoy, bx1, by1, NULL, 0, NULL, SDL_FLIP_NONE);
 
                 if(dificuldade == 2)
                 {
@@ -692,7 +684,7 @@ int main( int argc, char* args[] )
                     }
                     gx2 = gx1 + 64;
 
-                    render(&gCurrentGirl, gx1, gy1, NULL, 0, NULL, SDL_FLIP_NONE);
+                    render(&gGirl, gx1, gy1, NULL, 0, NULL, SDL_FLIP_NONE);
                 }
 
                 if( gottenChild == 0 )
@@ -720,7 +712,28 @@ int main( int argc, char* args[] )
         currentTime = SDL_GetTicks();
         }
     }
+
+    SDL_DestroyTexture(gBoy.mTexture);
+    //free(gBoy.mTexture);
+    SDL_DestroyTexture(gGirl.mTexture);
+    //free(gGirl.mTexture);
+    SDL_DestroyTexture(gBackground.mTexture);
+    //free(gBackground.mTexture);
+    SDL_DestroyTexture(gDifButton1.mTexture);
+    //free(gDifButton1.mTexture);
+    SDL_DestroyTexture(gDifButton2.mTexture);
+    //free(gDifButton2.mTexture);
+    SDL_DestroyTexture(gTextTimeTexture.mTexture);
+    //free(gTextTimeTexture.mTexture);
+    SDL_DestroyTexture(gTextTime.mTexture);
+    //free(gTextTime.mTexture);
+    SDL_DestroyTexture(gTextTitle.mTexture);
+    //free(gTextTitle.mTexture);
+    SDL_DestroyTexture()
+
     close();
 
 	return 0;
 }
+
+

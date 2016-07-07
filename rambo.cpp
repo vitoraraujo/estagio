@@ -665,7 +665,6 @@ int main( int argc, char* args[] )
     gTextTitle.mHeight = 0;
     gTextTitle.mWidth = 0;
 
-
     LTexture gCurrentFoo;
     gCurrentFoo.mHeight = 0;
     gCurrentFoo.mWidth = 0;
@@ -1448,7 +1447,7 @@ int main( int argc, char* args[] )
                                 {
                                     printf( "Failed to load health media!\n" );
                                 }
-                                if( hp >= 0)
+                                if( hp <= 0)
                                 {
                                     startGame = 0;
                                 }
@@ -1510,6 +1509,44 @@ int main( int argc, char* args[] )
 			}
 		}
 	}
+
+	SDL_DestroyTexture(gTextHealthTexture.mTexture);
+	SDL_DestroyTexture(gTextScoreTexture.mTexture);
+	SDL_DestroyTexture(gTextHealth.mTexture);
+	SDL_DestroyTexture(gTextScore.mTexture);
+	SDL_DestroyTexture(gTextTitle.mTexture);
+
+    //free(gCurrentFoo.mTexture);
+    SDL_DestroyTexture(gStandFoo.mTexture);
+	SDL_DestroyTexture(gRightFoo.mTexture);
+	SDL_DestroyTexture(gLeftFoo.mTexture);
+	SDL_DestroyTexture(gLeftPunchfoo.mTexture);
+	SDL_DestroyTexture(gRightPunchfoo.mTexture);
+
+	//free(gCurrentEnemy2.mTexture);
+	SDL_DestroyTexture(gRightEnemy1.mTexture);
+	SDL_DestroyTexture(gLeftEnemy1.mTexture);
+	SDL_DestroyTexture(gLeftStandEnemy1.mTexture);
+	SDL_DestroyTexture(gRightStandEnemy1.mTexture);
+	SDL_DestroyTexture(gRightPunchenemy1.mTexture);
+	SDL_DestroyTexture(gLeftPunchenemy1.mTexture);
+
+	//free(gCurrentEnemy2.mTexture);
+	SDL_DestroyTexture(gRightEnemy2.mTexture);
+	SDL_DestroyTexture(gLeftEnemy2.mTexture);
+	SDL_DestroyTexture(gLeftStandEnemy2.mTexture);
+	SDL_DestroyTexture(gRightStandEnemy2.mTexture);
+	SDL_DestroyTexture(gRightPunchenemy2.mTexture);
+	SDL_DestroyTexture(gLeftPunchenemy2.mTexture);
+
+	SDL_DestroyTexture(gDifButton1.mTexture);
+	SDL_DestroyTexture(gDifButton2.mTexture);
+	SDL_DestroyTexture(gBackground.mTexture);
+	SDL_DestroyTexture(gMedikit.mTexture);
+
+    free(gMusic);
+    free(gButtonSound);
+
 	close();
 
 	return 0;
