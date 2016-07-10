@@ -85,7 +85,7 @@ Com a imagem carregada, utilize a função `SDL_SetColorKey()` para determinar a
 		}
 ```
 
-Com a imagem passada, passe as dimenções da imagem para os atributos de classe que devem contê-las, e depois, deloque a imagem antiga que não será mais utilizada:
+Com a imagem passada, passe as dimenções da imagem para os atributos de classe que devem contê-las, e depois, dealoque a imagem antiga que não será mais utilizada:
 
 ```
 		else

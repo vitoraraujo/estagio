@@ -86,7 +86,7 @@ LTexture::~LTexture()
 }
 ```
 
-Declare o método `loadFromFile()`, que carrega a imagem passada, ignorando o fundo desta imagem. Primeiramente, deloque qualquer textura que já estivesse antes, para prevenir conflitos, declare o ponteiro do tipo `SDL_Texture` que conterá textura que será passada para o atributo de classe que deve contê-la, depois, declare o ponteiro do tipo `SDL_Surface` para carregar a imagem passada ao método:
+Declare o método `loadFromFile()`, que carrega a imagem passada, ignorando o fundo desta imagem. Primeiramente, dealoque qualquer textura que já estivesse antes, para prevenir conflitos, declare o ponteiro do tipo `SDL_Texture` que conterá textura que será passada para o atributo de classe que deve contê-la, depois, declare o ponteiro do tipo `SDL_Surface` para carregar a imagem passada ao método:
 
 ```
 bool LTexture::loadFromFile( const char* path )
@@ -116,7 +116,7 @@ Com a imagem carregada, utilize a função `SDL_SetColorKey()` para determinar a
 		}
 ```
 
-Com a imagem passada, passe as dimenções da imagem para os atributos de classe que devem contê-las, e depois, deloque a imagem antiga que não será mais utilizada:
+Com a imagem passada, passe as dimenções da imagem para os atributos de classe que devem contê-las, e depois, dealoque a imagem antiga que não será mais utilizada:
 
 ```
 		else
@@ -136,7 +136,7 @@ Por fim, passe a imagem final para o atributo de classe `mTexture` e retorne est
 }
 ```
 
-Declare o método `free()`, que deloca a textura da memória caso exista:
+Declare o método `free()`, que dealoca a textura da memória caso exista:
 
 ```
 void LTexture::free()
@@ -252,7 +252,7 @@ int loadMedia()
 	return success;
 }
 ```
-Crie a função `close()` que delocará as imagens, destruirá o renderizador e a window, e fechará o SDL:
+Crie a função `close()` que dealocará as imagens, destruirá o renderizador e a window, e fechará o SDL:
 
 ```
 void close()

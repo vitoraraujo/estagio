@@ -24,9 +24,11 @@ SDL_Renderer* gRenderer = NULL;
 
 TTF_Font *gFont = NULL;
 
+SDL_Texture* newTexture = NULL;
+
 int loadFromFile(LTexture* s, const char* path )
 {
-	SDL_Texture* newTexture = NULL;
+	//SDL_Texture* newTexture = NULL;
 
 	SDL_Surface* loadedSurface = IMG_Load( path );
 
@@ -321,6 +323,12 @@ void close()
 	gWindow = NULL;
 	gRenderer = NULL;
 
+    TTF_CloseFont( gFont );
+	gFont = NULL;
+
+    SDL_DestroyTexture(newTexture);
+
+    TTF_Quit();
     IMG_Quit();
 	SDL_Quit();
 }
@@ -541,9 +549,6 @@ int main( int argc, char* args[] )
                     {
                         gottenChild -= 1;
 
-
-                        printf("Click!\n");
-
                         by1 = 1000;
                         by2 = 1000;
 
@@ -551,9 +556,6 @@ int main( int argc, char* args[] )
                     if (e.type == SDL_MOUSEBUTTONDOWN && checkMouse(&mouse, gx1, gy1, gx2, gy2))
                     {
                         gottenChild -= 1;
-
-
-                        printf("Click!\n");
 
                         gy1 = 1000;
                         gy2 = 1000;
@@ -729,7 +731,6 @@ int main( int argc, char* args[] )
     //free(gTextTime.mTexture);
     SDL_DestroyTexture(gTextTitle.mTexture);
     //free(gTextTitle.mTexture);
-    SDL_DestroyTexture()
 
     close();
 

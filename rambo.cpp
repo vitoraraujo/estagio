@@ -32,12 +32,14 @@ TTF_Font *gFont = NULL;
 Mix_Music *gMusic = NULL;
 Mix_Chunk *gButtonSound = NULL;
 
+SDL_Texture* newTexture = NULL;
+
 SDL_Rect gSpriteClipsRight[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gSpriteClipsLeft[ WALKING_ANIMATION_FRAMES ];
 
 int loadFromFile(LTexture* s, const char* path )
 {
-	SDL_Texture* newTexture = NULL;
+
 
 	SDL_Surface* loadedSurface = IMG_Load( path );
 
@@ -341,7 +343,7 @@ int loadMediaSound()
 		success = 0;
 	}
 
-	gButtonSound= Mix_LoadWAV( "sons/buttonsound.wav" );
+	gButtonSound = Mix_LoadWAV( "sons/buttonsound.wav" );
 	if( gButtonSound == NULL )
 	{
 		printf( "Failed to load button sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
@@ -632,6 +634,8 @@ void close()
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
 	gRenderer = NULL;
+
+    SDL_DestroyTexture(newTexture);
 
     TTF_CloseFont( gFont );
 	gFont = NULL;
@@ -1286,6 +1290,8 @@ int main( int argc, char* args[] )
                         medikit = 0;
                         medikittempo = 0;
                         hp = 10;
+
+                        SDL_DestroyTexture(gTextHealth.mTexture);
                         if( !loadMediaHealth(&gTextHealth, hp) )
                         {
                             printf( "Failed to load health media!\n" );
@@ -1543,9 +1549,6 @@ int main( int argc, char* args[] )
 	SDL_DestroyTexture(gDifButton2.mTexture);
 	SDL_DestroyTexture(gBackground.mTexture);
 	SDL_DestroyTexture(gMedikit.mTexture);
-
-    free(gMusic);
-    free(gButtonSound);
 
 	close();
 

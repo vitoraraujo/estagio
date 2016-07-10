@@ -169,7 +169,7 @@ int loadMedia()
 }
 ```
 
-Crie a função `void close()`, que irá delocar tecla por tecla:
+Crie a função `void close()`, que irá dealocar tecla por tecla:
 
 ```
 void close()

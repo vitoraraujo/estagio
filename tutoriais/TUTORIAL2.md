@@ -71,7 +71,7 @@ int loadMedia()
 	return success;
 }
 ```
-Crie a função `close()`, que deloca a superfíce, destroi a window e sai do SDL:
+Crie a função `close()`, que dealoca a superfíce, destroi a window e sai do SDL:
 
 ```
 void close()

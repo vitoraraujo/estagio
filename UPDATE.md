@@ -9,15 +9,16 @@
 * Começa a estudar valgrind
 * Tenta dealocar as instancias do rambo.cpp( erro: double free or corruption) e donttouchit.cpp, mas não fez diferença na memoria definitivamente perdida no teste com o donttouchit.cpp
 * Procurei por coisas que possam estar alocadas
-* Li os sites http://valgrind.org/docs/manual/quick-start.html e http://www.linuxprogrammingblog.com/using-valgrind-to-debug-memory-leakscomo para entender como usar o valgrind 
+* Li os sites http://valgrind.org/docs/manual/quick-start.html e http://www.linuxprogrammingblog.com/using-valgrind-to-debug-memory-leaks como para entender como usar o valgrind 
+* Analizei os códigos algumas vezes para achar texturas e outras coisas para dealocar, vi que o ttf não estavam sendo dealocado, mas não mudou nada na memoria definitivamente perdida
+* Pesquisei mais nos sites, mas não tá dando muito certo
+* Consertei deloca para dealoca nos tutoriais
 
 ## O que eu vou fazer durante a próxima semana?
-* Dealocar todas as instancias
-* checar o valgrind dos códigos
 * Tutorial de valgrind
 
 ## Quantas horas de trabalho?
-* 4 horas
+* 7 horas e 30 minutos
 
 =======
 
