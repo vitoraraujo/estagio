@@ -1,3 +1,18 @@
+# 12/07
+
+## O que eu ia fazer durante a semana passada?
+* Tutorial de valgrind
+
+## O que eu realmente fiz durante a semana passada?
+
+## O que eu vou fazer durante a próxima semana?
+* Otimizar o donttouchit.cpp, removendo a memoria perdida
+* Melhorar o donttouchit.cpp de modo que fique mais simétrico
+* Tutorial de valgrind
+
+## Quantas horas de trabalho?
+
+=======
 # 5/07
 
 ## O que eu ia fazer durante a semana passada?

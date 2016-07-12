@@ -440,10 +440,6 @@ int main( int argc, char* args[] )
         int mouseOverBoy = 0;
         int mouseOverGirl = 0;
 
-
-        //gCurrentBoy = gBoy;
-        //gCurrentGirl = gGirl;
-
         float button1x1 = SCREEN_WIDTH / 3.75;
         float button1y1 = SCREEN_HEIGHT / 3.75;
         float button1x2 = button1x1 + 550;
@@ -699,14 +695,17 @@ int main( int argc, char* args[] )
                 {
                     countTime = currentTime;
                     time +=1;
+
                     if( !loadMediaTime(&gTextTime, time) )
                     {
                         printf( "Failed to load time text media!\n" );
                     }
-                }
 
+                }
                 render(&gTextTimeTexture, (SCREEN_WIDTH - getWidth(&gTextTimeTexture) ) / 2.2 ,( SCREEN_HEIGHT - getHeight(&gTextTimeTexture) ) / 1.05 , NULL, 0, NULL, SDL_FLIP_NONE);
+
                 render(&gTextTime, (SCREEN_WIDTH - getWidth(&gTextTime) ) / 1.9,( SCREEN_HEIGHT - getHeight(&gTextTime) ) / 1.05, NULL, 0, NULL, SDL_FLIP_NONE);
+
 
                 SDL_RenderPresent( gRenderer );
 
@@ -716,22 +715,14 @@ int main( int argc, char* args[] )
     }
 
     SDL_DestroyTexture(gBoy.mTexture);
-    //free(gBoy.mTexture);
     SDL_DestroyTexture(gGirl.mTexture);
-    //free(gGirl.mTexture);
     SDL_DestroyTexture(gBackground.mTexture);
-    //free(gBackground.mTexture);
     SDL_DestroyTexture(gDifButton1.mTexture);
-    //free(gDifButton1.mTexture);
     SDL_DestroyTexture(gDifButton2.mTexture);
-    //free(gDifButton2.mTexture);
     SDL_DestroyTexture(gTextTimeTexture.mTexture);
-    //free(gTextTimeTexture.mTexture);
     SDL_DestroyTexture(gTextTime.mTexture);
-    //free(gTextTime.mTexture);
     SDL_DestroyTexture(gTextTitle.mTexture);
-    //free(gTextTitle.mTexture);
-
+    
     close();
 
 	return 0;
