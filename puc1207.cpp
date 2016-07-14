@@ -4,10 +4,10 @@
 #include <SDL2/SDL_ttf.h>
 
 SDL_Window* gWindow = NULL;
-	
-TTF_Font *gFont = NULL;	
 
-SDL_Renderer* gRenderer = NULL;	
+TTF_Font *gFont = NULL;
+
+SDL_Renderer* gRenderer = NULL;
 
 struct LTexture{
     SDL_Texture* mTexture = NULL;
@@ -52,24 +52,24 @@ void loadMediaTime(LTexture* s, int time)
     sprintf(vc, "%d", time );
 
 	SDL_Color textColor = { 0, 0, 0 };
-	loadFromRenderedText(s, vc , textColor );	
+	loadFromRenderedText(s, vc , textColor );
 }
 
 int main( int argc, char* args[] )
 {
 	const int SCREEN_WIDTH = 640;
-	const int SCREEN_HEIGHT = 480;	
-		
+	const int SCREEN_HEIGHT = 480;
+
 	SDL_Init( SDL_INIT_VIDEO );
-	
+
 	gWindow = SDL_CreateWindow( "SDL Valgrind", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 	assert(gWindow != NULL );
 
 	gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 	assert ( gRenderer != NULL );
-	
+
 	assert( TTF_Init() != -1 );
-	gFont = TTF_OpenFont( "imagens/lazy.ttf", 35 );	
+	gFont = TTF_OpenFont( "imagens/lazy.ttf", 35 );
 	assert( gFont != NULL );
 
 	LTexture gTextTime;
@@ -77,40 +77,40 @@ int main( int argc, char* args[] )
     gTextTime.mWidth = 0;
 
 	loadMediaTime(&gTextTime, 0) ;
-	
+
 	int quit = 0;
 	SDL_Event e;
 	int time = 0;
-		
+
 	Uint32 currentTime = 0;
     Uint32 countTime = 0;
-	
-	
+
+
 
 	while( !quit )
    	{
 		while( SDL_PollEvent( &e ) != 0 )
        	{
        		if( e.type == SDL_QUIT )
-             	{
-              		quit = 1;
-               	}			
+            {
+                quit = 1;
+            }
 		}
 
 		if(currentTime - countTime >= 100)
         {
         	countTime = currentTime;
             time +=1;
-			           
+
 			loadMediaTime(&gTextTime, time);
         }
-		
+
 		SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-        SDL_RenderClear( gRenderer );		
-		
+        SDL_RenderClear( gRenderer );
+
 		render(&gTextTime, (SCREEN_WIDTH - 20) / 2,( SCREEN_HEIGHT) / 2, NULL, 0, NULL, SDL_FLIP_NONE);
         SDL_RenderPresent( gRenderer );
-		
+
 		currentTime = SDL_GetTicks();
 	}
 
@@ -120,8 +120,8 @@ int main( int argc, char* args[] )
 	TTF_Quit();
 
 	SDL_DestroyRenderer( gRenderer );
-	gRenderer = NULL;	
-	
+	gRenderer = NULL;
+
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
 

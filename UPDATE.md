@@ -4,6 +4,10 @@
 * Tutorial de valgrind
 
 ## O que eu realmente fiz durante a semana passada?
+* Fui à PUC
+* Criei o código puc1207.cpp para servir de exemplo simples para trabalhar com valgrind
+* Comecei a simplificar o código donttouchit.cpp, usando asserts e fazendo simetria, como feito na PUC. Reduziu 230 linhas
+* acho que donttouchit.cpp está de maneira irredutivel, pois a memoria perdida não passa de 6.376 bytes, independente do tempo. Mas gostaria de uma confirmação.
 
 ## O que eu vou fazer durante a próxima semana?
 * Otimizar o donttouchit.cpp, removendo a memoria perdida
@@ -11,6 +15,7 @@
 * Tutorial de valgrind
 
 ## Quantas horas de trabalho?
+* 5 horas
 
 =======
 # 5/07
