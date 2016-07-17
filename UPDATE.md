@@ -7,15 +7,18 @@
 * Fui à PUC
 * Criei o código puc1207.cpp para servir de exemplo simples para trabalhar com valgrind
 * Comecei a simplificar o código donttouchit.cpp, usando asserts e fazendo simetria, como feito na PUC. Reduziu 230 linhas
-* acho que donttouchit.cpp está de maneira irredutivel, pois a memoria perdida não passa de 6.376 bytes, independente do tempo. Mas gostaria de uma confirmação.
+* Acho que donttouchit.cpp está de maneira irredutivel, pois a memoria perdida não passa de 6.376 bytes, independente do tempo. Mas gostaria de uma confirmação.
+* Comecei a fazer a mesma coisa no rambo.cpp, para exercitar esse monitoramento de memoria
+* Simplifiquei o código rambo.cpp, usando asserts e fazendo simetria, como feito na PUC. Reduziu 450 linhas 
+* Deixei o rambo.cpp de modo que a memoria perdida não passasse de 7.336 bytes
+* Tentei consertar o erro da variavel do mouse não inicializada
 
 ## O que eu vou fazer durante a próxima semana?
-* Otimizar o donttouchit.cpp, removendo a memoria perdida
-* Melhorar o donttouchit.cpp de modo que fique mais simétrico
 * Tutorial de valgrind
 
 ## Quantas horas de trabalho?
-* 5 horas
+* 8 horas
+
 
 =======
 # 5/07

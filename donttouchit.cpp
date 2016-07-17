@@ -17,6 +17,9 @@ typedef struct LTexture LTexture;
 struct Mouse{
     SDL_Point mPosition;
 };
+typedef struct Mouse Mouse;
+
+Mouse mouse;
 
 SDL_Window* gWindow = NULL;
 
@@ -162,10 +165,6 @@ int main( int argc, char* args[] )
     gBackground.mHeight = 0;
     gBackground.mWidth = 0;
 
-    Mouse mouse;
-    mouse.mPosition.x = 0;
-    mouse.mPosition.y = 0;
-
     LTexture gDifButton1;
     gDifButton1.mHeight = 0;
     gDifButton1.mWidth = 0;
@@ -186,8 +185,11 @@ int main( int argc, char* args[] )
     gTextTitle.mHeight = 0;
     gTextTitle.mWidth = 0;
 
-    init();
+    Mouse mouse;
+    mouse.mPosition.x = 0;
+    mouse.mPosition.y = 0;
 
+    init();
 
     SDL_Color textColor = { 0, 0, 0 };
 
@@ -259,8 +261,6 @@ int main( int argc, char* args[] )
     float button2y2 = button2y1 + 200;
 
     Uint32 oldTime = 0;
-    //Uint32 mouseOverBoyTime = 0;
-    //Uint32 mouseOverGirlTime = 0;
     Uint32 currentTime = 0;
     Uint32 countTime = 0;
     Uint32 endGame = -1000;
@@ -286,7 +286,6 @@ int main( int argc, char* args[] )
                         if(checkMouse(&mouse, button1x1, button1y1, button1x2, button1y2))
                         {
                             //Mix_PlayChannel( -1, gButtonSound, 0 );
-
                             startGame = 1;
 
                             dificuldade = 1;
