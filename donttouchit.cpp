@@ -19,8 +19,6 @@ struct Mouse{
 };
 typedef struct Mouse Mouse;
 
-Mouse mouse;
-
 SDL_Window* gWindow = NULL;
 
 SDL_Renderer* gRenderer = NULL;
@@ -234,14 +232,14 @@ int main( int argc, char* args[] )
 
     int dificuldade = 0;
 
-    float bx1 ;
+    float bx1 = 0;
     float by1 = 450;
-    float bx2 = bx1 + 64;
+    float bx2 = 0;
     float by2 = by1 + 150;
 
-    float gx1;
+    float gx1 = 0;
     float gy1 = 450;
-    float gx2 = gx1 + 64;
+    float gx2 = 0;
     float gy2 = gy1 + 150;
 
     int mouseX = 0;

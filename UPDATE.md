@@ -1,3 +1,19 @@
+# 21/07
+
+## O que eu ia fazer durante a semana passada?
+* Tutorial de valgrind
+
+## O que eu realmente fiz durante a semana passada?
+* Fiz o tutorial de valgrind
+* Procurei pelo bug do conditional jump do mouse, mas não há nada utilizando sua variavel antes de sua inicialização. Não consegui achar outro meio de resolver.
+
+## O que eu vou fazer durante a próxima semana?
+
+
+## Quantas horas de trabalho?
+* 2 horas
+
+=======
 # 12/07
 
 ## O que eu ia fazer durante a semana passada?

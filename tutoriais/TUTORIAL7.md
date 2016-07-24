@@ -1,3 +1,26 @@
+# SDL com C
+
+## Valgrind básico
+
+## Instalando o valgrind no Ubuntu
+
+Para isso, é necessário instalar o valgrind na máquina. Abra o terminal e digite o seguinte comando:
+
+```
+sudo apt-get install valgrind
+```
+
+Para usar o valgrind, digite:
+
+```
+valgrind ./executável
+```
+
+### Usando um programa como exemplo de um código que aloca memória e dealoca toda memória que não será mais utilizada
+
+Este programa (valgrind.cpp) contabiliza os segundos, alocando um novo número (1, 2, 3..) a cada segundo, para por na interface. Basicamente, se não dealocarmos a memória a cada vez que alocarmos uma nova, iremos acumular memória que não será mais utilizada. Devemos lembrar também no final do código de dealocar todas as memórias alocadas que foram utilizadas. Neste código não há memória perdida por conta do programador, somente das ferramentas do SDL.
+
+```
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <assert.h>
@@ -9,27 +32,39 @@ TTF_Font *gFont = NULL;
 
 SDL_Renderer* gRenderer = NULL;
 
+```
+
+Aloca-se o número no `SDL_Texture* mTexture` da struct `LTexture`:
+
+```
 struct LTexture{
     SDL_Texture* mTexture = NULL;
 	int mWidth;
     int mHeight;
 };
+```
 
+Na hora de alocar a memória, devemos dealoca a antiga, para que não se acumule. Utilize a função do SDL `SDL_DestroyTexture()`. Cheque se a memória não está null, pois se estiver poderá causar problema, pois a função não pode receber um `SDL_Texture*` que aponta para NULL:
+
+```
 void loadFromRenderedText(LTexture* s, const char* textureText, SDL_Color textColor )
 {
 
 	SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText, textColor );
 	assert( textSurface != NULL );
-
-    //if (s->mTexture != NULL) {
-        //SDL_DestroyTexture(s->mTexture);
-	//}
+	
+	//Dealocando a memória do mTexture
+    if (s->mTexture != NULL) {
+		SDL_DestroyTexture(s->mTexture);
+	}
+	
 	s->mTexture = SDL_CreateTextureFromSurface( gRenderer, textSurface );
 	assert( s->mTexture != NULL );
 
 	s->mWidth = textSurface->w;
 	s->mHeight = textSurface->h;
-
+	
+	//Dealocando a superfície 
 	SDL_FreeSurface( textSurface );
 }
 
@@ -69,7 +104,7 @@ int main( int argc, char* args[] )
 	assert ( gRenderer != NULL );
 
 	assert( TTF_Init() != -1 );
-	gFont = TTF_OpenFont( "imagens/lazy.ttf", 35 );
+	gFont = TTF_OpenFont( "imagens-tutorial/lazy.ttf", 35 );
 	assert( gFont != NULL );
 
 	LTexture gTextTime;
@@ -85,8 +120,6 @@ int main( int argc, char* args[] )
 	Uint32 currentTime = 0;
     Uint32 countTime = 0;
 
-
-
 	while( !quit )
    	{
 		while( SDL_PollEvent( &e ) != 0 )
@@ -97,7 +130,7 @@ int main( int argc, char* args[] )
             }
 		}
 
-		if(currentTime - countTime >= 1000)
+		if(currentTime - countTime >= 100)
         {
         	countTime = currentTime;
             time +=1;
@@ -113,7 +146,11 @@ int main( int argc, char* args[] )
 
 		currentTime = SDL_GetTicks();
 	}
-/*
+```
+
+Dealoque a fonte `gFont`, feche o ttf, destrua a `gWindow` e o `gRenderer` e por fim o SDL:
+
+```
 	TTF_CloseFont( gFont );
 	gFont = NULL;
 
@@ -127,6 +164,17 @@ int main( int argc, char* args[] )
 
 	SDL_Quit();
 	printf("OK\n");
-*/
+	
 	return 0;
 }
+```
+
+Experimente não dealocar a memória antiga e a superfice na função `loadFromRenderedText()`, e as dealocações no fim da `int main()`, e cheque o valgrind depois de alguns segundos rodando, para ver quanta memória perdida ele contabiliz, e compare com quando todas são dealocadas.
+
+Para compilar e executar, basta escrever os seguintes comandos no terminal:
+
+```
+$ gcc valgrind.cpp -o valgrind -lSDL2 -lSDL2_ttf
+$ ./valgrind
+$ valgrind ./valgrind
+```
